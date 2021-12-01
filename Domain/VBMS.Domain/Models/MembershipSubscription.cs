@@ -5,7 +5,7 @@ public class MembershipSubscription : Entity<int>
 {
     public int MemberId { get; set; }
 
-    public MembershipLevel MembershipLevel { get; set; }
+    public Subscription Subscription { get; set; }
 
     public decimal SubscriptionAmount { get; set; }
 

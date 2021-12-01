@@ -2,7 +2,7 @@
 
 namespace VBMS.Domain.Enums;
 
-public enum MembershipLevel : byte
+public enum Subscription : byte
 {
     Ordinary = 0,
     Premium = 1,
