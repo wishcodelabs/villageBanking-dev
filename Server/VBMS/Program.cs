@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-using VBMS.Areas.Identity;
-using VBMS.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

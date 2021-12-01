@@ -1,18 +1,17 @@
-﻿namespace VBMS.Models
+﻿namespace VBMS.Models;
+
+public class User : IdentityUser<int>
 {
-    public class User
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public string? MiddleName { get; set; }
+
+    public Guid UserGuid { get; set; }
+
+    public User()
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string? MiddleName { get; set; }
-
-        public Guid UserGuid { get; set; }
-
-        public User()
-        {
-            UserGuid = new();
-        }
+        UserGuid = new();
     }
 }

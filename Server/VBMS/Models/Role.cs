@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Models
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
     }
 }
