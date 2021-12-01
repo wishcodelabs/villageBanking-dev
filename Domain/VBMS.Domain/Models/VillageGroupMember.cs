@@ -7,6 +7,7 @@
         public int PersonalDetailsId { get; set; }
 
         public DateTime DateJoined { get; set; }
+        public VillageGroupMemberStatus Status { get; set; }
 
         public MembershipLevel MembershipLevel { get; set; }
 

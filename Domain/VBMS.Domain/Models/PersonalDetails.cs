@@ -3,7 +3,7 @@
 public class PersonalDetails : Entity<int>
 {
     const string nrc = @"^{d6}\/{d2}\/{d1}";
-    public int UserId { get; set; }
+    public string UserGuid { get; set; }
 
     public string FirstName { get; set; }
 
