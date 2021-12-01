@@ -9,7 +9,7 @@
         public DateTime DateJoined { get; set; }
         public VillageGroupMemberStatus Status { get; set; }
 
-        public MembershipLevel MembershipLevel { get; set; }
+        public List<MembershipSubscription> Subscriptions { get; set; }
 
         public virtual VillageBankGroup VillageBankGroup { get; set; }
 
