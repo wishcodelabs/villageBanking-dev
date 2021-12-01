@@ -12,7 +12,7 @@ public class PersonalDetails : Entity<int>
     public string LastName { get; set; }
 
     [StringLength(11)]
-    [RegularExpression(nrc, ErrorMessage = "Required format is 00000/00/1")]
+    [RegularExpression(nrc, ErrorMessage = "Required format is 00000/00/0")]
     public string NrcNumber { get; set; }
 
     [DataType(DataType.PhoneNumber)]
@@ -22,5 +22,13 @@ public class PersonalDetails : Entity<int>
     public string EmailAddress { get; set; }
 
     public Address PhysicalAddress { get; set; }
+
+    public string Occupation { get; set; }
+
+    public Gender Gender { get; set; }
+
+    public MaritalStatus MaritalStatus { get; set; }
+
+
 
 }

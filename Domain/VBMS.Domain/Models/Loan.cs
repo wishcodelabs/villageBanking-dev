@@ -12,10 +12,11 @@
 
         public DateTime DateSubmitted { get; set; }
 
-        public string Status { get; set; }
+        public LoanStatus Status { get; set; }
 
         public int LoanTypeId { get; set; }
 
+        public string Details { get; set; }
         public virtual LoanType LoanType { get; set; }
         public virtual Applicant Applicant { get; set; }
 

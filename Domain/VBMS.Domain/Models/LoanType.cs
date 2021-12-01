@@ -6,5 +6,10 @@ public class LoanType : AuditableEntity<int>
 
     public int LoanInterestRateId { get; set; }
 
+    public decimal MaxLoanAmount { get; set; }
+
+    [DataType(DataType.Duration)]
+    public TimeSpan PaybackDuration { get; set; }
+
     public LoanInterestRate LoanInterestRate { get; set; }
 }
