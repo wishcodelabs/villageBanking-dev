@@ -12,5 +12,5 @@ public class VillageGroupMemberShare : Entity<int>
     [ForeignKey(nameof(MemberId))]
     public virtual VillageGroupMember Shareholder { get; set; }
 
-    public virtual InvestmentPeriod InvestmentPeriod { get; set; }
+    public virtual Period InvestmentPeriod { get; set; }
 }
