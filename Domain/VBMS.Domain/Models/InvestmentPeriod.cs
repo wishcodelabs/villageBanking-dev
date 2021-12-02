@@ -9,7 +9,7 @@ public class InvestmentPeriod : AuditableEntity<int>
     public DateTime EndDate { get; set; }
 
     [DataType(DataType.Currency)]
-    public decimal Amount { get; set; }
+    public decimal MinAmount { get; set; }
 
 
 }
