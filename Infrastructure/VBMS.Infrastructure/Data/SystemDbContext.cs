@@ -28,6 +28,7 @@ public class SystemDbContext : DbContext
     public virtual DbSet<MembershipSubscription> MembershipSubscriptions { get; set; }
     public virtual DbSet<Applicant> Applicants { get; set; }
     public virtual DbSet<Investment> Investments { get; set; }
+    public virtual DbSet<MembershipRole> MembershipRoles { get; set; }
     public virtual DbSet<VillageGroupMemberRole> VillageGroupMemberRoles { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
@@ -83,7 +84,17 @@ public class SystemDbContext : DbContext
         modelBuilder.Entity<LoanPayment>()
                     .Property(lp => lp.PaymentMethod)
                     .HasConversion<int>();
-
+        modelBuilder.Entity<MembershipRole>()
+                    .Property(r => r.RoleId)
+                    .HasConversion<int>();
+        /*Enum Seeding*/
+        modelBuilder.Entity<MembershipRole>()
+                    .HasData(Enum.GetValues(typeof(MembershipRole)).Cast<VillageGroupRole>()
+                                 .Select(e => new MembershipRole()
+                                 {
+                                     RoleId = e,
+                                     RoleName = e.ToString()
+                                 }));
     }
 
 }
