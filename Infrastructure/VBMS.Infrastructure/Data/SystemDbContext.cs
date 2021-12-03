@@ -4,9 +4,10 @@ namespace VBMS.Infrastructure.Data;
 
 public class SystemDbContext : DbContext
 {
-    public SystemDbContext(DbContextOptions<SystemDbContext> options) : base(options)
+    readonly ICurrentUserService currentUserService;
+    public SystemDbContext(DbContextOptions<SystemDbContext> options, ICurrentUserService _currentUserService) : base(options)
     {
-
+        currentUserService = _currentUserService;
     }
     public virtual DbSet<Loan> Loans { get; set; }
 
@@ -21,4 +22,34 @@ public class SystemDbContext : DbContext
     public virtual DbSet<VillageGroupMember> VillageGroupMembers { get; set; }
 
     public virtual DbSet<VillageGroupMemberShare> VillageGroupMemberShares { get; set; }
+    public virtual DbSet<LoanPayment> LoanPayments { get; set; }
+    public virtual DbSet<PersonalDetails> PersonalDetails { get; set; }
+    public virtual DbSet<MembershipSubscription> MembershipSubscriptions { get; set; }
+    public virtual DbSet<Applicant> Applicants { get; set; }
+    public virtual DbSet<Investment> Investments { get; set; }
+    public virtual DbSet<VillageGroupMemberRole> VillageGroupMemberRoles { get; set; }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+    {
+        foreach (var entry in ChangeTracker.Entries<IAuditableEntity>().ToList())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.CreatedOn = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = currentUserService.GetUserId();
+                    break;
+                case EntityState.Modified:
+                    entry.Entity.LastModifiedOn = DateTime.UtcNow;
+                    entry.Entity.LastModifiedBy = currentUserService.GetUserId();
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
 }

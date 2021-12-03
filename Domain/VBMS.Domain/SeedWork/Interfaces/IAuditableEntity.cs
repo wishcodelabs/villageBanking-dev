@@ -5,11 +5,11 @@ public interface IAuditableEntity<TKey> : IAuditableEntity, IEntity<TKey>
 }
 public interface IAuditableEntity : IEntity
 {
-    string CreatedBy { get; set; }
+    int CreatedBy { get; set; }
 
     DateTime CreatedOn { get; set; }
 
-    string LastModifiedBy { get; set; }
+    int LastModifiedBy { get; set; }
 
     DateTime? LastModifiedOn { get; set; }
 }
