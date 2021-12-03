@@ -65,6 +65,25 @@ public class SystemDbContext : DbContext
         modelBuilder.Entity<Loan>()
                     .Property(l => l.Status)
                     .HasConversion<int>();
+        modelBuilder.Entity<PersonalDetails>()
+                    .Property(p => p.Gender)
+                    .HasConversion<int>();
+        modelBuilder.Entity<PersonalDetails>()
+                    .Property(p => p.MaritalStatus)
+                    .HasConversion<int>();
+        modelBuilder.Entity<VillageGroupMemberRole>()
+                    .Property(mr => mr.Role)
+                    .HasConversion<int>();
+        modelBuilder.Entity<VillageGroupMembership>()
+                    .Property(m => m.Status)
+                    .HasConversion<int>();
+        modelBuilder.Entity<MembershipSubscription>()
+                    .Property(mr => mr.Subscription)
+                    .HasConversion<int>();
+        modelBuilder.Entity<LoanPayment>()
+                    .Property(lp => lp.PaymentMethod)
+                    .HasConversion<int>();
+
     }
 
 }
