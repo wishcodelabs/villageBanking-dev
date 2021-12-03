@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Enums;
 
-public enum VillageGroupRole : byte
+public enum VillageGroupRole : int
 {
     Basic,
     Chairperson,

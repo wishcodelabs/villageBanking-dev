@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Enums
 {
-    public enum LoanStatus : byte
+    public enum LoanStatus : int
     {
 
         Submitted = 0,

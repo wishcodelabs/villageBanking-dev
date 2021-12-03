@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Enums;
 
-public enum PaymentMethod : byte
+public enum PaymentMethod : int
 {
     BankTransfer,
     MTNMobileMoney,

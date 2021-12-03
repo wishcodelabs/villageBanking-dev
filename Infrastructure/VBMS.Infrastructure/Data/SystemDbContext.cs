@@ -62,7 +62,9 @@ public class SystemDbContext : DbContext
             property.SetColumnType("decimal(18,2)");
         }
         base.OnModelCreating(modelBuilder);
-
+        modelBuilder.Entity<Loan>()
+                    .Property(l => l.Status)
+                    .HasConversion<int>();
     }
 
 }

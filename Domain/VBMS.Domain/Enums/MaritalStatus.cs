@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Enums;
 
-public enum MaritalStatus : byte
+public enum MaritalStatus : int
 {
     Single = 1,
     Married = 2,
