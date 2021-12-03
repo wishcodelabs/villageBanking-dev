@@ -3,7 +3,8 @@
 public class PersonalDetails : Entity<int>
 {
     const string nrc = @"^\d{6}\/d{2}\/d{1}$";
-    public string UserGuid { get; set; }
+
+    public int MembershipId { get; set; }
 
     public string FirstName { get; set; }
 
@@ -29,6 +30,7 @@ public class PersonalDetails : Entity<int>
 
     public MaritalStatus MaritalStatus { get; set; }
 
+    public virtual VillageGroupMembership Owner { get; set; }
 
 
 }

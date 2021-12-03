@@ -12,5 +12,5 @@ public class MembershipSubscription : Entity<int>
     public bool Paid { get; set; }
 
     [ForeignKey(nameof(MemberId))]
-    public virtual VillageGroupMember Subscriber { get; set; }
+    public virtual VillageGroupMembership Subscriber { get; set; }
 }

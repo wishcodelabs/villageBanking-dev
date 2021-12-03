@@ -10,5 +10,5 @@ public class VillageBankGroup : AuditableEntity<int>
 
     public Admin Admin { get; set; }
 
-    public virtual List<VillageGroupMember> GroupMembers { get; set; }
+    public virtual List<VillageGroupMembership> GroupMembers { get; set; }
 }

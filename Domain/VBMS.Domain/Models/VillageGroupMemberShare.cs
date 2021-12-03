@@ -10,7 +10,7 @@ public class VillageGroupMemberShare : Entity<int>
     public double NumberOfShares { get; set; }
 
     [ForeignKey(nameof(MemberId))]
-    public virtual VillageGroupMember Shareholder { get; set; }
+    public virtual VillageGroupMembership Shareholder { get; set; }
 
     public virtual Period InvestmentPeriod { get; set; }
 }

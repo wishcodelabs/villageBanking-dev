@@ -13,6 +13,6 @@ public class Investment : Entity<int>
     public Period InvestmentPeriod { get; set; }
 
     [ForeignKey(nameof(InverstorId))]
-    public virtual VillageGroupMember Investor { get; set; }
+    public virtual VillageGroupMembership Investor { get; set; }
 
 }

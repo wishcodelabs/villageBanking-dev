@@ -2,8 +2,10 @@
 {
     public class Applicant : Entity<int>
     {
-        public int PersonalDetailsId { get; set; }
+        public int MembershipId { get; set; }
 
-        public virtual PersonalDetails PersonalDetails { get; set; }
+        [ForeignKey(nameof(MembershipId))]
+        public VillageGroupMembership GroupMembership { get; set; }
+
     }
 }

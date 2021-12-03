@@ -20,7 +20,7 @@ public class SystemDbContext : DbContext
 
     public virtual DbSet<VillageBankGroup> VillageBankGroups { get; set; }
 
-    public virtual DbSet<VillageGroupMember> VillageGroupMembers { get; set; }
+    public virtual DbSet<VillageGroupMembership> VillageGroupMembers { get; set; }
 
     public virtual DbSet<VillageGroupMemberShare> VillageGroupMemberShares { get; set; }
     public virtual DbSet<LoanPayment> LoanPayments { get; set; }

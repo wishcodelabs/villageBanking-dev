@@ -8,5 +8,5 @@ public class VillageGroupMemberRole : Entity<int>
     public VillageGroupRole Role { get; set; }
 
     [ForeignKey(nameof(MemberId))]
-    public virtual VillageGroupMember VillageGroupMember { get; set; }
+    public virtual VillageGroupMembership VillageGroupMember { get; set; }
 }

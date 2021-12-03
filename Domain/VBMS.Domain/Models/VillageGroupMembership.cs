@@ -1,8 +1,10 @@
 ﻿namespace VBMS.Domain.Models;
 
-public class VillageGroupMember : Entity<int>
+public class VillageGroupMembership : Entity<int>
 {
     public int VillageGroupId { get; set; }
+
+    public string UserGuid { get; set; }
 
     public int PersonalDetailsId { get; set; }
 
