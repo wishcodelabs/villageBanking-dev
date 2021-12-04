@@ -1,6 +1,6 @@
 ﻿
 
-namespace FOCALPOINT.CORE.Repositories;
+namespace VBMS.Infrastructure.Repositories;
 #nullable disable
 public class UnitOfWork<TKey> : IUnitOfWork<TKey>
 {
