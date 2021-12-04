@@ -6,7 +6,4 @@ public class MembershipManager : ManagerBase<VillageGroupMembership, int>
     {
 
     }
-
-
-
 }

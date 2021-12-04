@@ -2,12 +2,15 @@
 
 public abstract class ManagerBase<T, TKey> : IManager<T, TKey> where T : Entity<TKey>
 {
-    protected IUnitOfWork<TKey> UnitOfWork { get; init; }
+    private IUnitOfWork<TKey> UnitOfWork { get; init; }
+
 
     public ManagerBase(IUnitOfWork<TKey> unitOfWork)
     {
         UnitOfWork = unitOfWork;
     }
+
+    protected IRepositoryAsync<T, TKey> Repository { get => UnitOfWork.Repository<T>(); }
 
     public async Task<int> AddAsync(T entity)
     {
