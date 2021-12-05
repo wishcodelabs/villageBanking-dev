@@ -10,7 +10,7 @@ public class Investment : Entity<int>
 
     public decimal AmountInvested { get; set; }
 
-    public Period InvestmentPeriod { get; set; }
+    public InvestmentPeriod InvestmentPeriod { get; set; }
 
     [ForeignKey(nameof(InverstorId))]
     public virtual VillageGroupMembership Investor { get; set; }

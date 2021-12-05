@@ -14,7 +14,8 @@ public class SystemDbContext : DbContext
 
     public virtual DbSet<LoanInterestRate> LoanInterestRates { get; set; }
 
-    public virtual DbSet<Period> InvestmentsPeriods { get; set; }
+    public virtual DbSet<Period> Periods { get; set; }
+    public virtual DbSet<InvestmentPeriod> InvestmentPeriods { get; set; }
 
     public virtual DbSet<LoanType> LoanTypes { get; set; }
 
