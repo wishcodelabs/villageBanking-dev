@@ -68,7 +68,13 @@ public class SystemDbContext : DbContext
         modelBuilder.Entity<MembershipRole>()
                     .Property(r => r.RoleId)
                     .HasConversion<int>();
-        /*Enum Seeding*/
+        modelBuilder.Entity<Period>()
+                    .Property(p => p.Status)
+                    .HasConversion<int>();
+        modelBuilder.Entity<InvestmentPeriod>()
+                    .Property(ip => ip.Status)
+                    .HasConversion<int>();
+        /*Enum Seedings*/
         modelBuilder.Entity<MembershipRole>()
                     .HasData(Enum.GetValues(typeof(MembershipRole)).Cast<VillageGroupRole>()
                                  .Select(e => new MembershipRole()
