@@ -10,6 +10,8 @@ public class Investment : Entity<int>
 
     public decimal AmountInvested { get; set; }
 
+    public Status Status { get; set; }
+
     public InvestmentPeriod InvestmentPeriod { get; set; }
 
     [ForeignKey(nameof(InverstorId))]
