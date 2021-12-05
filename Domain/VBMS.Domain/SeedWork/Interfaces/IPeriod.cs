@@ -3,8 +3,10 @@
 public interface IPeriod : IAuditableEntity
 {
     [DataType(DataType.Date)]
-    public DateTime BeginDate { get; set; }
+    DateTime BeginDate { get; set; }
 
     [DataType(DataType.Date)]
-    public DateTime EndDate { get; set; }
+    DateTime EndDate { get; set; }
+
+    PeriodStatus Status { get; set; }
 }

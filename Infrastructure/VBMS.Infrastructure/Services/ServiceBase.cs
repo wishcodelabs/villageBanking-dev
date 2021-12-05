@@ -22,6 +22,7 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         else
         {
             await unitOfWork.RollBack();
+            result = false;
         }
         return result;
 
@@ -36,6 +37,7 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         else
         {
             await unitOfWork.RollBack();
+            result = false;
         }
         return result;
     }
@@ -49,6 +51,7 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         else
         {
             await unitOfWork.RollBack();
+            result = false;
         }
         return result;
     }
