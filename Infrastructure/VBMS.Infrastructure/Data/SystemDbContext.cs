@@ -10,27 +10,7 @@ public class SystemDbContext : DbContext
     {
         currentUserService = _currentUserService;
     }
-    public virtual DbSet<Loan> Loans { get; set; }
 
-    public virtual DbSet<LoanInterestRate> LoanInterestRates { get; set; }
-
-    public virtual DbSet<Period> Periods { get; set; }
-    public virtual DbSet<InvestmentPeriod> InvestmentPeriods { get; set; }
-
-    public virtual DbSet<LoanType> LoanTypes { get; set; }
-
-    public virtual DbSet<VillageBankGroup> VillageBankGroups { get; set; }
-
-    public virtual DbSet<VillageGroupMembership> VillageGroupMembers { get; set; }
-
-    public virtual DbSet<VillageGroupMemberShare> VillageGroupMemberShares { get; set; }
-    public virtual DbSet<LoanPayment> LoanPayments { get; set; }
-    public virtual DbSet<PersonalDetails> PersonalDetails { get; set; }
-    public virtual DbSet<MembershipSubscription> MembershipSubscriptions { get; set; }
-    public virtual DbSet<Applicant> Applicants { get; set; }
-    public virtual DbSet<Investment> Investments { get; set; }
-    public virtual DbSet<MembershipRole> MembershipRoles { get; set; }
-    public virtual DbSet<VillageGroupMemberRole> VillageGroupMemberRoles { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
