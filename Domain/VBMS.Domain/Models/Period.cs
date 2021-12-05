@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Models;
 
-public class InvestmentPeriod : AuditableEntity<int>
+public class Period : AuditableEntity<int>
 {
     [DataType(DataType.Date)]
     public DateTime BeginDate { get; set; }

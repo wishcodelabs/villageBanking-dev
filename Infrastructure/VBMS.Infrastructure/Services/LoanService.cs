@@ -1,8 +1,8 @@
-﻿namespace VBMS.Infrastructure.Managers
+﻿namespace VBMS.Infrastructure.Services
 {
-    public class LoanManager : ManagerBase<Loan, int>
+    public class LoanService : ServiceBase<Loan, int>
     {
-        public LoanManager(IUnitOfWork<int> unitOfWork) : base(unitOfWork)
+        public LoanService(IUnitOfWork<int> unitOfWork) : base(unitOfWork)
         {
         }
         public async Task<List<Loan>> GetAllByMemberId(int memberId)
