@@ -17,12 +17,12 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         var result = await unitOfWork.Repository<T>().AddAsync(entity);
         if (result)
         {
-            await unitOfWork.Commit(new CancellationToken());
+            result = await unitOfWork.Commit(new CancellationToken()) != 0;
         }
         else
         {
             await unitOfWork.RollBack();
-            result = false;
+
         }
         return result;
 
@@ -32,12 +32,12 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         var result = await unitOfWork.Repository<T>().UpdateAsync(entity);
         if (result)
         {
-            await unitOfWork.Commit(new CancellationToken());
+            result = await unitOfWork.Commit(new CancellationToken()) != 0;
         }
         else
         {
             await unitOfWork.RollBack();
-            result = false;
+
         }
         return result;
     }
@@ -46,12 +46,12 @@ public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<
         var result = await unitOfWork.Repository<T>().DeleteAsync(entity);
         if (result)
         {
-            await unitOfWork.Commit(new CancellationToken());
+            result = await unitOfWork.Commit(new CancellationToken()) != 0;
         }
         else
         {
             await unitOfWork.RollBack();
-            result = false;
+
         }
         return result;
     }
