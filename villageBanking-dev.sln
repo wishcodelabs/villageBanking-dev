@@ -7,11 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{011F03F2-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{F66D298E-3BEC-4B37-A183-352F0752A05C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBMS.Domain", "Domain\VBMS.Domain\VBMS.Domain.csproj", "{6020042D-0A62-4C36-9C82-D2C6EB29E86F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBMS.Domain", "Domain\VBMS.Domain\VBMS.Domain.csproj", "{6020042D-0A62-4C36-9C82-D2C6EB29E86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBMS.Infrastructure", "Infrastructure\VBMS.Infrastructure\VBMS.Infrastructure.csproj", "{516016F7-6575-4F55-A52A-FD8730BF19F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBMS.Infrastructure", "Infrastructure\VBMS.Infrastructure\VBMS.Infrastructure.csproj", "{516016F7-6575-4F55-A52A-FD8730BF19F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBMS", "Server\VBMS\VBMS.csproj", "{A0127671-2A2D-48F0-A2B4-60004F71D3D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBMS", "Server\VBMS\VBMS.csproj", "{A0127671-2A2D-48F0-A2B4-60004F71D3D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
