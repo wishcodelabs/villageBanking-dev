@@ -20,11 +20,11 @@ public class SystemDbContext : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedOn = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = currentUserService.GetUserId();
+                    entry.Entity.CreatedBy = currentUserService.GetUserName();
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedOn = DateTime.UtcNow;
-                    entry.Entity.LastModifiedBy = currentUserService.GetUserId();
+                    entry.Entity.LastModifiedBy = currentUserService.GetUserName();
                     break;
                 default:
                     break;
