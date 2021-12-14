@@ -34,6 +34,15 @@ public class SystemDbContext : DbContext
         }
         return await base.SaveChangesAsync(cancellationToken);
     }
+    protected override void ConfigureConventions(
+      ModelConfigurationBuilder configurationBuilder)
+    {
+        // Pre-convention model configuration goes here
+        configurationBuilder.Properties<Enum>()
+                            .HaveConversion<int>();
+        configurationBuilder.Properties<decimal>()
+            .HaveColumnType("decimal(18,2)");
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -44,36 +53,7 @@ public class SystemDbContext : DbContext
             property.SetColumnType("decimal(18,2)");
         }
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Loan>()
-                    .Property(l => l.Status)
-                    .HasConversion<int>();
-        modelBuilder.Entity<PersonalDetails>()
-                    .Property(p => p.Gender)
-                    .HasConversion<int>();
-        modelBuilder.Entity<PersonalDetails>()
-                    .Property(p => p.MaritalStatus)
-                    .HasConversion<int>();
-        modelBuilder.Entity<VillageGroupMemberRole>()
-                    .Property(mr => mr.Role)
-                    .HasConversion<int>();
-        modelBuilder.Entity<VillageGroupMembership>()
-                    .Property(m => m.Status)
-                    .HasConversion<int>();
-        modelBuilder.Entity<MembershipSubscription>()
-                    .Property(mr => mr.Subscription)
-                    .HasConversion<int>();
-        modelBuilder.Entity<LoanPayment>()
-                    .Property(lp => lp.PaymentMethod)
-                    .HasConversion<int>();
-        modelBuilder.Entity<MembershipRole>()
-                    .Property(r => r.RoleId)
-                    .HasConversion<int>();
-        modelBuilder.Entity<Period>()
-                    .Property(p => p.Status)
-                    .HasConversion<int>();
-        modelBuilder.Entity<InvestmentPeriod>()
-                    .Property(ip => ip.Status)
-                    .HasConversion<int>();
+
         /*Enum Seedings*/
         modelBuilder.Entity<MembershipRole>()
                     .HasData(Enum.GetValues(typeof(MembershipRole)).Cast<VillageGroupRole>()
