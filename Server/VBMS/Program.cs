@@ -10,6 +10,16 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMudServices(configuration =>
+{
+    configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomEnd;
+    configuration.SnackbarConfiguration.HideTransitionDuration = 1000;
+    configuration.SnackbarConfiguration.ShowTransitionDuration = 100;
+    configuration.SnackbarConfiguration.VisibleStateDuration = 5000;
+    configuration.SnackbarConfiguration.NewestOnTop = true;
+    configuration.SnackbarConfiguration.MaximumOpacity = 100;
+    configuration.SnackbarConfiguration.ShowCloseIcon = true;
+});
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
 
