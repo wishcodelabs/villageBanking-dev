@@ -4,3 +4,4 @@ global using Microsoft.EntityFrameworkCore;
 
 global using VBMS.Areas.Identity;
 global using VBMS.Data;
+global using VBMS.Domain.Interfaces;
