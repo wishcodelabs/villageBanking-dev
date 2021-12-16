@@ -1,0 +1,67 @@
+﻿@inherits LayoutComponentBase
+<main class="login-page">
+    <header class="miri-ui-kit-header header-no-bg-img header-navbar-only">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+            <div class="container">
+                <a class="navbar-brand" href="index.html"><img src="/images/logo_icon.svg" alt="logo"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#miriUiKitNavbar"
+                    aria-controls="navbarSupportedContent2" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            
+                <div class="collapse navbar-collapse" id="miriUiKitNavbar">
+                    <div class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://bootstrapdash.com/demo/miri-ui-kit-pro/documentation/documentation.html" target="_blank">About</a>
+                        </li>
+            
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Contact</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                More
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right ">
+                                <a href="landing.html" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-shape-outline"></i>Landing Page</a>
+                                <a href="login.html" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-lock-outline"></i>Login Page</a>
+                                <a href="profile.html" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-shield-account-outline"></i>Profile Page</a>
+                            </div>
+                        </li>
+            
+                        <li class="nav-item">
+
+                            <a class="nav-link nav-icon icon-fb" href="#"><i class="mdi mdi-facebook-box"></i></a>
+
+                            <a class="nav-link nav-icon icon-twitter" href="#"><i class="mdi mdi-twitter-box"></i></a>
+ 
+                            <a class="nav-link nav-icon icon-insta" href="#"><i class="mdi mdi-instagram"></i></a>
+                            
+                        </li>
+            
+                        <form action="#" class="form-inline ml-lg-3">
+                            <button class="btn btn-danger">Join Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="card login-card">
+        @Body
+    </div>
+    <footer>
+        <div class="container">
+            <nav class="navbar navbar-dark bg-transparent navbar-expand footer-navbar d-block d-sm-flex text-center">
+                <span class="navbar-text">&copy; @(DateTime.Now.Year) Village Bank MS. All rights reserved.</span>
+                <div class="navbar-nav ml-auto justify-content-center">
+                    <a href="#" class="nav-link">Support</a>
+                    <a href="#" class="nav-link">Terms</a>
+                    <a href="#" class="nav-link">Privacy</a>
+                </div>
+            </nav>
+        </div>
+    </footer>
+   
+</main>
