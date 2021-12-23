@@ -8,3 +8,4 @@ global using MudBlazor.Services;
 global using VBMS.Areas.Identity;
 global using VBMS.Data;
 global using VBMS.Domain.Interfaces;
+global using VBMS.Domain.Requests;
