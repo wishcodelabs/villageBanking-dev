@@ -1,0 +1,35 @@
+﻿@layout AuthLayout
+@page "/register"
+<div style="max-width:70%" class="card-body">
+    <h3 class="text-center text-white font-weight-light mb-4">REGISTER</h3>
+    <EditForm Model="RegisterModel"
+              OnValidSubmit="Process"
+              OnInvalidSubmit="ModelInvalid">
+       <DataAnnotationsValidator/>
+       <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
+            <MudItem xs="12" sm="6"></MudItem>
+            <MudItem xs="12" sm="6"></MudItem>
+            <MudItem xs="12" sm="6"></MudItem>
+            <MudItem xs="12" sm="6"></MudItem>
+       </MudGrid>
+    </EditForm>
+    <div class="d-flex justify-content-between mt-4">
+        <p class="text-white text-center font-weight-light">Already have a group?</p>
+        
+    </div>
+</div>
+@code{
+    GroupRegisterModel RegisterModel { get; set; } = new();
+
+
+    async void Process()
+    {
+
+    }
+    void ModelInvalid()
+    {
+        snackBar.Add("Please fill in all the mandatory fields.", Severity.Error);
+    }
+
+
+}

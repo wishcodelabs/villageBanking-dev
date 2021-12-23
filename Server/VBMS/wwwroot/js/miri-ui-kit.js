@@ -7,10 +7,10 @@ function fixnavbaronScroll() {
     if ($('.fixed-on-scroll').length) {
         if ($(this).scrollTop() >= $('.fixed-on-scroll').height()) {
             $('.fixed-on-scroll').addClass('fixed-on-top');
-            $('.fixed-on-scroll .navbar-brand img').prop('src','assets/images/logo-dark.svg')
+            $('.fixed-on-scroll .navbar-brand img').prop('src','images/logo_icon.svg')
         } else {
             $('.fixed-on-scroll').removeClass('fixed-on-top');
-            $('.fixed-on-scroll .navbar-brand img').prop('src','assets/images/logo.svg')
+            $('.fixed-on-scroll .navbar-brand img').prop('src','images/logo_icond.svg')
         }
     }
 }
