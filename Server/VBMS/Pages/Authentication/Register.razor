@@ -1,35 +1,40 @@
 ﻿@layout AuthLayout
 @page "/register"
 <div class="card-body">
-    <h3 class="text-center text-white font-weight-light mb-4">REGISTER</h3>
+    <h3 class="text-center font-weight-light mb-2">REGISTER</h3>
     <EditForm Model="RegisterModel"
               OnValidSubmit="Process"
               OnInvalidSubmit="ModelInvalid">
        <DataAnnotationsValidator/>
-       <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
+       <MudGrid Class="mb-3" Justify="Justify.SpaceBetween" Spacing="2">
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="First Name" Clearable="true" Class = "my-6"/>          
+                <MudTextField T="string" Variant="Variant.Outlined" Label="First Name" Clearable="true" Class = "my-3"/>          
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="Last Name" Clearable="true" Class = "my-6"/>  
+                <MudTextField T="string" Variant="Variant.Outlined" Label="Last Name" Clearable="true" Class = "my-3"/>  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" InputMode="InputMode.email" Variant="Variant.Outlined" Label="E-mail" Clearable="true" Class = "my-6"/>  
+                <MudTextField T="string" InputMode="InputMode.email" Variant="Variant.Outlined" Label="E-mail" Clearable="true" Class = "my-3"/>  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" InputType="InputType.Telephone" InputMode="InputMode.tel" Variant="Variant.Outlined" Label="Phone Number" Clearable="true" Class = "my-6"/>  
+                <MudTextField T="string" InputType="InputType.Telephone" InputMode="InputMode.tel" Variant="Variant.Outlined" Label="Phone Number" Clearable="true" Class = "my-3"/>  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="Village Group Name" Clearable="true" Class = "my-6"/>  
+                <MudTextField T="string" Variant="Variant.Outlined" Label="Village Group Name" Clearable="true" Class = "my-3"/>  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudSelect T="VillageGroupRole" Variant="Variant.Outlined" Label="Your Role" Class="my-6"  />
+                <MudSelect T="VillageGroupRole" Variant="Variant.Outlined" Label="Your Role" Class="my-3"  />
+            </MudItem>
+            <MudItem xs='12' sm="6">
+                <MudTextField T="string" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password" Class="my-3"/>
+            </MudItem>
+            <MudItem xs='12' sm='6'>
+                <MudTextField T="string" InputType="InputType.Password" Variant='Variant.Outlined' Label="Confirm Password" Class="my-3"/>
             </MudItem>
        </MudGrid>
+       <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign Up</MudButton>
     </EditForm>
-    <div class="d-flex justify-content-between mt-4">
-        <p class="text-white text-center font-weight-light">Already have a group?</p>      
-    </div>
+   
 </div>
 @code{
     GroupRegisterModel RegisterModel { get; set; } = new();
