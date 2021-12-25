@@ -1,4 +1,6 @@
 ﻿
+using VBMS.Domain.SeedWork.Contracts;
+
 namespace VBMS.Infrastructure.Repositories;
 
 public class RepositoryAsync<T, TKey> : IRepositoryAsync<T, TKey> where T : class, IEntity<TKey>

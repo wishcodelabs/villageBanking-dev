@@ -1,6 +1,4 @@
-﻿using VBMS.Domain.SeedWork.Interfaces;
-
-namespace VBMS.Domain.SeedWork;
+﻿namespace VBMS.Domain.SeedWork;
 
 public class Period : AuditableEntity<int>, IPeriod
 {

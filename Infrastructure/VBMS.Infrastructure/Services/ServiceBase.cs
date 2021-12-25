@@ -1,4 +1,6 @@
-﻿namespace VBMS.Infrastructure.Services;
+﻿using VBMS.Domain.SeedWork.Contracts;
+
+namespace VBMS.Infrastructure.Services;
 
 public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : class, IEntity<TKey>
 {

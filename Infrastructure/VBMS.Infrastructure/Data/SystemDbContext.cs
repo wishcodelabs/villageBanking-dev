@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using VBMS.Domain.SeedWork.Interfaces;
+using VBMS.Domain.SeedWork.Contracts;
 using VBMS.Infrastructure.Models.Identity;
 
 namespace VBMS.Infrastructure.Data;

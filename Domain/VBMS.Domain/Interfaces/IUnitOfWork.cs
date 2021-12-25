@@ -1,5 +1,4 @@
-﻿
-namespace VBMS.Domain.Interfaces;
+﻿namespace VBMS.Domain.Interfaces;
 
 public interface IUnitOfWork<TKey> : IDisposable
 {

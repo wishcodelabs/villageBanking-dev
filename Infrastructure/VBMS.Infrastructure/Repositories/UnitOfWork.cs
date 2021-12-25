@@ -2,6 +2,8 @@
 
 
 
+using VBMS.Domain.SeedWork.Contracts;
+
 namespace VBMS.Infrastructure.Repositories;
 #nullable disable
 public class UnitOfWork<TKey> : IUnitOfWork<TKey>

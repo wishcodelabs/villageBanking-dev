@@ -1,4 +1,4 @@
-﻿using VBMS.Domain.SeedWork.Interfaces;
+﻿
 
 namespace VBMS.Domain.Interfaces;
 

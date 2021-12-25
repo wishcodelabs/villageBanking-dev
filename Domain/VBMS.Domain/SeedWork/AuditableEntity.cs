@@ -1,6 +1,4 @@
-﻿using VBMS.Domain.SeedWork.Interfaces;
-
-namespace VBMS.Domain.SeedWork;
+﻿namespace VBMS.Domain.SeedWork;
 
 public class AuditableEntity<TKey> : Entity<TKey>, IAuditableEntity<TKey>
 {

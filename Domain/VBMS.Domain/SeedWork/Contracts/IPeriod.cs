@@ -1,4 +1,4 @@
-﻿namespace VBMS.Domain.SeedWork.Interfaces;
+﻿namespace VBMS.Domain.SeedWork.Contracts;
 
 public interface IPeriod : IAuditableEntity
 {
