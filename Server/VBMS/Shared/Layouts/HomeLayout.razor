@@ -240,10 +240,15 @@
         <MudItem xs="12" sm="4" Class="footer-about">
             <h4>About the company</h4>
             <p>VBMS is a Zambian leading Village Banking Software.</p>
-            <div class="social-links social-icons"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-linkedin"></i></a><a href="#"><i class="fa fa-github"></i></a></div>
+            <div class="social-links social-icons">
+                <a href="#"><MudIcon Icon="@Icons.Material.Filled.Facebook"/></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.Twitter"/></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.LinkedIn"/></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp"/></a>
+            </div>
         </MudItem>
         <MudItem xs="12">
-            <MudText Align="Align.Center" Style="font-size:smaller;" Class="text-muted mt-6">VBMS Zambia Copyright © @(DateTime.Now.Year) All rights reserved</MudText>
+            <MudText Align="Align.Start" Style="font-size:smaller;" Class="text-muted mt-6">VBMS Zambia Copyright © @(DateTime.Now.Year) All rights reserved</MudText>
         </MudItem>
     </MudGrid>
 
