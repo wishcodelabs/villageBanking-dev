@@ -8,28 +8,71 @@
        <DataAnnotationsValidator/>
        <MudGrid Class="mb-3" Justify="Justify.SpaceBetween" Spacing="2">
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="First Name" Clearable="true" Class = "my-3"/>          
+                <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.FirstName"
+                              For="(()=>RegisterModel.FirstName)"
+                              Variant="Variant.Outlined" 
+                              Label="First Name" 
+                              Clearable="true" 
+                              />          
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="Last Name" Clearable="true" Class = "my-3"/>  
+                <MudTextField T="string"
+                              @bind-Value="@RegisterModel.LastName"
+                              For="(()=>RegisterModel.LastName)"
+                              Variant="Variant.Outlined" 
+                              Label="Last Name" 
+                              Clearable="true" />  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" InputMode="InputMode.email" Variant="Variant.Outlined" Label="E-mail" Clearable="true" Class = "my-3"/>  
+                <MudTextField T="string"
+                              @bind-Value="@RegisterModel.Email"
+                              For="(()=>RegisterModel.Email)"
+                              InputMode="InputMode.email"
+                              Variant="Variant.Outlined" 
+                              Label="E-mail" 
+                              Clearable="true" />  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" InputType="InputType.Telephone" InputMode="InputMode.tel" Variant="Variant.Outlined" Label="Phone Number" Clearable="true" Class = "my-3"/>  
+                <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.PhoneNumber"
+                              For="(()=>RegisterModel.PhoneNumber)"
+                              InputType="InputType.Telephone" 
+                              InputMode="InputMode.tel" 
+                              Variant="Variant.Outlined" 
+                              Label="Phone Number" 
+                              Clearable="true" />  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField T="string" Variant="Variant.Outlined" Label="Village Group Name" Clearable="true" Class = "my-3"/>  
+                <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.GroupName"
+                              For="(()=>RegisterModel.GroupName)"
+                              Variant="Variant.Outlined" 
+                              Label="Village Group Name" 
+                              Clearable="true" />  
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudSelect T="VillageGroupRole" Variant="Variant.Outlined" Label="Your Role" Class="my-3"  />
+                <MudSelect T="VillageGroupRole"
+                            @bind-Value="@RegisterModel.Role"
+                            For="(()=>RegisterModel.Role)"
+                            Variant="Variant.Outlined" 
+                            Label="Your Role"  />
             </MudItem>
             <MudItem xs='12' sm="6">
-                <MudTextField T="string" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password" Class="my-3"/>
+                <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.Password"
+                              For ="(()=>RegisterModel.Password)"
+                              InputType="InputType.Password" 
+                              Variant="Variant.Outlined" 
+                              Label="Password" />
             </MudItem>
             <MudItem xs='12' sm='6'>
-                <MudTextField T="string" InputType="InputType.Password" Variant='Variant.Outlined' Label="Confirm Password" Class="my-3"/>
+                <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.ConfirmPassword"
+                              For = "(()=>RegisterModel.ConfirmPassword)"
+                              InputType="InputType.Password" 
+                              Variant='Variant.Outlined' 
+                              Label="Confirm Password" />
             </MudItem>
        </MudGrid>
        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign Up</MudButton>
@@ -37,6 +80,7 @@
    
 </div>
 @code{
+   
     GroupRegisterModel RegisterModel { get; set; } = new();
 
 
@@ -46,7 +90,7 @@
     }
     void ModelInvalid()
     {
-        snackBar.Add("Please fill in all the mandatory fields.", Severity.Error);
+        snackBar.Add("Please fill in all the required fields.", Severity.Error);
     }
 
 
