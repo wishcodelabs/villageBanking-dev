@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Infrastructure.Services;
 
-public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : Entity<TKey>
+public abstract class ServiceBase<T, TKey> : IService<T, TKey> where T : class, IEntity<TKey>
 {
     private IUnitOfWork<TKey> unitOfWork;
 

@@ -1,5 +1,7 @@
 ﻿
 
+
+
 namespace VBMS.Infrastructure.Repositories;
 #nullable disable
 public class UnitOfWork<TKey> : IUnitOfWork<TKey>
@@ -23,7 +25,7 @@ public class UnitOfWork<TKey> : IUnitOfWork<TKey>
         GC.SuppressFinalize(this);
     }
 
-    public IRepositoryAsync<T, TKey> Repository<T>() where T : Entity<TKey>
+    public IRepositoryAsync<T, TKey> Repository<T>() where T : class, IEntity<TKey>
     {
         if (repositories == null)
             repositories = new Hashtable();
