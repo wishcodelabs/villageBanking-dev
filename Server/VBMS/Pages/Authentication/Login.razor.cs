@@ -7,7 +7,7 @@ namespace VBMS.Pages.Authentication
         TokenRequest tokenRequest = new();
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
-
+        bool forgotPass;
         bool PasswordVisibility;
         InputType PasswordInput = InputType.Password;
         string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -29,6 +29,10 @@ namespace VBMS.Pages.Authentication
                 PasswordInputIcon = Icons.Material.Filled.Visibility;
                 PasswordInput = InputType.Text;
             }
+        }
+        void ForgotPass()
+        {
+            forgotPass = !forgotPass;
         }
     }
 }

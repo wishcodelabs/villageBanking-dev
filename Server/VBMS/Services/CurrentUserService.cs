@@ -2,16 +2,15 @@
 {
     public class CurrentUserService : ICurrentUserService
     {
-        readonly AuthenticationStateProvider _stateProvider;
-        public CurrentUserService(AuthenticationStateProvider stateProvider)
+        readonly IHttpContextAccessor httpContextAccessor;
+        public CurrentUserService(IHttpContextAccessor contextAccessor)
         {
-            _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
+            httpContextAccessor = contextAccessor;
         }
-        public async Task<string> GetUserName()
+        public Task<string> GetUserName()
         {
-            var state = await _stateProvider.GetAuthenticationStateAsync();
-
-            return state?.User?.Identity?.Name ?? "Uknown";
+            var context = httpContextAccessor.HttpContext;
+            return Task.FromResult(context?.User?.Identity?.Name ?? "SYSTEM");
         }
     }
 }

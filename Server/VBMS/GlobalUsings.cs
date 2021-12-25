@@ -11,4 +11,6 @@ global using VBMS.Domain.Requests;
 global using VBMS.Extensions;
 global using VBMS.Infrastructure.Data;
 global using VBMS.Infrastructure.Models.Identity;
+global using VBMS.Infrastructure.Repositories;
 global using VBMS.Infrastructure.Services.Application;
+global using VBMS.Services;

@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddCurrentUserService();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddIdentity();
 builder.Services.AddRazorPages();

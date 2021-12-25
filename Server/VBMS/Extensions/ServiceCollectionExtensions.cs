@@ -1,9 +1,13 @@
-﻿
-
-namespace VBMS.Extensions
+﻿namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
+        internal static IServiceCollection AddCurrentUserService(this IServiceCollection services)
+        {
+            services.AddHttpContextAccessor()
+                    .AddTransient<ICurrentUserService, CurrentUserService>();
+            return services;
+        }
         internal static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<SystemDbContext>(options =>
@@ -32,7 +36,8 @@ namespace VBMS.Extensions
         }
         internal static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddTransient<LoanService>()
+            services.AddTransient<IUnitOfWork<int>, UnitOfWork<int>>()
+                    .AddTransient<LoanService>()
                     .AddTransient<InvestmentPeriodService>()
                     .AddTransient<MembershipService>();
             services.AddMudServices(configuration =>

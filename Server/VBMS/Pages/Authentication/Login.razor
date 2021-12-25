@@ -1,13 +1,14 @@
 ﻿@layout AuthLayout
 @page "/login"
 <div class="card-body">
-    <h3 class="text-center text-white font-weight-light mb-4">LOG IN</h3>
+   <center class="mb-4"> <MudIcon Style="width:100px;height:100px" Color="Color.Primary" Size="Size.Large" Icon="@Icons.Material.Filled.AccountCircle"/></center>
     <EditForm Model="@tokenRequest" OnValidSubmit="SubmitAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <DataAnnotationsValidator />
     <MudTextField T="string" 
                   @bind-Value="@tokenRequest.Email" 
                   Placeholder="e.g staff@example.zm" 
+                  InputMode="InputMode.email"
                   Label="E-mail" 
                   For = "@(()=>tokenRequest.Email)"
                   Variant="Variant.Outlined" 
@@ -26,14 +27,16 @@
 
     <div Class="d-flex justify-space-between align-center">
         <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
-        <MudLink Href="/forgot-password">Forgot pwd?</MudLink>
+        <MudLink @onclick="ForgotPass">Forgot password?</MudLink>
     </div>
 
 
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign In</MudButton>
-</EditForm>
-    <div class="d-flex justify-content-between mt-4">
-        <p class="text-white text-center font-weight-light">Forgot password?</p>
-        
-    </div>
+    <MudButton title="Login now" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign In</MudButton>
+        @if (forgotPass)
+        {
+            <MudAlert Dense="true" ShowCloseIcon="true" CloseIconClicked="ForgotPass" Class="mt-4" Variant="Variant.Filled" Severity="Severity.Info">Please contact your group admin.</MudAlert>
+        }
+    </EditForm>
+    
 </div>
+<PageTitle>Login - Village Banking Management System</PageTitle>
