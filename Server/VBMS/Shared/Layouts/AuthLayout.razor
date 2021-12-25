@@ -37,9 +37,15 @@
             </div>
         </nav>
     </header>
-    <div class="card login-card">
-        @Body
+   <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 75vh;">
+    <div class="d-flex flex-column mud-width-full">
+        <MudPaper Elevation="20" Class="pa-8" Width="100%" MaxWidth="600px">
+            @Body
+        </MudPaper>
+        <MudAlert Severity="Severity.Info" Class="mt-8 mud-width-full" Style="max-width:500px;" >No authentication is required, click sign in.</MudAlert>
     </div>
+ </MudContainer>
+
     <footer>
         <div class="container">
             <nav class="navbar navbar-dark bg-transparent navbar-expand footer-navbar d-block d-sm-flex text-center">
