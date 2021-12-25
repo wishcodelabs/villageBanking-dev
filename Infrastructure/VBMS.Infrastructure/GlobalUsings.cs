@@ -1,4 +1,5 @@
-﻿global using Microsoft.EntityFrameworkCore;
+﻿global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
 
 global using System.Collections;
 

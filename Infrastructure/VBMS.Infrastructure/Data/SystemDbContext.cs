@@ -1,8 +1,13 @@
 ﻿
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using VBMS.Domain.SeedWork.Interfaces;
+using VBMS.Infrastructure.Models.Identity;
+
 namespace VBMS.Infrastructure.Data;
 
-public class SystemDbContext : DbContext
+public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, RoleClaim, IdentityUserToken<int>>
 {
 #nullable disable
     readonly ICurrentUserService currentUserService;

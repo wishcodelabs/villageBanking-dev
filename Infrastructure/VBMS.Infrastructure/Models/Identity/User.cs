@@ -1,4 +1,4 @@
-﻿namespace VBMS.Models;
+﻿namespace VBMS.Infrastructure.Models.Identity;
 
 public class User : IdentityUser<int>
 {

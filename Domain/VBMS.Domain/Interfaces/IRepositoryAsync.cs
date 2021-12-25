@@ -1,4 +1,6 @@
 ﻿
+using VBMS.Domain.SeedWork.Interfaces;
+
 namespace VBMS.Domain.Interfaces;
 
 public interface IRepositoryAsync<T, in TKey> where T : class, IEntity<TKey>

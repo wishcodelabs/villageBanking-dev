@@ -6,6 +6,9 @@ global using MudBlazor;
 global using MudBlazor.Services;
 
 global using VBMS.Areas.Identity;
-global using VBMS.Data;
 global using VBMS.Domain.Interfaces;
 global using VBMS.Domain.Requests;
+global using VBMS.Extensions;
+global using VBMS.Infrastructure.Data;
+global using VBMS.Infrastructure.Models.Identity;
+global using VBMS.Infrastructure.Services.Application;

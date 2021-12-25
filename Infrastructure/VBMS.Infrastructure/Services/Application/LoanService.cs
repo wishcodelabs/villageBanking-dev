@@ -1,4 +1,4 @@
-﻿namespace VBMS.Infrastructure.Services
+﻿namespace VBMS.Infrastructure.Services.Application
 {
     public class LoanService : ServiceBase<Loan, int>
     {

@@ -1,4 +1,4 @@
-﻿namespace VBMS.Domain.Interfaces;
+﻿namespace VBMS.Domain.SeedWork.Interfaces;
 
 public interface IAuditableEntity<TKey> : IAuditableEntity, IEntity<TKey>
 {
