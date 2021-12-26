@@ -6,6 +6,7 @@ global using MudBlazor;
 global using MudBlazor.Services;
 
 global using VBMS.Areas.Identity;
+global using VBMS.Domain.Enums;
 global using VBMS.Domain.Interfaces;
 global using VBMS.Domain.Requests;
 global using VBMS.Extensions;

@@ -5,7 +5,7 @@ namespace VBMS.Pages.Authentication
     public partial class Register
     {
         GroupRegisterModel RegisterModel { get; set; } = new();
-
+        IEnumerable<VillageGroupRole> villageGroupRoles { get; set; } = new HashSet<VillageGroupRole>();
 
         async void Process()
         {

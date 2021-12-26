@@ -55,8 +55,17 @@
                 <MudSelect T="VillageGroupRole"
                             @bind-Value="@RegisterModel.Role"
                             For="(()=>RegisterModel.Role)"
-                            Variant="Variant.Outlined" 
-                            Label="Your Role"  />
+                            Variant="Variant.Outlined"
+                            MultiSelection="true"
+                            @bind-SelectedValues="villageGroupRoles"
+                            Label="Your Role">
+                 @foreach (VillageGroupRole item  in  Enum.GetValues(typeof(VillageGroupRole)))
+                 {
+                       <MudSelectItem T="VillageGroupRole" Value="@item">@item.ToString()</MudSelectItem>
+                 }
+                        
+                </MudSelect>
+
             </MudItem>
             <MudItem xs='12' sm="6">
                 <MudTextField T="string" 
