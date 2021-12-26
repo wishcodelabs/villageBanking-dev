@@ -28,5 +28,9 @@
         [Required]
         [Compare(nameof(Password), ErrorMessage = "Confirm password and password should match")]
         public string ConfirmPassword { get; set; }
+        public GroupRegisterModel()
+        {
+            Role = VillageGroupRole.Admin;
+        }
     }
 }

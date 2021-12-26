@@ -58,7 +58,7 @@
                             Variant="Variant.Outlined"
                             MultiSelection="true"
                             @bind-SelectedValues="villageGroupRoles"
-                            Label="Your Role">
+                            Label="Your Role(s)">
                  @foreach (VillageGroupRole item  in  Enum.GetValues(typeof(VillageGroupRole)))
                  {
                        <MudSelectItem T="VillageGroupRole" Value="@item">@item.ToString()</MudSelectItem>
