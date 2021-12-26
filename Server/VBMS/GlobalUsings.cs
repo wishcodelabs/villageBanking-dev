@@ -12,7 +12,10 @@ global using VBMS.Domain.Interfaces;
 global using VBMS.Domain.Requests;
 global using VBMS.Extensions;
 global using VBMS.Infrastructure.Data;
+global using VBMS.Infrastructure.Interfaces;
 global using VBMS.Infrastructure.Models.Identity;
 global using VBMS.Infrastructure.Repositories;
 global using VBMS.Infrastructure.Services.Application;
+global using VBMS.Infrastructure.Services.Identity;
 global using VBMS.Services;
+

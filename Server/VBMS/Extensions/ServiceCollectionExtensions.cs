@@ -1,4 +1,5 @@
-﻿namespace VBMS.Extensions
+﻿
+namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
@@ -55,6 +56,7 @@
         }
         internal static IServiceCollection AddIdentityServices(this IServiceCollection services)
         {
+            services.AddTransient<IUserRegisterService, UserRegisterService>();
             return services;
         }
 

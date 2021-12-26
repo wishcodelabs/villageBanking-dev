@@ -5,13 +5,14 @@
         readonly UserManager<User> userManager;
         readonly ILogger<UserRegisterService> logger;
         readonly IUserStore<User> userStore;
-        readonly RoleManager<User> roleManager;
+        readonly RoleManager<Role> roleManager;
         readonly SignInManager<User> signInManager;
         private readonly IUserEmailStore<User> emailStore;
+        const string Basic_Role = "BasicUser";
 
         public UserRegisterService(UserManager<User> userManager,
                            ILogger<UserRegisterService> logger,
-                           RoleManager<User> roleManager,
+                           RoleManager<Role> roleManager,
                            SignInManager<User> signInManager,
                            IUserStore<User> userStore
             )
@@ -41,6 +42,20 @@
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User created a account with password");
+                    var roleResult = await roleManager.FindByNameAsync(Basic_Role);
+                    var existingUser = await userManager.FindByEmailAsync(request.Email);
+                    if (roleResult == null)
+                    {
+                        await roleManager.CreateAsync(new Role(Basic_Role, "Basic Role For AnyUser"));
+                    }
+                    else
+                    {
+                        var uresult = await userManager.IsInRoleAsync(existingUser, Basic_Role);
+                        if (!uresult)
+                        {
+                            await userManager.AddToRoleAsync(existingUser, Basic_Role);
+                        }
+                    }
                     return await Result.SuccessAsync("Account Created Succesifully");
                 }
                 else
