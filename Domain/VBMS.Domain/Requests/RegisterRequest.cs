@@ -9,6 +9,8 @@
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Required]
+        public string UserName { get; set; }
         [Display(Name = "Middle Name")]
         public string MiddleName { get; set; }
         [Required]

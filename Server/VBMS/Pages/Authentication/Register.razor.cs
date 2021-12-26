@@ -9,7 +9,26 @@ namespace VBMS.Pages.Authentication
 
         async void Process()
         {
-
+            var userRequest = new RegisterRequest
+            {
+                FirstName = RegisterModel.FirstName,
+                LastName = RegisterModel.LastName,
+                Email = RegisterModel.Email,
+                PhoneNumber = RegisterModel.PhoneNumber,
+                Password = RegisterModel.Password,
+                UserName = RegisterModel.UserName,
+                IsValid = true,
+                AutoConfirm = true
+            };
+            var result = await userRegisterService.RegisterAsync(userRequest);
+            if (result.Succeeded)
+            {
+                snackBar.Add(result.Messages[0], Severity.Success);
+            }
+            else
+            {
+                snackBar.Add(result.Messages[0], Severity.Error);
+            }
         }
         void ModelInvalid()
         {

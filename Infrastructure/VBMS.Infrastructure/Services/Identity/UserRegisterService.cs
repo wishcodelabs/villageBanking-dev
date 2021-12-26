@@ -29,38 +29,59 @@
         {
             if (request.IsValid)
             {
+                var userWithSameUserName = await userManager.FindByNameAsync(request.UserName);
+                if (userWithSameUserName != null)
+                {
+                    return await Result.FailAsync($"Username {request.UserName} is already taken");
+                }
                 var user = CreateUser();
                 user.PhoneNumber = request.PhoneNumber;
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 user.MiddleName = request.MiddleName;
                 user.EmailConfirmed = request.AutoConfirm;
-                await userStore.SetUserNameAsync(user, request.Email, CancellationToken.None);
-                await emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
-
-                var result = await userManager.CreateAsync(user, request.Password);
-                if (result.Succeeded)
+                if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
                 {
-                    logger.LogInformation("User created a account with password");
-                    var roleResult = await roleManager.FindByNameAsync(Basic_Role);
-                    var existingUser = await userManager.FindByEmailAsync(request.Email);
-                    if (roleResult == null)
+                    var userWithSamePhoneNumber = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+                    if (userWithSamePhoneNumber != null)
                     {
-                        await roleManager.CreateAsync(new Role(Basic_Role, "Basic Role For AnyUser"));
+                        return await Result.FailAsync(string.Format("Phone number {0} is already registered.", request.PhoneNumber));
+                    }
+                }
+                var userWithSameEmail = await userManager.FindByEmailAsync(request.Email);
+                if (userWithSameEmail == null)
+                {
+                    await userStore.SetUserNameAsync(user, request.UserName, CancellationToken.None);
+                    await emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
+
+                    var result = await userManager.CreateAsync(user, request.Password);
+                    if (result.Succeeded)
+                    {
+                        logger.LogInformation("User created a account with password");
+                        var roleResult = await roleManager.FindByNameAsync(Basic_Role);
+                        var existingUser = await userManager.FindByEmailAsync(request.Email);
+                        if (roleResult == null)
+                        {
+                            await roleManager.CreateAsync(new Role(Basic_Role, "Basic Role For AnyUser"));
+                        }
+                        else
+                        {
+                            var uresult = await userManager.IsInRoleAsync(existingUser, Basic_Role);
+                            if (!uresult)
+                            {
+                                await userManager.AddToRoleAsync(existingUser, Basic_Role);
+                            }
+                        }
+                        return await Result.SuccessAsync("Account Created Succesifully");
                     }
                     else
                     {
-                        var uresult = await userManager.IsInRoleAsync(existingUser, Basic_Role);
-                        if (!uresult)
-                        {
-                            await userManager.AddToRoleAsync(existingUser, Basic_Role);
-                        }
+                        return await Result.FailAsync("An Error Has Occured, Try Again");
                     }
-                    return await Result.SuccessAsync("Account Created Succesifully");
                 }
                 else
                 {
-                    return await Result.FailAsync("Something went wrong..");
+                    return await Result.FailAsync($"An account with Email address {request.Email} already exists");
                 }
             }
             else
