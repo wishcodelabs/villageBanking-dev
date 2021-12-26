@@ -30,6 +30,7 @@ public class PersonalDetails : Entity<int>
 
     public MaritalStatus MaritalStatus { get; set; }
 
+    [ForeignKey(nameof(MembershipId))]
     public virtual VillageGroupMembership Owner { get; set; }
 
 

@@ -21,15 +21,16 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
     {
         foreach (var entry in ChangeTracker.Entries<IAuditableEntity>().ToList())
         {
+            var userName = await currentUserService.GetUserName();
             switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.CreatedOn = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = await currentUserService.GetUserName();
+                    entry.Entity.CreatedBy ??= userName;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedOn = DateTime.UtcNow;
-                    entry.Entity.LastModifiedBy = await currentUserService.GetUserName();
+                    entry.Entity.LastModifiedBy ??= userName;
                     break;
                 default:
                     break;
@@ -93,7 +94,6 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         });
 
         #endregion
-
         /*Enum Seedings*/
         modelBuilder.Entity<MembershipRole>()
                     .HasData(Enum.GetValues(typeof(MembershipRole)).Cast<VillageGroupRole>()
@@ -102,6 +102,69 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
                                      RoleId = e,
                                      RoleName = e.ToString()
                                  }));
+        modelBuilder.Entity<Loan>(entity =>
+        {
+            entity.ToTable("Loans");
+        });
+        modelBuilder.Entity<Investment>(e =>
+        {
+            e.ToTable("Investments");
+        });
+        modelBuilder.Entity<LoanPayment>(e =>
+        {
+            e.ToTable("LoanPayments");
+        });
+        modelBuilder.Entity<InvestmentPeriod>(e =>
+        {
+            e.ToTable("InvestmentPeriods");
+        });
+        modelBuilder.Entity<VillageGroupMembership>(e =>
+        {
+            e.ToTable("Membership");
+            e.OwnsOne(e => e.PersonalDetails, p =>
+            {
+                p.ToTable("MemberPersonalDetails");
+                p.OwnsOne(p => p.PhysicalAddress, a =>
+                {
+                    a.ToTable("MemberAddresses");
+                    a.Property<int>("OwnerId");
+                    a.WithOwner();
+
+                })
+                .WithOwner(p => p.Owner);
+
+            });
+        });
+        modelBuilder.Entity<LoanType>(e =>
+        {
+            e.ToTable("LaonTypes");
+        });
+        modelBuilder.Entity<LoanInterestRate>(e =>
+        {
+            e.ToTable("LoanInterestRates");
+        });
+        modelBuilder.Entity<VillageBankGroup>(e =>
+        {
+            e.ToTable("VillageBankGroups");
+            e.OwnsOne(v => v.PhysicalAddress, a =>
+            {
+                a.ToTable("VillageBankAdresses");
+                a.Property<int>("OwnerId");
+                a.WithOwner();
+            });
+        });
+        modelBuilder.Entity<VillageGroupMemberRole>(e =>
+        {
+            e.ToTable("GroupMemberRoles");
+        });
+        modelBuilder.Entity<VillageGroupMemberShare>(e =>
+        {
+            e.ToTable("GroupMemberShares");
+        });
+        modelBuilder.Entity<MembershipSubscription>(e =>
+        {
+            e.ToTable("MemberSubscriptions");
+        });
     }
 
 }

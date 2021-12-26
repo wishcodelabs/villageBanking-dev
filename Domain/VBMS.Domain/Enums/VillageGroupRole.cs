@@ -3,6 +3,7 @@
 public enum VillageGroupRole : int
 {
     Basic,
+    Admin,
     Chairperson,
     CommiteeMember,
     Secretary,
