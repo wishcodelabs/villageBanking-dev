@@ -1,13 +1,23 @@
 ﻿namespace VBMS.Infrastructure.Models.Identity
 {
-    public class Role : IdentityRole<int>
+    public class Role : IdentityRole<int>, IAuditableEntity<int>
     {
-        public string Description { get; set; }
-        public virtual ICollection<RoleClaim> Claims { get; set; }
-        public Role(string name, string description) : base(name)
+        public string? Description { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public string? LastModifiedBy { get; set; }
+        public DateTime? LastModifiedOn { get; set; }
+
+        public virtual ICollection<RoleClaim> RoleClaims { get; set; }
+
+        public Role() : base()
         {
-            Description = description;
-            Claims = new HashSet<RoleClaim>();
+            RoleClaims = new HashSet<RoleClaim>();
+        }
+        public Role(string roleName, string? roleDescription = null) : base(roleName)
+        {
+            Description = roleDescription;
+            RoleClaims = new HashSet<RoleClaim>();
         }
     }
 
