@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using VBMS.Domain.SeedWork.Contracts;
 using VBMS.Infrastructure.Models.Identity;
 
 namespace VBMS.Infrastructure.Data;
@@ -83,7 +82,7 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
             entity.ToTable(name: "RoleClaims", "Identity");
 
             entity.HasOne(d => d.Role)
-                .WithMany(p => p.Claims)
+                .WithMany(p => p.RoleClaims)
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
