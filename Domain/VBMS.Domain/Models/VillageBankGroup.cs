@@ -6,9 +6,6 @@ public class VillageBankGroup : AuditableEntity<int>
 
     public Address PhysicalAddress { get; set; }
 
-    public int AdminId { get; set; }
-
-    public Admin Admin { get; set; }
-
+    public string AdminGuid { get; set; }
     public virtual List<VillageGroupMembership> GroupMembers { get; set; }
 }

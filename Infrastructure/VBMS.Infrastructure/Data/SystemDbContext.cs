@@ -93,14 +93,7 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         });
 
         #endregion
-        /*Enum Seedings*/
-        modelBuilder.Entity<MembershipRole>()
-                    .HasData(Enum.GetValues(typeof(MembershipRole)).Cast<VillageGroupRole>()
-                                 .Select(e => new MembershipRole()
-                                 {
-                                     RoleId = e,
-                                     RoleName = e.ToString()
-                                 }));
+
         modelBuilder.Entity<Loan>(entity =>
         {
             entity.ToTable("Loans");
