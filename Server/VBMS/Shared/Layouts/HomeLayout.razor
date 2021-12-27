@@ -39,10 +39,32 @@
                         <a class="nav-link nav-icon icon-insta" href="#"><i class="mdi mdi-instagram"></i></a>
 
                     </li>
+                    @if (!isSignedIn)
+                    {
+                        <form action="#" class="form-inline ml-lg-3">
 
-                    <form action="#" class="form-inline ml-lg-3">
-                        <a href="login" title="Already a member? Login" class="btn btn-danger">Login Now</a>
-                    </form>
+                            <a href="login" title="Already a member? Login" class="btn btn-danger">Login Now</a>
+                        </form>
+                    }
+                    else
+                    {
+                     <li class="flex-1 md:flex-none md:mr-3">
+                            <div class="relative inline-block">
+                                <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none">
+                                    <span class="pr-2"><i class="em em-robot_face"></i></span> Hi, @userName <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                    </svg>
+                                </button>
+                                <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+                                    <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
+                                    <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
+                                    <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
+                                    <div class="border border-gray-800"></div>
+                                    <a href="/logout" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
+                                </div>
+                            </div>
+                        </li>   
+                    }
                 </div>
             </div>
         </div>
@@ -96,7 +118,7 @@
                     Achieve prosperity with an all-in-one digital solution for village banks.
                 </h2>
                 <p class="mb-5">
-                    We help village banks manage their members, loan lifecycle and time-consuming task such as tracking repayments. We provide a complete solution to help in validating memberships and loan applications and determine eligibility. 
+                    We help village banks manage their members, loan lifecycle and time-consuming task such as tracking repayments. We provide a complete solution to help in validating memberships and loan applications and determine eligibility.
                 </p>
                 <p>
                     <button class="btn btn-rounded btn-danger raise-on-hover" data-toggle="lightbox" data-target="#demoVideoLightbox"><i class="mdi mdi-play"></i></button><span class="button-label text-danger font-weight-medium ml-3">SEE HOW WE WORKS</span>
@@ -219,11 +241,11 @@
 <footer class="footer">
     <MudGrid Justify="Justify.SpaceBetween">
         <MudItem md="4" sm="12" Class="footer-navigation">
-            <MudText Typo ="Typo.h4" Class="text-white">VBMS Zambia</MudText>
+            <MudText Typo="Typo.h4" Class="text-white">VBMS Zambia</MudText>
             <p class="links"><a href="#">Home</a><strong> · </strong><a href="#">Blog</a><strong> · </strong><a href="#">Pricing</a><strong> · </strong><a href="#">About</a><strong> · </strong><a href="#">Faq</a><strong> · </strong><a href="#">Contact</a></p>
-            
+
         </MudItem>
-        <MudItem md="4" sm="12"Class="footer-contacts">
+        <MudItem md="4" sm="12" Class="footer-contacts">
             <div>
                 <span class="fa fa-map-marker footer-contacts-icon"> </span>
                 <p><span class="new-line-span">21 Riverside, Kitwe</span>Copperbelt, ZAMBIA</p>
@@ -242,10 +264,10 @@
             <h4>About the company</h4>
             <p>VBMS is a Zambian leading Village Banking Software.</p>
             <div class="social-links social-icons">
-                <a href="#"><MudIcon Icon="@Icons.Material.Filled.Facebook"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.Twitter"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.LinkedIn"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp"/></a>
+                <a href="#"><MudIcon Icon="@Icons.Material.Filled.Facebook" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.Twitter" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.LinkedIn" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp" /></a>
             </div>
         </MudItem>
         <MudItem xs="12">
@@ -256,4 +278,19 @@
 </footer>
 <PageTitle>Home - Village Banking Management System</PageTitle>
 
+@code {
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    bool isSignedIn;
+    string userName = string.Empty;
+    ClaimsPrincipal CurrentUser { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = (await AuthenticationStateTask).User;
+        if (CurrentUser.Identity.IsAuthenticated)
+        {
+            userName = await userService.GetFullName(CurrentUser.Identity.Name);
+            isSignedIn = true;
+        }
+    }
+}

@@ -17,7 +17,7 @@ namespace VBMS.Pages.Authentication
             var result = await userService.LoginAsync(tokenRequest);
             if (result.Succeeded)
             {
-                navigationManager.NavigateTo($"/login/?key={result.Data}", true);
+                navigationManager.NavigateTo($"/login?key={result.Data}", true);
             }
             else
             {

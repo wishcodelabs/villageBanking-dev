@@ -35,7 +35,7 @@ namespace VBMS.Middleware
 
         public async Task Invoke(HttpContext context, SignInManager<TUser> signInManager)
         {
-            if (context.Request.Path == "/login/" && context.Request.Query.ContainsKey("key"))
+            if (context.Request.Path == "/login" && context.Request.Query.ContainsKey("key"))
             {
                 var key = Guid.Parse(context.Request.Query["key"]);
                 var tokenRequest = Logins[key];
