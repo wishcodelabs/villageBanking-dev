@@ -16,6 +16,8 @@
 @using VBMS.Shared.Layouts
 @using MudBlazor
 @using Blazored.FluentValidation
+
+@attribute [Authorize]
 @inject NavigationManager navigationManager
 @inject ISnackbar snackBar
 @inject IJSRuntime jsRuntime

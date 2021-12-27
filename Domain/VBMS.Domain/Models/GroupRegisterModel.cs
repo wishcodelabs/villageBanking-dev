@@ -18,6 +18,9 @@
         [Required(ErrorMessage = "Phone number is required")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Phone number is required")]
+        [DataType(DataType.PhoneNumber)]
+        public string GroupPhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Group role required")]
         public VillageGroupRole Role { get; set; }

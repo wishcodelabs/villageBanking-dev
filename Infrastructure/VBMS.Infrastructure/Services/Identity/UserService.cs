@@ -34,9 +34,9 @@
                     return await Result.FailAsync("Incorrect Credentials.");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                logger.LogError(e.Message + e.StackTrace);
                 return await Result.FailAsync("An Error Occured. Please Try Again");
             }
         }

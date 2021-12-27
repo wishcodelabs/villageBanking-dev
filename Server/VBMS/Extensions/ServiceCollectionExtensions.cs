@@ -45,6 +45,7 @@ namespace VBMS.Extensions
             {
                 configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomEnd;
                 configuration.SnackbarConfiguration.HideTransitionDuration = 1000;
+                configuration.SnackbarConfiguration.ClearAfterNavigation = true;
                 configuration.SnackbarConfiguration.ShowTransitionDuration = 100;
                 configuration.SnackbarConfiguration.VisibleStateDuration = 5000;
                 configuration.SnackbarConfiguration.NewestOnTop = true;

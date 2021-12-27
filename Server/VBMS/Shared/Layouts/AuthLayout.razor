@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@attribute [AllowAnonymous]
 <main class="login-page">
     <header class="miri-ui-kit-header header-no-bg-img header-navbar-only">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -39,7 +40,7 @@
     </header>
    <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 75vh;">
     <div class="d-flex flex-column mud-width-full">
-        <MudPaper Elevation="20" Class="pa-4" Width="100%" MaxWidth="600px">
+        <MudPaper Style="border-radius:10px" Elevation="20" Class="pa-4" Width="100%" MaxWidth="600px">
             @Body
         </MudPaper>        
     </div>

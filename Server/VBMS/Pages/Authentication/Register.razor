@@ -1,4 +1,5 @@
 ﻿@layout AuthLayout
+@attribute [AllowAnonymous]
 @page "/register"
 <div class="card-body">
     <h3 class="text-center font-weight-light mb-2">REGISTER</h3>
@@ -15,6 +16,15 @@
                               Label="First Name" 
                               Clearable="true" 
                               />          
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                 <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.UserName"
+                              For="(()=>RegisterModel.UserName)"
+                              Variant="Variant.Outlined" 
+                              Label="User Name" 
+                              Clearable="true" 
+                              />      
             </MudItem>
             <MudItem xs="12" sm="6">
                 <MudTextField T="string"
@@ -50,6 +60,15 @@
                               Variant="Variant.Outlined" 
                               Label="Village Group Name" 
                               Clearable="true" />  
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                 <MudTextField T="string" 
+                              @bind-Value="@RegisterModel.GroupPhoneNumber"
+                              For="(()=>RegisterModel.GroupPhoneNumber)"
+                              Variant="Variant.Outlined" 
+                              Label="Telephone Number" 
+                              Clearable="true" 
+                              />      
             </MudItem>
             <MudItem xs="12" sm="6">
                 <MudSelect T="VillageGroupRole"
