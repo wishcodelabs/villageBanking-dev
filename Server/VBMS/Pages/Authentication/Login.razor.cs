@@ -13,10 +13,11 @@ namespace VBMS.Pages.Authentication
         string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
         async Task SubmitAsync()
         {
+            tokenRequest.ReturnUrl = "/";
             var result = await userService.LoginAsync(tokenRequest);
             if (result.Succeeded)
             {
-                snackBar.Add(result.Messages.First(), Severity.Success);
+                navigationManager.NavigateTo($"/login?key={result.Data}", true);
             }
             else
             {

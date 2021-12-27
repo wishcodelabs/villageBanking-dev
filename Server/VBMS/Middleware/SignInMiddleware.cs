@@ -1,8 +1,5 @@
 ﻿using System.Collections.Concurrent;
 
-using IResult = VBMS.Domain.Responses.IResult;
-using Result = VBMS.Domain.Responses.Result;
-
 namespace VBMS.Middleware
 {
     public class SignInMiddleware<TUser> where TUser : class
@@ -34,7 +31,7 @@ namespace VBMS.Middleware
             next = requestDelegate;
         }
 
-        public async Task<IResult> Invoke(HttpContext context, SignInManager<TUser> signInManager)
+        public async Task Invoke(HttpContext context, SignInManager<TUser> signInManager)
         {
             if (context.Request.Path == "/login" && context.Request.Query.ContainsKey("key"))
             {
@@ -45,22 +42,22 @@ namespace VBMS.Middleware
                 {
                     Logins.Remove(key);
                     context.Response.Redirect(tokenRequest.ReturnUrl);
-                    return await Result.SuccessAsync("Login Succesiful.");
+                    return;
                 }
                 else if (result.RequiresTwoFactor)
                 {
                     context.Response.Redirect("/loginWith2fa/" + key);
-                    return await Result.SuccessAsync("A login code has been sent to your phone number.");
+                    return;
                 }
                 else if (result.IsLockedOut)
                 {
-                    return await Result.FailAsync("Your account is blocked. Please contact your administrator.");
+                    return;
                 }
                 else
                 {
 
                     await next.Invoke(context);
-                    return await Result.FailAsync("Login failed. Check your email or password");
+                    return;
                 }
             }
             else if (context.Request.Path.StartsWithSegments("/loginWith2fa"))
@@ -80,15 +77,15 @@ namespace VBMS.Middleware
                     {
                         Logins.Remove(key);
                         context.Response.Redirect(tokenRequest.ReturnUrl);
-                        return await Result.SuccessAsync("Login Succesiful.");
+                        return;
                     }
                     else if (result.IsLockedOut)
                     {
-                        return await Result.FailAsync("Your account is blocked please contact your admin");
+                        return;
                     }
                     else
                     {
-                        return await Result.FailAsync("Invalid Login Code");
+                        return;
                     }
                 }
             }
@@ -96,13 +93,13 @@ namespace VBMS.Middleware
             {
                 await signInManager.SignOutAsync();
                 context.Response.Redirect("/");
-                return await Result.SuccessAsync("You have been logged out");
+                return;
             }
             //We get here? then something went wrong
             //continue the http middleware chain
 
             await next.Invoke(context);
-            return await Result.FailAsync("Something went wrong at our end.");
+
 
         }
 
