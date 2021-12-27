@@ -1,5 +1,4 @@
-﻿
-namespace VBMS.Extensions
+﻿namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {

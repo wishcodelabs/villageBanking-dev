@@ -1,4 +1,8 @@
-﻿namespace VBMS.Infrastructure.Services.Identity
+﻿
+
+using IResult = VBMS.Domain.Responses.IResult;
+
+namespace VBMS.Services
 {
     public class UserService : IUserService
     {
@@ -14,30 +18,37 @@
             signInManager = _signInManager;
         }
 
-        public async Task<IResult> LoginAsync(TokenRequest<User> token)
+        public async Task<IResult<Guid>> LoginAsync(TokenRequest<User> token)
         {
             try
             {
                 var user = await userManager.FindByEmailAsync(token.Email);
                 if (user == null)
                 {
-                    return await Result.FailAsync("User not found.");
+                    return await Result<Guid>.FailAsync("User not found.");
                 }
-                var result = await signInManager.PasswordSignInAsync(user, token.Password, token.RememberMe, false);
-                if (result.Succeeded)
+                if (await signInManager.CanSignInAsync(user))
                 {
-                    logger.LogInformation("User logged in with password.");
-                    return Result.Success($"Welcome {user.FirstName} {user.LastName}");
+                    var result = await signInManager.CheckPasswordSignInAsync(user, token.Password, true);
+                    if (result.Succeeded)
+                    {
+                        var key = SignInMiddleware<User>.AnnounceLogin(token);
+                        return await Result<Guid>.SuccessAsync(key);
+                    }
+                    else
+                    {
+                        return await Result<Guid>.FailAsync("Incorrect Credentials.");
+                    }
                 }
                 else
                 {
-                    return await Result.FailAsync("Incorrect Credentials.");
+                    return await Result<Guid>.FailAsync("Your Account Is Blocked. Please contact your group admin");
                 }
             }
             catch (Exception e)
             {
                 logger.LogError(e.Message + e.StackTrace);
-                return await Result.FailAsync("An Error Occured. Please Try Again");
+                return await Result<Guid>.FailAsync("An Error Occured. Please Try Again");
             }
         }
 
@@ -88,5 +99,7 @@
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -3,7 +3,7 @@
     public interface IUserService : IIdentityService
     {
         Task<int> GetCount();
-        Task<IResult> LoginAsync(TokenRequest<User> request);
+        Task<IResult<Guid>> LoginAsync(TokenRequest<User> request);
 
         Task<string> GetUserName(int userId);
 
