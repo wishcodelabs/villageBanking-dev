@@ -22,7 +22,7 @@ namespace VBMS.Services
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(token.Email);
+                var user = await userManager.FindByNameAsync(token.UserName);
                 if (user == null)
                 {
                     return await Result<Guid>.FailAsync("User not found.");

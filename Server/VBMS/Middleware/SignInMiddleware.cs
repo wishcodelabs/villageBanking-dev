@@ -5,6 +5,7 @@ namespace VBMS.Middleware
     public class SignInMiddleware<TUser> where TUser : class
     {
         readonly RequestDelegate next;
+        readonly ILogger<SignInMiddleware<TUser>> logger;
         static IDictionary<Guid, TokenRequest<TUser>> Logins { get; set; }
                = new ConcurrentDictionary<Guid, TokenRequest<TUser>>();
         public static Guid AnnounceLogin(TokenRequest<TUser> request)
@@ -26,21 +27,23 @@ namespace VBMS.Middleware
         {
             return GetLoginInProgress(Guid.Parse(key));
         }
-        public SignInMiddleware(RequestDelegate requestDelegate)
+        public SignInMiddleware(RequestDelegate requestDelegate, ILogger<SignInMiddleware<TUser>> logger)
         {
             next = requestDelegate;
+            this.logger = logger;
         }
 
         public async Task Invoke(HttpContext context, SignInManager<TUser> signInManager)
         {
-            if (context.Request.Path == "/login" && context.Request.Query.ContainsKey("key"))
+            if (context.Request.Path == "/login/" && context.Request.Query.ContainsKey("key"))
             {
                 var key = Guid.Parse(context.Request.Query["key"]);
                 var tokenRequest = Logins[key];
-                var result = await signInManager.PasswordSignInAsync(tokenRequest.Email, tokenRequest.Password, tokenRequest.RememberMe, false);
+                var result = await signInManager.PasswordSignInAsync(tokenRequest.UserName, tokenRequest.Password, tokenRequest.RememberMe, false);
                 if (result.Succeeded)
                 {
                     Logins.Remove(key);
+                    logger.LogInformation("User logged in successifully..");
                     context.Response.Redirect(tokenRequest.ReturnUrl);
                     return;
                 }

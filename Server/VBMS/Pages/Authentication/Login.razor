@@ -14,18 +14,19 @@
         <FluentValidationValidator @ref="_fluentValidationValidator" />
         <DataAnnotationsValidator />
         <MudTextField T="string"
-                      @bind-Value="@tokenRequest.Email"
-                      Placeholder="e.g staff@example.zm"
-                      InputMode="InputMode.email"
-                      Label="E-mail"
+                      @bind-Value="@tokenRequest.UserName"
+                      Placeholder="user name"
+                      InputMode="InputMode.text"
+                      Label="User Name"
                       Clearable="true"
-                      For="@(()=>tokenRequest.Email)"
+                      For="@(()=>tokenRequest.UserName)"
                       Variant="Variant.Outlined"
                       Class="my-6">
         </MudTextField>
 
         <MudTextField @bind-Value="@tokenRequest.Password"
                       Label="Password"
+                      Placeholder="placeholder"
                       Variant="Variant.Outlined"
                       InputType="@PasswordInput"
                       Adornment="Adornment.End"
