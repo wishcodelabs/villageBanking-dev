@@ -4,7 +4,7 @@ namespace VBMS.Pages.Authentication
 {
     public partial class Login
     {
-        TokenRequest tokenRequest = new();
+        TokenRequest<User> tokenRequest = new();
         private FluentValidationValidator _fluentValidationValidator;
         private bool Validated => _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         bool forgotPass;

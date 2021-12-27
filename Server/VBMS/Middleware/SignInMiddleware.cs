@@ -1,0 +1,110 @@
+﻿using System.Collections.Concurrent;
+
+using IResult = VBMS.Domain.Responses.IResult;
+using Result = VBMS.Domain.Responses.Result;
+
+namespace VBMS.Middleware
+{
+    public class SignInMiddleware<TUser> where TUser : class
+    {
+        readonly RequestDelegate next;
+        static IDictionary<Guid, TokenRequest<TUser>> Logins { get; set; }
+               = new ConcurrentDictionary<Guid, TokenRequest<TUser>>();
+        public static Guid AnnounceLogin(TokenRequest<TUser> request)
+        {
+            request.LoginStarted = DateTime.Now;
+            var key = Guid.NewGuid();
+            Logins.TryAdd(key, request);
+            return key;
+        }
+        public static TokenRequest<TUser> GetLoginInProgress(Guid key)
+        {
+            if (Logins.ContainsKey(key))
+            {
+                return Logins[key];
+            }
+            return null;
+        }
+        public static TokenRequest<TUser> GetLoginInProgress(string key)
+        {
+            return GetLoginInProgress(Guid.Parse(key));
+        }
+        public SignInMiddleware(RequestDelegate requestDelegate)
+        {
+            next = requestDelegate;
+        }
+
+        public async Task<IResult> Invoke(HttpContext context, SignInManager<TUser> signInManager)
+        {
+            if (context.Request.Path == "/login" && context.Request.Query.ContainsKey("key"))
+            {
+                var key = Guid.Parse(context.Request.Query["key"]);
+                var tokenRequest = Logins[key];
+                var result = await signInManager.PasswordSignInAsync(tokenRequest.Email, tokenRequest.Password, tokenRequest.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    Logins.Remove(key);
+                    context.Response.Redirect(tokenRequest.ReturnUrl);
+                    return await Result.SuccessAsync("Login Succesiful.");
+                }
+                else if (result.RequiresTwoFactor)
+                {
+                    context.Response.Redirect("/loginWith2fa/" + key);
+                    return await Result.SuccessAsync("A login code has been sent to your phone number.");
+                }
+                else if (result.IsLockedOut)
+                {
+                    return await Result.FailAsync("Your account is blocked. Please contact your administrator.");
+                }
+                else
+                {
+
+                    await next.Invoke(context);
+                    return await Result.FailAsync("Login failed. Check your email or password");
+                }
+            }
+            else if (context.Request.Path.StartsWithSegments("/loginWith2fa"))
+            {
+                var key = Guid.Parse(context.Request.Path.Value.Split('/').Last());
+                var tokenRequest = Logins[key];
+                if (string.IsNullOrEmpty(tokenRequest.TwoFactorCode))
+                {
+                    //user login 2fa for the first time
+                    var user = await signInManager.GetTwoFactorAuthenticationUserAsync();
+                    tokenRequest.User = user;
+                }
+                else
+                {
+                    var result = await signInManager.TwoFactorAuthenticatorSignInAsync(tokenRequest.TwoFactorCode, tokenRequest.RememberMe, tokenRequest.RemberMachine);
+                    if (result.Succeeded)
+                    {
+                        Logins.Remove(key);
+                        context.Response.Redirect(tokenRequest.ReturnUrl);
+                        return await Result.SuccessAsync("Login Succesiful.");
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return await Result.FailAsync("Your account is blocked please contact your admin");
+                    }
+                    else
+                    {
+                        return await Result.FailAsync("Invalid Login Code");
+                    }
+                }
+            }
+            else if (context.Request.Path.StartsWithSegments("/logout"))
+            {
+                await signInManager.SignOutAsync();
+                context.Response.Redirect("/");
+                return await Result.SuccessAsync("You have been logged out");
+            }
+            //We get here? then something went wrong
+            //continue the http middleware chain
+
+            await next.Invoke(context);
+            return await Result.FailAsync("Something went wrong at our end.");
+
+        }
+
+    }
+}

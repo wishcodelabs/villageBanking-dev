@@ -14,7 +14,7 @@
             signInManager = _signInManager;
         }
 
-        public async Task<IResult> LoginAsync(TokenRequest token)
+        public async Task<IResult> LoginAsync(TokenRequest<User> token)
         {
             try
             {
