@@ -7,6 +7,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddCurrentUserService();
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddIdentity();
+builder.Services.AddIdentityServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddApplicationServices();

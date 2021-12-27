@@ -3,6 +3,7 @@
     public interface IUserService : IIdentityService
     {
         Task<int> GetCount();
+        Task<IResult> LoginAsync(TokenRequest request);
 
         Task<string> GetUserName(int userId);
 
@@ -14,6 +15,6 @@
 
         Task<List<RoleClaim>> GetRoleClaims(int userId);
 
-        Task<Result> ResetPassword(ResetPasswordRequest request);
+        Task<IResult> ResetPassword(ResetPasswordRequest request);
     }
 }
