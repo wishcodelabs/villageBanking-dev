@@ -13,7 +13,19 @@ namespace VBMS.Pages.Authentication
         string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
         async Task SubmitAsync()
         {
-
+            var result = await userService.LoginAsync(tokenRequest);
+            if (result.Succeeded)
+            {
+                snackBar.Add(result.Messages.First(), Severity.Success);
+            }
+            else
+            {
+                snackBar.Add(result.Messages.First(), Severity.Error);
+            }
+        }
+        void ModelInvalid()
+        {
+            snackBar.Add("Please fill in all required fields.", Severity.Error);
         }
         void TogglePasswordVisibility()
         {

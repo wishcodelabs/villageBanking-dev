@@ -26,6 +26,7 @@
                 var result = await signInManager.PasswordSignInAsync(user, token.Password, token.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    logger.LogInformation("User logged in with password.");
                     return Result.Success($"Welcome {user.FirstName} {user.LastName}");
                 }
                 else

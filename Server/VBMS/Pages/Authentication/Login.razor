@@ -1,42 +1,49 @@
 ﻿@layout AuthLayout
 @page "/login"
 <div class="card-body">
-   <center class="mb-4"> <MudIcon Style="width:100px;height:100px" Color="Color.Primary" Size="Size.Large" Icon="@Icons.Material.Filled.AccountCircle"/></center>
-    <EditForm Model="@tokenRequest" OnValidSubmit="SubmitAsync">
-    <FluentValidationValidator @ref="_fluentValidationValidator" />
-    <DataAnnotationsValidator />
-    <MudTextField T="string" 
-                  @bind-Value="@tokenRequest.Email" 
-                  Placeholder="e.g staff@example.zm" 
-                  InputMode="InputMode.email"
-                  Label="E-mail" 
-                  For = "@(()=>tokenRequest.Email)"
-                  Variant="Variant.Outlined" 
-                  Class="my-6">
-     </MudTextField>
+    <center class="mb-4">
+        <MudIcon Style="width:100px;height:100px" 
+                 Color="Color.Primary"
+                 Size="Size.Large" 
+                 Icon="@Icons.Material.Filled.AccountCircle" />
+    </center>
+    <EditForm Model="@tokenRequest" 
+              OnInvalidSubmit="ModelInvalid"
+              OnValidSubmit="SubmitAsync">
+        <FluentValidationValidator @ref="_fluentValidationValidator" />
+        <DataAnnotationsValidator />
+        <MudTextField T="string"
+                      @bind-Value="@tokenRequest.Email"
+                      Placeholder="e.g staff@example.zm"
+                      InputMode="InputMode.email"
+                      Label="E-mail"
+                      For="@(()=>tokenRequest.Email)"
+                      Variant="Variant.Outlined"
+                      Class="my-6">
+        </MudTextField>
 
-    <MudTextField @bind-Value="@tokenRequest.Password" 
-                  Label="Password" 
-                  Variant="Variant.Outlined" 
-                  InputType="@PasswordInput" 
-                  Adornment="Adornment.End"
-                  For = "@(()=>tokenRequest.Password)"
-                  AdornmentIcon="@PasswordInputIcon" 
-                  OnAdornmentClick="TogglePasswordVisibility" />
+        <MudTextField @bind-Value="@tokenRequest.Password"
+                      Label="Password"
+                      Variant="Variant.Outlined"
+                      InputType="@PasswordInput"
+                      Adornment="Adornment.End"
+                      For="@(()=>tokenRequest.Password)"
+                      AdornmentIcon="@PasswordInputIcon"
+                      OnAdornmentClick="TogglePasswordVisibility" />
 
 
-    <div Class="d-flex justify-space-between align-center">
-        <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
-        <MudLink @onclick="ForgotPass">Forgot password?</MudLink>
-    </div>
+        <div Class="d-flex justify-space-between align-center">
+            <MudCheckBox @bind-Checked="@tokenRequest.RememberMe" T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+            <MudLink @onclick="ForgotPass">Forgot password?</MudLink>
+        </div>
 
 
-    <MudButton title="Login now" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign In</MudButton>
+        <MudButton title="Login now" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true">Sign In</MudButton>
         @if (forgotPass)
         {
             <MudAlert Dense="true" ShowCloseIcon="true" CloseIconClicked="ForgotPass" Class="mt-4" Variant="Variant.Filled" Severity="Severity.Info">Please contact your group admin.</MudAlert>
         }
     </EditForm>
-    
+
 </div>
 <PageTitle>Login - Village Banking Management System</PageTitle>
