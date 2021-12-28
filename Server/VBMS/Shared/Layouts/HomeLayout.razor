@@ -41,8 +41,13 @@
                     </li>
 
                     <form action="#" class="form-inline ml-lg-3">
-                        <a href="login" title="Already a member? Login" class="btn btn-danger">Login Now</a>
-                    </form>
+                       @if(!isSignedIn)
+                        {
+                            <a href="login" title="Already a member? Login" class="btn btn-danger">Login Now</a>
+                        }else{
+                               <a href="logout" @onclick='(()=>snackBar.Add("Logout Success",Severity.Success))' title="Sign out if the application" class="btn btn-primary">Logout</a>  
+                            }
+                            </form>
                 </div>
             </div>
         </div>
@@ -255,5 +260,18 @@
 
 </footer>
 <PageTitle>Home - Village Banking Management System</PageTitle>
+@code{
 
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask{ get; set; }
+    bool isSignedIn;
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthenticationStateTask).User; 
+        if(user.Identity.IsAuthenticated)
+        {
+            isSignedIn = true;
+            snackBar.Add($"Welcome {await userService.GetFullName(user.Identity.Name)}",Severity.Success);
+        }
+    }
+}
 
