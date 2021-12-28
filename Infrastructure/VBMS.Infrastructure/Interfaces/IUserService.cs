@@ -5,7 +5,7 @@
         Task<int> GetCount();
         Task<IResult<Guid>> LoginAsync(TokenRequest<User> request);
 
-        Task<string> GetFullName(string username);
+        Task<string> GetUserName(int userId);
 
         Task<User> GetUserAsync(int userId);
 

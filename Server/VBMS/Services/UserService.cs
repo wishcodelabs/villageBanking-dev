@@ -90,10 +90,9 @@ namespace VBMS.Services
             return user;
         }
 
-        public async Task<string> GetFullName(string username)
+        public Task<string> GetUserName(int userId)
         {
-            var user = await userManager.FindByNameAsync(username);
-            return user.FirstName + " " + user.LastName;
+            throw new NotImplementedException();
         }
 
         public Task<IResult> ResetPassword(ResetPasswordRequest request)
