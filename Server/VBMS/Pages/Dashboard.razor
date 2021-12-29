@@ -3,7 +3,9 @@
 <MudContainer  Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <div class="bg-gray-800 pt-3">
         <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-            <h3 class="font-bold pl-2 text-white"> Group Analytics</h3>
+            <h3 class="font-bold pl-2 text-white">Group Analytics</h3>
+            <MudText Class="text-text-white-50" Typo="Typo.h6" Align="Align.Start">Group Name: @VillageBank.GroupName</MudText>
+            <MudText Class="text-text-white-50" Align="Align.Start" Style="font-size :small">Status: @(VillageBank.IsActive?"Active":"Inactive")</MudText>
         </div>
     </div>
     <div class="main-content flex-1 bg-gray-100 p-4">

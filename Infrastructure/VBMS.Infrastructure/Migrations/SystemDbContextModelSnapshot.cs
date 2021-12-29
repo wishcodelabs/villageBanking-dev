@@ -113,6 +113,31 @@ namespace VBMS.Infrastructure.Migrations
                     b.ToTable("Applicant");
                 });
 
+            modelBuilder.Entity("VBMS.Domain.Models.GroupAdmin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserGuid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupAdmins", (string)null);
+                });
+
             modelBuilder.Entity("VBMS.Domain.Models.Investment", b =>
                 {
                     b.Property<int>("Id")
@@ -314,7 +339,7 @@ namespace VBMS.Infrastructure.Migrations
 
                     b.HasIndex("LoanInterestRateId");
 
-                    b.ToTable("LaonTypes", (string)null);
+                    b.ToTable("LoanTypes", (string)null);
                 });
 
             modelBuilder.Entity("VBMS.Domain.Models.MembershipSubscription", b =>
@@ -352,10 +377,6 @@ namespace VBMS.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AdminGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -366,6 +387,9 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<string>("GroupName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
@@ -436,9 +460,6 @@ namespace VBMS.Infrastructure.Migrations
 
                     b.Property<DateTime>("DateJoined")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("PersonalDetailsId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -670,6 +691,17 @@ namespace VBMS.Infrastructure.Migrations
                     b.Navigation("GroupMembership");
                 });
 
+            modelBuilder.Entity("VBMS.Domain.Models.GroupAdmin", b =>
+                {
+                    b.HasOne("VBMS.Domain.Models.VillageBankGroup", "Group")
+                        .WithMany("Admins")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("VBMS.Domain.Models.Investment", b =>
                 {
                     b.HasOne("VBMS.Domain.Models.VillageGroupMembership", "Investor")
@@ -741,51 +773,6 @@ namespace VBMS.Infrastructure.Migrations
                     b.Navigation("Subscriber");
                 });
 
-            modelBuilder.Entity("VBMS.Domain.Models.VillageBankGroup", b =>
-                {
-                    b.OwnsOne("VBMS.Domain.Models.Address", "PhysicalAddress", b1 =>
-                        {
-                            b1.Property<int>("VillageBankGroupId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("HouseNumber")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("OwnerId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("PostalCode")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("VillageBankGroupId");
-
-                            b1.ToTable("VillageBankAdresses", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("VillageBankGroupId");
-                        });
-
-                    b.Navigation("PhysicalAddress")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("VBMS.Domain.Models.VillageGroupMemberRole", b =>
                 {
                     b.HasOne("VBMS.Domain.Models.VillageGroupMembership", "VillageGroupMember")
@@ -838,9 +825,6 @@ namespace VBMS.Infrastructure.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<int>("Gender")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Id")
                                 .HasColumnType("int");
 
                             b1.Property<string>("LastName")
@@ -946,6 +930,8 @@ namespace VBMS.Infrastructure.Migrations
 
             modelBuilder.Entity("VBMS.Domain.Models.VillageBankGroup", b =>
                 {
+                    b.Navigation("Admins");
+
                     b.Navigation("GroupMembers");
                 });
 

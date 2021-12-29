@@ -50,6 +50,7 @@
                     .AddTransient<VillageBankGroupService>()
                     .AddTransient<InvestmentPeriodService>()
                     .AddTransient<InvestmentService>()
+                    .AddTransient<GroupAdminService>()
                     .AddTransient<MembershipService>();
 
 

@@ -173,7 +173,7 @@ namespace VBMS.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdminGuid = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -252,6 +252,27 @@ namespace VBMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GroupAdmins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserGuid = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupAdmins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupAdmins_VillageBankGroups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "VillageBankGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Membership",
                 columns: table => new
                 {
@@ -259,7 +280,6 @@ namespace VBMS.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VillageGroupId = table.Column<int>(type: "int", nullable: false),
                     UserGuid = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonalDetailsId = table.Column<int>(type: "int", nullable: false),
                     DateJoined = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     VillageBankGroupId = table.Column<int>(type: "int", nullable: false)
@@ -276,31 +296,7 @@ namespace VBMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VillageBankAdresses",
-                columns: table => new
-                {
-                    VillageBankGroupId = table.Column<int>(type: "int", nullable: false),
-                    HouseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_VillageBankAdresses", x => x.VillageBankGroupId);
-                    table.ForeignKey(
-                        name: "FK_VillageBankAdresses_VillageBankGroups_VillageBankGroupId",
-                        column: x => x.VillageBankGroupId,
-                        principalTable: "VillageBankGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LaonTypes",
+                name: "LoanTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -316,9 +312,9 @@ namespace VBMS.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LaonTypes", x => x.Id);
+                    table.PrimaryKey("PK_LoanTypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LaonTypes_LoanInterestRates_LoanInterestRateId",
+                        name: "FK_LoanTypes_LoanInterestRates_LoanInterestRateId",
                         column: x => x.LoanInterestRateId,
                         principalTable: "LoanInterestRates",
                         principalColumn: "Id",
@@ -433,8 +429,7 @@ namespace VBMS.Infrastructure.Migrations
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    MaritalStatus = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    MaritalStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -498,9 +493,9 @@ namespace VBMS.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Loans_LaonTypes_LoanTypeId",
+                        name: "FK_Loans_LoanTypes_LoanTypeId",
                         column: x => x.LoanTypeId,
-                        principalTable: "LaonTypes",
+                        principalTable: "LoanTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -535,6 +530,11 @@ namespace VBMS.Infrastructure.Migrations
                 column: "MembershipId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupAdmins_GroupId",
+                table: "GroupAdmins",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GroupMemberRoles_MemberId",
                 table: "GroupMemberRoles",
                 column: "MemberId");
@@ -560,11 +560,6 @@ namespace VBMS.Infrastructure.Migrations
                 column: "InvestmentPeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LaonTypes_LoanInterestRateId",
-                table: "LaonTypes",
-                column: "LoanInterestRateId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LoanInterestRates_PeriodId",
                 table: "LoanInterestRates",
                 column: "PeriodId");
@@ -578,6 +573,11 @@ namespace VBMS.Infrastructure.Migrations
                 name: "IX_Loans_LoanTypeId",
                 table: "Loans",
                 column: "LoanTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanTypes_LoanInterestRateId",
+                table: "LoanTypes",
+                column: "LoanInterestRateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Membership_VillageBankGroupId",
@@ -598,6 +598,9 @@ namespace VBMS.Infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "GroupAdmins");
+
             migrationBuilder.DropTable(
                 name: "GroupMemberRoles");
 
@@ -644,16 +647,13 @@ namespace VBMS.Infrastructure.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "VillageBankAdresses");
-
-            migrationBuilder.DropTable(
                 name: "InvestmentPeriods");
 
             migrationBuilder.DropTable(
                 name: "Applicant");
 
             migrationBuilder.DropTable(
-                name: "LaonTypes");
+                name: "LoanTypes");
 
             migrationBuilder.DropTable(
                 name: "MemberPersonalDetails");
