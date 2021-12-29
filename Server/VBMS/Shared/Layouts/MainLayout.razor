@@ -1,20 +1,104 @@
 ﻿@inherits LayoutComponentBase
 
 <PageTitle>VBMS</PageTitle>
+<AuthorizeView Context="authContext">
+   <NotAuthorized>
+        <ErrorBoundary>
+            <ChildContent>
+                @{
+                    var hasJSRuntime = navigationManager != null && (navigationManager.GetType()?.GetProperty("HasAttachedJSRuntime") != null ?
+                        (bool)navigationManager.GetType().GetProperty("HasAttachedJSRuntime").GetValue(navigationManager) : true);
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+                    if (hasJSRuntime)
+                    {
 
-    <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+                        navigationManager.NavigateTo("/login");
+                    }
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+                }
+
+            </ChildContent>
+
+            <ErrorContent>
+                <MudAlert ShowCloseIcon="true" Variant="Variant.Filled" Severity="Severity.Error" Icon="@Icons.Material.Filled.Error">🤕 Sorry! An error occured at our end. <a href="/login">Login Instead</a></MudAlert>
+            </ErrorContent>
+        </ErrorBoundary>
+    </NotAuthorized>
+    <Authorized>
+        <MudLayout Class="bg-gray-800">
+            <MudAppBar Style="@barStyle" Elevation="25">
+                <MudToolBar DisableGutters=true>
+                    <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+                </MudToolBar>
+                <MudSpacer />
+                <MudSpacer />
+                <div class="flex w-full pt-2 content-center justify-between md:w-1/3 md:justify-end">
+                    <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
+                        <li class="flex-1 md:flex-none md:mr-3">
+                            <a class="inline-block py-2 px-4 text-white no-underline" href="#">Active</a>
+                        </li>
+                        <li class="flex-1 md:flex-none md:mr-3">
+                            <a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="#">link</a>
+                        </li>
+                        <li class="flex-1 md:flex-none md:mr-3">
+                            <div class="relative inline-block">
+                                <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none">
+                                    <span class="pr-2"><i class="em em-robot_face"></i></span> Hi, @User.FirstName <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                    </svg>
+                                </button>
+                                <div id="myDropdown" class="dropdownlist absolute bg-gray-800 text-white right-0 mt-3 p-3 overflow-auto z-30 invisible">
+                                    <input type="text" class="drop-search p-2 text-gray-600" placeholder="Search.." id="myInput" onkeyup="filterDD('myDropdown','myInput')">
+                                    <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-user fa-fw"></i> Profile</a>
+                                    <a href="#" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fa fa-cog fa-fw"></i> Settings</a>
+                                    <div class="border border-gray-800"></div>
+                                    <a href="/logout" class="p-2 hover:bg-gray-800 text-white text-sm no-underline hover:no-underline block"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </MudAppBar>
+            <MudDrawer @bind-Open="@openDrawer" Style="background-color:#22333B;color:white" DisableOverlay="false" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="@DrawerVariant.Persistent">
+                <MudDrawerHeader>
+                    <MudText Typo="Typo.h6">VBMS</MudText>
+                </MudDrawerHeader>
+                <NavMenu />
+            </MudDrawer>
+            <MudMainContent>
+                <MudContainer id="mainContainer" MaxWidth="MaxWidth.ExtraExtraLarge">
+                   @Body   
+                </MudContainer>
+            </MudMainContent>
+        </MudLayout>
+    </Authorized>
+   
+</AuthorizeView>
+
+@code {
+    [CascadingParameter] protected Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+    protected ClaimsPrincipal? CurrentUser { get; set; }
+    User User { get; set; } = new();
+    string barStyle = $"background:#1C3144;";
+    bool openDrawer;
+
+    bool isDarkMode = false;
+    private MudTheme _currentTheme;
+
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentUser = (await AuthenticationStateTask).User;
+        if (CurrentUser.Identity.IsAuthenticated)
+        {
+            
+        }
+
+    }   
+    
+    protected void ToggleDrawer()
+    {
+        openDrawer = !openDrawer;
+    }
+    
+}
