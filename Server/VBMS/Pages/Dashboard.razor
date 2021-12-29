@@ -1,4 +1,4 @@
-﻿@page "/dashboard"
+﻿@page "/admin/dashboard"
 
 <MudContainer  Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <div class="bg-gray-800 pt-3">
@@ -197,16 +197,25 @@
 </style>
 
 @code{
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask{ get; set; }
+    VillageBankGroup VillageBank { get; set; }
     int[] searchData, clicksData, applyChartData, admissionData, consolData;
-    
 
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
-        searchData = new int[] { 10, 15, 25, 40 };
-        clicksData = new int[] { 5, 30, 54, 40 };
-        applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
-        admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
-        consolData = new int[] { 25, 40, 35 };
+        var claimsPrincipal = (await AuthenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            var userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            var admin = await groupAdminService.GetByUserGuid(userGuid);
+            VillageBank = admin.Group;
+            searchData = new int[] { 10, 15, 25, 40 };
+            clicksData = new int[] { 5, 30, 54, 40 };
+            applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
+            admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
+            consolData = new int[] { 25, 40, 35 };
+        }
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

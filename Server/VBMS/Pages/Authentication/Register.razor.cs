@@ -26,17 +26,24 @@ namespace VBMS.Pages.Authentication
                 var userGuid = await userService.GetGuid(userRequest.UserName);
                 var villageBank = new VillageBankGroup
                 {
-                    GroupName = RegisterModel.GroupName,
+                    GroupName = RegisterModel.GroupName
                 };
-                var myGroup = await villageBankGroupService.GetGroup(userGuid);
-                if (myGroup != null)
+
+                if (await groupAdminService.IsAlreadyAdmin(userGuid))
                 {
-                    snackBar.Add("There is already a group associated with this user.", Severity.Warning);
+                    snackBar.Add("There is already a group associated with this user. Login Instead", Severity.Error);
                 }
+                villageBank.Admins = new List<GroupAdmin>();
+                villageBank.Admins.Add(new GroupAdmin { UserGuid = userGuid });
                 if (await villageBankGroupService.AddAsync(villageBank))
                 {
+
                     snackBar.Add("New Village Bank Group Created Successfully.", Severity.Success);
                     navigationManager.NavigateTo($"/login?key={result.Data}", true);
+                }
+                else
+                {
+                    snackBar.Add("An error occured while creating your group.", Severity.Error);
                 }
             }
             else

@@ -78,7 +78,7 @@
                             Password = request.Password,
                             RememberMe = false,
                             User = existingUser,
-                            ReturnUrl = "/dashboard"
+                            ReturnUrl = "/admin/dashboard"
 
                         });
                         return await Result<Guid>.SuccessAsync(key, "Account Created Succesifully");

@@ -10,5 +10,9 @@
 
         [ForeignKey(nameof(GroupId))]
         public virtual VillageBankGroup Group { get; set; }
+        public GroupAdmin()
+        {
+            Guid = Guid.NewGuid();
+        }
     }
 }
