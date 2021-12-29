@@ -200,7 +200,7 @@
 
 @code{
     [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask{ get; set; }
-    VillageBankGroup VillageBank { get; set; }
+    VillageBankGroup VillageBank { get; set; } = new();
     int[] searchData, clicksData, applyChartData, admissionData, consolData;
 
 

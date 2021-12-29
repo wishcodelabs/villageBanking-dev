@@ -4,7 +4,7 @@
     {
         public Guid Guid { get; set; }
 
-        public string UserGuid { get; set; }
+        public Guid UserGuid { get; set; }
 
         public int GroupId { get; set; }
 

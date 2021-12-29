@@ -5,12 +5,12 @@
         public GroupAdminService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
         {
         }
-        public async Task<bool> IsAlreadyAdmin(string userGuid)
+        public async Task<bool> IsAlreadyAdmin(Guid userGuid)
         {
             var admin = await Repository.Entities().FirstOrDefaultAsync(g => g.UserGuid == userGuid);
             return admin != null;
         }
-        public async Task<GroupAdmin> GetByUserGuid(string userGuid)
+        public async Task<GroupAdmin> GetByUserGuid(Guid userGuid)
         {
             return await Repository.Entities().FirstOrDefaultAsync(g => g.UserGuid == userGuid);
         }

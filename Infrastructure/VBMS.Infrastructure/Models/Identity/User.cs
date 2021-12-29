@@ -16,6 +16,6 @@ public class User : IdentityUser<int>, IAuditableEntity<int>
     public bool IsActive { get; set; }
     public User()
     {
-        UserGuid = new();
+        UserGuid = new Guid();
     }
 }

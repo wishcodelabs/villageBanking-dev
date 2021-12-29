@@ -4,7 +4,7 @@ public class VillageGroupMembership : Entity<int>
 {
     public int VillageGroupId { get; set; }
 
-    public string UserGuid { get; set; }
+    public Guid UserGuid { get; set; }
 
     public DateTime DateJoined { get; set; }
     public VillageGroupMemberStatus Status { get; set; }
