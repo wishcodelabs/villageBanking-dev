@@ -6,5 +6,6 @@ namespace VBMS.Infrastructure.Services.Application
         public VillageBankGroupService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
         {
         }
+
     }
 }

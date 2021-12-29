@@ -35,7 +35,7 @@
                         </div>
                         <div class="flex-1 text-right md:text-center">
                             <h5 class="font-bold uppercase text-gray-600">Total Members</h5>
-                            <h3 class="font-bold text-3xl">249 <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></h3>
+                            <h3 class="font-bold text-3xl">@(memberCount) <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></h3>
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
     VillageBankGroup VillageBank { get; set; } = new();
     int[] searchData, clicksData, applyChartData, admissionData, consolData;
 
-
+    int memberCount = 0;
     protected override async Task OnInitializedAsync()
     {
         var claimsPrincipal = (await AuthenticationStateTask).User;
@@ -212,6 +212,7 @@
             var userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
             var admin = await groupAdminService.GetByUserGuid(userGuid);
             VillageBank = admin.Group;
+            memberCount = await membershipService.CountMembers(VillageBank.Id);
             searchData = new int[] { 10, 15, 25, 40 };
             clicksData = new int[] { 5, 30, 54, 40 };
             applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
