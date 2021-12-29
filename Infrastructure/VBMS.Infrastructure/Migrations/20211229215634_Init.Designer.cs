@@ -12,7 +12,7 @@ using VBMS.Infrastructure.Data;
 namespace VBMS.Infrastructure.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20211229214555_Init")]
+    [Migration("20211229215634_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,9 +129,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -462,9 +461,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("VillageBankGroupId")
                         .HasColumnType("int");

@@ -258,7 +258,7 @@ namespace VBMS.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserGuid = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -279,7 +279,7 @@ namespace VBMS.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VillageGroupId = table.Column<int>(type: "int", nullable: false),
-                    UserGuid = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateJoined = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     VillageBankGroupId = table.Column<int>(type: "int", nullable: false)

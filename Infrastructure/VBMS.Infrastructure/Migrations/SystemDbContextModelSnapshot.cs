@@ -127,9 +127,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -460,9 +459,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("VillageBankGroupId")
                         .HasColumnType("int");
