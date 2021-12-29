@@ -34,12 +34,25 @@
                     .AddDefaultTokenProviders();
             return services;
         }
+
         internal static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+
             services.AddTransient<IUnitOfWork<int>, UnitOfWork<int>>()
                     .AddTransient<LoanService>()
+                    .AddTransient<GroupMemberRoleService>()
+                    .AddTransient<GroupMemberShareService>()
+                    .AddTransient<LoanApplicantService>()
+                    .AddTransient<LoanTypeService>()
+                    .AddTransient<LoanPaymentService>()
+                    .AddTransient<LoanInterestRateService>()
+                    .AddTransient<MembershipSubscriptionService>()
+                    .AddTransient<VillageBankGroupService>()
                     .AddTransient<InvestmentPeriodService>()
+                    .AddTransient<InvestmentService>()
                     .AddTransient<MembershipService>();
+
+
             services.AddMudServices(configuration =>
             {
                 configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomEnd;
