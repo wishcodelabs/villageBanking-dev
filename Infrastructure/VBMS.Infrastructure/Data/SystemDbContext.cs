@@ -2,8 +2,6 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using VBMS.Infrastructure.Models.Identity;
-
 namespace VBMS.Infrastructure.Data;
 
 public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, RoleClaim, IdentityUserToken<int>>
@@ -129,7 +127,7 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         });
         modelBuilder.Entity<LoanType>(e =>
         {
-            e.ToTable("LaonTypes");
+            e.ToTable("LoanTypes");
         });
         modelBuilder.Entity<LoanInterestRate>(e =>
         {
@@ -138,12 +136,13 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         modelBuilder.Entity<VillageBankGroup>(e =>
         {
             e.ToTable("VillageBankGroups");
-            e.OwnsOne(v => v.PhysicalAddress, a =>
-            {
-                a.ToTable("VillageBankAdresses");
-                a.Property<int>("OwnerId");
-                a.WithOwner();
-            });
+            e.HasMany(e => e.Admins)
+             .WithOne(a => a.Group).HasForeignKey(a => a.GroupId);
+        });
+        modelBuilder.Entity<GroupAdmin>(e =>
+        {
+
+            e.ToTable("GroupAdmins");
         });
         modelBuilder.Entity<VillageGroupMemberRole>(e =>
         {

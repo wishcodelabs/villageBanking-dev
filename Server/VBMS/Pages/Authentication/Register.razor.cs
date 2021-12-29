@@ -27,9 +27,6 @@ namespace VBMS.Pages.Authentication
                 var villageBank = new VillageBankGroup
                 {
                     GroupName = RegisterModel.GroupName,
-                    AdminGuid = userGuid,
-                    PhoneNumber = RegisterModel.GroupPhoneNumber
-
                 };
                 var myGroup = await villageBankGroupService.GetGroup(userGuid);
                 if (myGroup != null)

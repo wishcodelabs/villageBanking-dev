@@ -2,7 +2,7 @@
 
 public interface IRepositoryAsync<T, in TKey> where T : class, IEntity<TKey>
 {
-    IQueryable<T> Entities { get; }
+    IQueryable<T> Entities(bool includeNavigation = true);
     Task<T> GetAsync(TKey id);
 
     Task<List<T>> GetAllAsync();

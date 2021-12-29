@@ -8,7 +8,7 @@
         public async Task<List<Loan>> GetAllByMemberId(int memberId)
         {
             return await Repository
-                         .Entities
+                         .Entities()
                          .Include(l => l.Applicant)
                          .Where(l => l.Applicant.MembershipId == memberId)
                          .ToListAsync();
@@ -16,7 +16,7 @@
         public async Task<List<Loan>> GetByStatusAsync(Status loanStatus)
         {
             return await Repository
-                         .Entities
+                         .Entities()
                          .Include(l => l.Applicant)
                          .Where(l => l.Status == loanStatus)
                          .ToListAsync();

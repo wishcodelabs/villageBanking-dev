@@ -1,7 +1,4 @@
-﻿
-using VBMS.Domain.SeedWork.Contracts;
-
-namespace VBMS.Infrastructure.Repositories;
+﻿namespace VBMS.Infrastructure.Repositories;
 
 public class RepositoryAsync<T, TKey> : IRepositoryAsync<T, TKey> where T : class, IEntity<TKey>
 {
@@ -11,7 +8,22 @@ public class RepositoryAsync<T, TKey> : IRepositoryAsync<T, TKey> where T : clas
     {
         database = _database;
     }
-    public IQueryable<T> Entities => database.Set<T>();
+    public IQueryable<T> Entities(bool includeNavigation = true)
+    {
+        var query = database.Set<T>().AsQueryable();
+        if (includeNavigation)
+        {
+            var navigations = database.Model.FindEntityType(typeof(T))
+                                                     .GetConcreteDerivedTypesInclusive()
+                                                     .SelectMany(e => e.GetNavigations())
+                                                     .Distinct();
+            foreach (var property in navigations)
+            {
+                query = query.Include(property.Name);
+            }
+        }
+        return query;
+    }
 
     public async Task<bool> AddAsync(T entity)
     {
@@ -43,7 +55,7 @@ public class RepositoryAsync<T, TKey> : IRepositoryAsync<T, TKey> where T : clas
 
     public async Task<List<T>> GetAllAsync()
     {
-        return await database.Set<T>()
+        return await Entities()
                              .ToListAsync();
     }
 

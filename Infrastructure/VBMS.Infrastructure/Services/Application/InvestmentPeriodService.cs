@@ -8,7 +8,7 @@ public class InvestmentPeriodService : ServiceBase<InvestmentPeriod, int>
     public async Task<List<InvestmentPeriod>> GetByStatusAsync(PeriodStatus status)
     {
         return await Repository
-                     .Entities
+                     .Entities(false)
                      .Where(x => x.Status == status)
                      .ToListAsync();
     }
