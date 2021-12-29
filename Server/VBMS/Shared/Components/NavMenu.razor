@@ -1,32 +1,33 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">VBMS</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿<MudNavMenu Class="mud-width-full">
+    <AuthorizeView >
+      <Authorized>
+          <MudDivider Class="my-2"/>
+          <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" IconColor="Color.Secondary">Home</MudNavLink>
+          <MudNavLink Href="dashboard" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+          <MudNavGroup Title="My Village Bank" IconColor="Color.Success"  Icon="@Icons.Material.Filled.Business" >
+              <MudNavLink Href="/loan/applications" Icon="@Icons.Material.Filled.Approval" IconColor="Color.Warning">Loan Applications</MudNavLink>
+              <MudNavLink Href="/loan/approved" Icon="@Icons.Material.Filled.DoneAll" IconColor="Color.Tertiary">Approved Loans</MudNavLink>
+              <MudNavLink Href="/loan/payments" Icon="@Icons.Material.Filled.Payments" IconColor="Color.Secondary">Loan Payments</MudNavLink>
+              
+          </MudNavGroup>
+          <MudNavGroup Title="Manage Memberships" Icon="@Icons.Material.Filled.VerifiedUser"  IconColor="Color.Warning"  >
+            <MudNavLink Href="/group/members" IconColor="Color.Success" Icon="@Icons.Material.Filled.Group">Group Members</MudNavLink>
+            <MudNavLink Href="/group/investments" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Money">Investments</MudNavLink>
+            <MudNavLink Href="/group/shares" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Group Shares</MudNavLink>
+            <MudNavLink Href="/group/shares" IconColor="Color.Warning" Icon="@Icons.Material.Filled.SupervisedUserCircle">Member Roles</MudNavLink>
+          </MudNavGroup>
+          <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings"  IconColor="Color.Info">
+              <MudNavLink Href="/admin/memberships" Icon="@Icons.Material.Filled.Class" IconColor="Color.Info">Memberships</MudNavLink>
+              <MudNavLink Href="/periods" Icon="@Icons.Material.Filled.HistoryEdu" IconColor="Color.Info">Investment Periods</MudNavLink>
+              <MudNavLink Href="/group/fees" Icon="@Icons.Material.Filled.Subscriptions" IconColor="Color.Inherit">Subscription Fees</MudNavLink>
+              <MudNavLink Href="/loan/types" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Loan Types</MudNavLink>
+              <MudNavLink Href="/account/profile" IconColor="Color.Success" Icon="@Icons.Material.Filled.SupervisorAccount">Profile</MudNavLink>
+              <MudNavLink Href="/settings/themes" IconColor="Color.Warning" Icon="@Icons.Material.Filled.DarkMode">Theme</MudNavLink>
+          </MudNavGroup>
+      </Authorized>
+    </AuthorizeView>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+</MudNavMenu>
 @code {
     private bool collapseNavMenu = true;
 

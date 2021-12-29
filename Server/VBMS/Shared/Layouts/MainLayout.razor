@@ -43,7 +43,7 @@
                         <li class="flex-1 md:flex-none md:mr-3">
                             <div class="relative inline-block">
                                 <button onclick="toggleDD('myDropdown')" class="drop-button text-white focus:outline-none">
-                                    <span class="pr-2"><i class="em em-robot_face"></i></span> Hi, @User.FirstName <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <span class="pr-2"><MudIcon Color="Color.Warning" Icon="@Icons.Material.Filled.WavingHand"></MudIcon></span> Hi, @UserName <svg class="h-3 fill-current inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                                     </svg>
                                 </button>
@@ -62,7 +62,7 @@
             </MudAppBar>
             <MudDrawer @bind-Open="@openDrawer" Style="background-color:#22333B;color:white" DisableOverlay="false" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="@DrawerVariant.Persistent">
                 <MudDrawerHeader>
-                    <MudText Typo="Typo.h6">VBMS</MudText>
+                    <MudText Class="text-white" Typo="Typo.h4">VBMS</MudText>
                 </MudDrawerHeader>
                 <NavMenu />
             </MudDrawer>
@@ -79,7 +79,7 @@
 @code {
     [CascadingParameter] protected Task<AuthenticationState>? AuthenticationStateTask { get; set; }
     protected ClaimsPrincipal? CurrentUser { get; set; }
-    User User { get; set; } = new();
+    string UserName { get; set; }
     string barStyle = $"background:#1C3144;";
     bool openDrawer;
 
@@ -91,7 +91,7 @@
         CurrentUser = (await AuthenticationStateTask).User;
         if (CurrentUser.Identity.IsAuthenticated)
         {
-            
+            UserName = await userService.GetFullName(CurrentUser.Identity.Name);
         }
 
     }   
