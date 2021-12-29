@@ -6,8 +6,6 @@ public class VillageGroupMembership : Entity<int>
 
     public string UserGuid { get; set; }
 
-    public int PersonalDetailsId { get; set; }
-
     public DateTime DateJoined { get; set; }
     public VillageGroupMemberStatus Status { get; set; }
 
