@@ -10,6 +10,7 @@
         Task<User> GetUserAsync(int userId);
 
         Task<List<User>> GetAllUsers();
+        Task<string> GetGuid(string userName);
 
         Task<List<Role>> GetRoles(int userId);
 

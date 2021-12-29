@@ -1,4 +1,4 @@
-﻿namespace VBMS.Infrastructure.Services.Identity
+﻿namespace VBMS.Services
 {
     public class UserRegisterService : IUserRegisterService
     {
@@ -25,14 +25,14 @@
             this.signInManager = signInManager;
         }
 
-        public async Task<IResult> RegisterAsync(RegisterRequest request)
+        public async Task<IResult<Guid>> RegisterAsync(RegisterRequest request)
         {
             if (request.IsValid)
             {
                 var userWithSameUserName = await userManager.FindByNameAsync(request.UserName);
                 if (userWithSameUserName != null)
                 {
-                    return await Result.FailAsync($"Username {request.UserName} is already taken");
+                    return await Result<Guid>.FailAsync($"Username {request.UserName} is already taken");
                 }
                 var user = CreateUser();
                 user.PhoneNumber = request.PhoneNumber;
@@ -45,7 +45,7 @@
                     var userWithSamePhoneNumber = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
                     if (userWithSamePhoneNumber != null)
                     {
-                        return await Result.FailAsync(string.Format("Phone number {0} is already registered.", request.PhoneNumber));
+                        return await Result<Guid>.FailAsync(string.Format("Phone number {0} is already registered.", request.PhoneNumber));
                     }
                 }
                 var userWithSameEmail = await userManager.FindByEmailAsync(request.Email);
@@ -72,21 +72,30 @@
                                 await userManager.AddToRoleAsync(existingUser, Basic_Role);
                             }
                         }
-                        return await Result.SuccessAsync("Account Created Succesifully");
+                        var key = SignInMiddleware<User>.AnnounceLogin(new TokenRequest<User>()
+                        {
+                            UserName = request.UserName,
+                            Password = request.Password,
+                            RememberMe = false,
+                            User = existingUser,
+                            ReturnUrl = "/dashboard"
+
+                        });
+                        return await Result<Guid>.SuccessAsync(key, "Account Created Succesifully");
                     }
                     else
                     {
-                        return await Result.FailAsync("An Error Has Occured, Try Again");
+                        return await Result<Guid>.FailAsync("An Error Has Occured, Try Again");
                     }
                 }
                 else
                 {
-                    return await Result.FailAsync($"An account with Email address {request.Email} already exists");
+                    return await Result<Guid>.FailAsync($"An account with Email address {request.Email} already exists");
                 }
             }
             else
             {
-                return await Result.FailAsync("The request is not valid");
+                return await Result<Guid>.FailAsync("The request is not valid");
             }
         }
         private User CreateUser()

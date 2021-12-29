@@ -6,7 +6,6 @@ namespace VBMS.Pages.Authentication
     {
         GroupRegisterModel RegisterModel { get; set; } = new();
         IEnumerable<VillageGroupRole> villageGroupRoles { get; set; } = new HashSet<VillageGroupRole>();
-
         async void Process()
         {
             var userRequest = new RegisterRequest
@@ -23,11 +22,29 @@ namespace VBMS.Pages.Authentication
             var result = await userRegisterService.RegisterAsync(userRequest);
             if (result.Succeeded)
             {
-                snackBar.Add(result.Messages[0], Severity.Success);
+                snackBar.Add(result.Messages.First(), Severity.Success);
+                var userGuid = await userService.GetGuid(userRequest.UserName);
+                var villageBank = new VillageBankGroup
+                {
+                    GroupName = RegisterModel.GroupName,
+                    AdminGuid = userGuid,
+                    PhoneNumber = RegisterModel.GroupPhoneNumber
+
+                };
+                var myGroup = await villageBankGroupService.GetGroup(userGuid);
+                if (myGroup != null)
+                {
+                    snackBar.Add("There is already a group associated with this user.", Severity.Warning);
+                }
+                if (await villageBankGroupService.AddAsync(villageBank))
+                {
+                    snackBar.Add("New Village Bank Group Created Successfully.", Severity.Success);
+                    navigationManager.NavigateTo($"/login?key={result.Data}", true);
+                }
             }
             else
             {
-                snackBar.Add(result.Messages[0], Severity.Error);
+                snackBar.Add(result.Messages.First(), Severity.Error);
             }
         }
         void ModelInvalid()

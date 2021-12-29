@@ -89,6 +89,11 @@ namespace VBMS.Services
             var user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
             return user;
         }
+        public async Task<string> GetGuid(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            return user.UserGuid.ToString();
+        }
 
         public async Task<string> GetFullName(string username)
         {

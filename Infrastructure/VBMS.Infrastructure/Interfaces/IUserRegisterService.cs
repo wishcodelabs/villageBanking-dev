@@ -2,7 +2,7 @@
 {
     public interface IUserRegisterService : IIdentityService
     {
-        Task<IResult> RegisterAsync(RegisterRequest request);
+        Task<IResult<Guid>> RegisterAsync(RegisterRequest request);
 
     }
 }
