@@ -13,7 +13,6 @@ namespace VBMS.Pages.Authentication
                 FirstName = RegisterModel.FirstName,
                 LastName = RegisterModel.LastName,
                 Email = RegisterModel.Email,
-                PhoneNumber = RegisterModel.PhoneNumber,
                 Password = RegisterModel.Password,
                 UserName = RegisterModel.UserName,
                 IsValid = true,

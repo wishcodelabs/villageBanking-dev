@@ -60,33 +60,8 @@
                               Variant="Variant.Outlined" 
                               Label="Village Group Name" 
                               Clearable="true" />  
-            </MudItem>
-            <MudItem xs="12" sm="6">
-                 <MudTextField T="string" 
-                              @bind-Value="@RegisterModel.GroupPhoneNumber"
-                              For="(()=>RegisterModel.GroupPhoneNumber)"
-                              Variant="Variant.Outlined" 
-                              Label="Group Telephone Number"
-                              InputMode="InputMode.tel"
-                              Clearable="true" 
-                              />      
-            </MudItem>
-            <MudItem xs="12" sm="6">
-                <MudSelect T="VillageGroupRole"
-                            @bind-Value="@RegisterModel.Role"
-                            For="(()=>RegisterModel.Role)"
-                            Variant="Variant.Outlined"
-                            MultiSelection="true"
-                            @bind-SelectedValues="villageGroupRoles"
-                            Label="Your Role(s)">
-                 @foreach (VillageGroupRole item  in  Enum.GetValues(typeof(VillageGroupRole)))
-                 {
-                       <MudSelectItem T="VillageGroupRole" Value="@item">@item.ToString()</MudSelectItem>
-                 }
-                        
-                </MudSelect>
-
-            </MudItem>
+            </MudItem>              
+             
             <MudItem xs='12' sm="6">
                 <MudTextField T="string" 
                               @bind-Value="@RegisterModel.Password"

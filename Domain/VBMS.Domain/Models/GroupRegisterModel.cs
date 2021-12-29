@@ -15,15 +15,6 @@
 
         [Required(ErrorMessage = "Email address is required")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Phone number is required")]
-        [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Phone number is required")]
-        [DataType(DataType.PhoneNumber)]
-        public string GroupPhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "Group role required")]
-        public VillageGroupRole Role { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -33,9 +24,6 @@
         [Required]
         [Compare(nameof(Password), ErrorMessage = "Confirm password and password should match")]
         public string ConfirmPassword { get; set; }
-        public GroupRegisterModel()
-        {
-            Role = VillageGroupRole.Admin;
-        }
+
     }
 }
