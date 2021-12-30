@@ -125,24 +125,26 @@
                                   Label="Address" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
-                    <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.City)"
+                    <MudSelect T="int"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.ProvinceId)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.City"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.ProvinceId"
                                   Variant="Variant.Outlined"
-                                  Label="City/District" />
+                                  Label="Province" >
+                    </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4">
-                    <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.Province)"
+                    <MudSelect T="int"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.Province"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId"
                                   Variant="Variant.Outlined"
-                                  Label="Province" />
+                                  Label="City/District" >
+                    </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4"></MudItem>
             </MudGrid>
