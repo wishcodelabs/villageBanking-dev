@@ -11,6 +11,7 @@ public class VillageGroupMembership : Entity<int>
 
     public List<MembershipSubscription> Subscriptions { get; set; }
 
+    [ValidateComplexType]
     public virtual VillageBankGroup VillageBankGroup { get; set; }
 
     public virtual List<Investment> Investments { get; set; }

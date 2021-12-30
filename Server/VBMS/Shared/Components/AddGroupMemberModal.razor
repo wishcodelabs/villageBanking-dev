@@ -1,6 +1,40 @@
 ﻿<MudDialog>
     <DialogContent>
-
+     <EditForm Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+         <FluentValidationValidator/>
+         <ObjectGraphDataAnnotationsValidator/>
+         <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
+            <MudItem xs="12" sm="3">
+                <MudTextField T="string"
+                              For="(()=>GroupMembershipModel.PersonalDetails.FirstName)"
+                              Immediate="true"
+                              @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
+                              Variant="Variant.Outlined"
+                              Label="First Name"
+                              ReadOnly="(UserGuid!=null)"/>
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                <MudTextField T="string"
+                              For="(()=>GroupMembershipModel.PersonalDetails.LastName)"
+                              Immediate="true"
+                              @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
+                              Variant="Variant.Outlined"
+                              Label="First Name"
+                              ReadOnly="(UserGuid!=null)"/>
+            </MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+            <MudItem xs="12" sm="3"></MudItem>
+         </MudGrid>
+     </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -8,13 +42,3 @@
     </DialogActions>
 </MudDialog>
 
-@code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public Guid UserGuid{ get; set; } 
-    [Parameter] public VillageBankGroup VillageBank { get; set; } = new();
-    async Task Submit()
-    {
-        
-    }
-    void Cancel() => MudDialog.Cancel();
-}
