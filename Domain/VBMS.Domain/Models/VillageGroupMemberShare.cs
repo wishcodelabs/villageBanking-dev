@@ -1,7 +1,7 @@
 ﻿
 namespace VBMS.Domain.Models;
 
-public class VillageGroupMemberShare : Entity<int>
+public class VillageGroupMemberShare : AuditableEntity<int>
 {
     public int MemberId { get; set; }
 
