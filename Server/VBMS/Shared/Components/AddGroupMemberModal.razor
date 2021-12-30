@@ -1,0 +1,20 @@
+﻿<MudDialog>
+    <DialogContent>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Guid UserGuid{ get; set; } 
+    [Parameter] public VillageBankGroup VillageBank { get; set; } = new();
+    async Task Submit()
+    {
+        
+    }
+    void Cancel() => MudDialog.Cancel();
+}
