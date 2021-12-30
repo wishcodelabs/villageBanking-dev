@@ -5,6 +5,7 @@ global using Microsoft.AspNetCore.Components.Authorization;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Logging;
+global using Microsoft.JSInterop;
 
 global using MudBlazor;
 global using MudBlazor.Services;
@@ -23,4 +24,5 @@ global using VBMS.Infrastructure.Repositories;
 global using VBMS.Infrastructure.Services.Application;
 global using VBMS.Middleware;
 global using VBMS.Services;
+global using VBMS.Shared.Components;
 

@@ -1,8 +1,4 @@
-﻿using Microsoft.JSInterop;
-
-using VBMS.Shared.Components;
-
-namespace VBMS.Pages
+﻿namespace VBMS.Pages
 {
     public partial class Dashboard
     {
@@ -57,6 +53,8 @@ namespace VBMS.Pages
             if (await villageBankGroupService.ActivateGroup(VillageBank.Id))
             {
                 snackBar.Add("Your group is now active", Severity.Success);
+                var admin = await groupAdminService.GetByUserGuid(userGuid);
+                VillageBank = admin.Group;
                 await Reload();
                 StateHasChanged();
             }

@@ -7,7 +7,7 @@ public class VillageGroupMembership : AuditableEntity<int>
     public Guid UserGuid { get; set; }
 
     public DateTime DateJoined { get; set; }
-    public VillageGroupMemberStatus Status { get; set; }
+    public VillageGroupMemberStatus Status { get; set; } = VillageGroupMemberStatus.Inactive;
 
     public List<MembershipSubscription> Subscriptions { get; set; }
 

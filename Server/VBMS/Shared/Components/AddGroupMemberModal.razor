@@ -157,7 +157,20 @@
                      }
                     </MudSelect>
                 </MudItem>
-                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudSelect T="VillageGroupMemberStatus"
+                                  For="(()=>GroupMembershipModel.Status)"
+                                  Immediate="true"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.Status"                                 
+                                  Variant="Variant.Outlined"
+                                  Label="Current Status" >
+                     @foreach (var item in (VillageGroupMemberStatus[]) Enum.GetValues(typeof(VillageGroupMemberStatus)))
+                     {
+                         <MudSelectItem T="VillageGroupMemberStatus" Value="@item">@item.ToString()</MudSelectItem>
+                     }
+                    </MudSelect>
+                </MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>
