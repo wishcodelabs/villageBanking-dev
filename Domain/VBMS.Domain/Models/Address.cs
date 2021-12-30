@@ -1,18 +1,14 @@
 ﻿namespace VBMS.Domain.Models;
 
-public class Address : ValueObject
+public class Address
 {
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return HouseNumber;
-        yield return City;
-        yield return Province;
-
-    }
     [Required(ErrorMessage = "Address can't be empty")]
     public string HouseNumber { get; set; }
     [Required(ErrorMessage = "City can't be empty")]
-    public string City { get; set; }
+    public int CityId { get; set; }
     [Required(ErrorMessage = "Province can't be empty")]
-    public string Province { get; set; }
+    public int ProvinceId { get; set; }
+
+    public virtual City City { get; set; }
+    public virtual Province Province { get; set; }
 }

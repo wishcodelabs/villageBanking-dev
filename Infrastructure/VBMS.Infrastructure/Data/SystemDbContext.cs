@@ -156,6 +156,14 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         {
             e.ToTable("MemberSubscriptions");
         });
+        modelBuilder.Entity<City>(e =>
+        {
+            e.ToTable("Cities");
+        });
+        modelBuilder.Entity<Province>(e =>
+        {
+            e.ToTable("Provinces");
+        });
     }
 
 }
