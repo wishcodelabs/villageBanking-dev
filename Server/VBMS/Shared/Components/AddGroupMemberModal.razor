@@ -1,40 +1,103 @@
 ﻿<MudDialog>
     <DialogContent>
-     <EditForm Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
-         <FluentValidationValidator/>
-         <ObjectGraphDataAnnotationsValidator/>
-         <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
-            <MudItem xs="12" sm="3">
-                <MudTextField T="string"
-                              For="(()=>GroupMembershipModel.PersonalDetails.FirstName)"
-                              Immediate="true"
-                              @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
-                              Variant="Variant.Outlined"
-                              Label="First Name"
-                              ReadOnly="(UserGuid!=null)"/>
-            </MudItem>
-            <MudItem xs="12" sm="3">
-                <MudTextField T="string"
-                              For="(()=>GroupMembershipModel.PersonalDetails.LastName)"
-                              Immediate="true"
-                              @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
-                              Variant="Variant.Outlined"
-                              Label="First Name"
-                              ReadOnly="(UserGuid!=null)"/>
-            </MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-            <MudItem xs="12" sm="3"></MudItem>
-         </MudGrid>
-     </EditForm>
+        <EditForm Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+            <FluentValidationValidator />
+            <ObjectGraphDataAnnotationsValidator />
+            <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.FirstName)"
+                                  Immediate="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
+                                  Variant="Variant.Outlined"
+                                  Label="First Name"
+                                  Clearable="true"
+                                  ReadOnly="(UserGuid!=null)" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.LastName)"
+                                  Immediate="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
+                                  Variant="Variant.Outlined"
+                                  Clearable="true"
+                                  Label="Last Name"
+                                  ReadOnly="(UserGuid!=null)" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.NrcNumber)"
+                                  Immediate="true"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.NrcNumber"
+                                  Variant="Variant.Outlined"
+                                  Label="NRC Number" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhoneNumber)"
+                                  Immediate="true"
+                                  Clearable="true"
+                                  InputMode="InputMode.tel"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhoneNumber"
+                                  Variant="Variant.Outlined"
+                                  Label="Phone Number" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.EmailAddress)"
+                                  Immediate="true"
+                                  InputMode="InputMode.email"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.EmailAddress"
+                                  Variant="Variant.Outlined"
+                                  Label="E-mail" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudSelect T="Gender"
+                               For="(()=>GroupMembershipModel.PersonalDetails.Gender)"
+                               Immediate="true"
+                               Clearable="true"
+                               @bind-Value="@GroupMembershipModel.PersonalDetails.Gender"
+                               Variant="Variant.Outlined"
+                               Label="Gender">
+                               @foreach (var item in (Gender[])Enum.GetValues(typeof(Gender)))
+                               {
+                                  <MudSelectItem T="Gender" Value="item">@item.ToString()</MudSelectItem>
+                               }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudSelect T="MaritalStatus"
+                               For="(()=>GroupMembershipModel.PersonalDetails.MaritalStatus)"
+                               Immediate="true"
+                               Clearable="true"
+                               @bind-Value="@GroupMembershipModel.PersonalDetails.MaritalStatus"
+                               Variant="Variant.Outlined"
+                               Label="Marital Status">
+                               @foreach (var item in (MaritalStatus [])Enum.GetValues(typeof(MaritalStatus)))
+                               {
+                                  <MudSelectItem T="MaritalStatus" Value="item">@item.ToString()</MudSelectItem>
+                               }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.Occupation)"
+                                  Immediate="true"
+                                  InputMode="InputMode.text"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.Occupation"
+                                  Variant="Variant.Outlined"
+                                  Label="Occupation" />
+                </MudItem>
+                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4"></MudItem>
+            </MudGrid>
+        </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

@@ -11,6 +11,7 @@ namespace VBMS.Pages
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
         int memberCount = 0;
         Guid userGuid;
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         protected override async Task OnInitializedAsync()
         {
             var claimsPrincipal = (await AuthenticationStateTask).User;
@@ -25,7 +26,7 @@ namespace VBMS.Pages
             var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["UserGuid"] = userGuid };
             if (memberCount == 0)
             {
-                var dialog = dialogService.Show<AddGroupMemberModal>("Complete Your Membership Form", parameters);
+                var dialog = dialogService.Show<AddGroupMemberModal>("Complete Your Membership Form", parameters, maxWidth);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {

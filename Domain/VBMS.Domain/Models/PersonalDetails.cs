@@ -8,7 +8,6 @@ public class PersonalDetails
     [Required(ErrorMessage = "First name can't be empty")]
     public string FirstName { get; set; }
 
-    public string? MiddleName { get; set; }
     [Required(ErrorMessage = "Last name can't be empty")]
     public string LastName { get; set; }
     [Required]
