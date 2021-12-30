@@ -3,7 +3,7 @@
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     @if (!VillageBank.IsActive)
     {
-       <MudAlert Class="group-inactive"  Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
+       <MudAlert Class="group-inactive"  Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
     }
     <div class="bg-gray-800 pt-3">
         <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
@@ -206,30 +206,57 @@
 </style>
 
 @code {
+
     [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
     VillageBankGroup VillageBank { get; set; } = new();
     int[] searchData, clicksData, applyChartData, admissionData, consolData;
     int memberCount = 0;
-    
+    Guid userGuid;
     protected override async Task OnInitializedAsync()
     {
         var claimsPrincipal = (await AuthenticationStateTask).User;
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
-            var userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
-            var admin = await groupAdminService.GetByUserGuid(userGuid);
-            VillageBank = admin.Group;
-            memberCount = await membershipService.CountMembers(VillageBank.Id);
-            searchData = new int[] { 10, 15, 25, 40 };
-            clicksData = new int[] { 5, 30, 54, 40 };
-            applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
-            admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
-            consolData = new int[] { 25, 40, 35 };
+            userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            await Reload();
         }
+    }
+    void ToggleActivateGroup()
+    {
+        if(memberCount == 0)
+        {
+
+
+        }
+        else
+        {
+            ActivateGroup();
+        }
+
+    }
+    async Task Reload()
+    {
+
+        var admin = await groupAdminService.GetByUserGuid(userGuid);
+        VillageBank = admin.Group;
+        memberCount = await membershipService.CountMembers(VillageBank.Id);
+        searchData = new int[] { 10, 15, 25, 40 };
+        clicksData = new int[] { 5, 30, 54, 40 };
+        applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
+        admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
+        consolData = new int[] { 25, 40, 35 }; 
     }
     async void ActivateGroup()
     {
-        
+        if(await villageBankGroupService.ActivateGroup(VillageBank.Id))
+        {
+            snackBar.Add("Your group is now active", Severity.Success);
+            await Reload();
+        }
+        else
+        {
+            snackBar.Add("Something went wrong while trying to activate your group", Severity.Error);
+        }
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
