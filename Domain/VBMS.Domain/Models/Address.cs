@@ -6,13 +6,13 @@ public class Address : ValueObject
     {
         yield return HouseNumber;
         yield return City;
-        yield return Country;
+        yield return Province;
 
     }
-    [Required]
+    [Required(ErrorMessage = "Address can't be empty")]
     public string HouseNumber { get; set; }
-    [Required]
+    [Required(ErrorMessage = "City can't be empty")]
     public string City { get; set; }
-    [Required]
-    public string Country { get; set; }
+    [Required(ErrorMessage = "Province can't be empty")]
+    public string Province { get; set; }
 }

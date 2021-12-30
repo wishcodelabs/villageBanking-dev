@@ -9,7 +9,7 @@ namespace VBMS.Shared.Components
         [Parameter] public Guid? UserGuid { get; set; }
         [Parameter] public int VillageBankId { get; set; } = new();
         VillageGroupMembership GroupMembershipModel = new VillageGroupMembership();
-        IEnumerable<VillageGroupRole> memberRoles { get; set; }
+        IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
         protected override async Task OnInitializedAsync()
         {
             GroupMembershipModel.PersonalDetails = new();

@@ -91,10 +91,59 @@
                                   Variant="Variant.Outlined"
                                   Label="Occupation" />
                 </MudItem>
-                <MudItem xs="6" sm="4"></MudItem>
-                <MudItem xs="6" sm="4"></MudItem>
-                <MudItem xs="6" sm="4"></MudItem>
-                <MudItem xs="6" sm="4"></MudItem>
+                <MudItem xs="6" sm="4">
+                     <MudSelect T="VillageGroupRole"  
+                                Immediate="true"
+                                Clearable="true"
+                                MultiSelection="true"
+                                Variant="Variant.Outlined"
+                                @bind-SelectedValues="@memberRoles"
+                                Label="Group Role(s)">
+                               @foreach (var item in (VillageGroupRole [])Enum.GetValues(typeof(VillageGroupRole)))
+                               {
+                                  <MudSelectItem T="VillageGroupRole" Value="item">@item.ToString()</MudSelectItem>
+                               }
+                    </MudSelect>
+                    <MudChipSet>
+                    @foreach (var item in memberRoles)
+                    {
+                      <MudChip Color="Color.Secondary"  Text="@item.ToString()"></MudChip>  
+                    }
+                    </MudChipSet>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Align="Align.Center">Residential Address</MudText>
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                     <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.HouseNumber)"
+                                  Immediate="true"
+                                  InputMode="InputMode.text"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.HouseNumber"
+                                  Variant="Variant.Outlined"
+                                  Label="Address" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.City)"
+                                  Immediate="true"
+                                  InputMode="InputMode.text"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.City"
+                                  Variant="Variant.Outlined"
+                                  Label="City/District" />
+                </MudItem>
+                <MudItem xs="6" sm="4">
+                    <MudTextField T="string"
+                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.Province)"
+                                  Immediate="true"
+                                  InputMode="InputMode.text"
+                                  Clearable="true"
+                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.Province"
+                                  Variant="Variant.Outlined"
+                                  Label="Province" />
+                </MudItem>
                 <MudItem xs="6" sm="4"></MudItem>
             </MudGrid>
         </EditForm>
