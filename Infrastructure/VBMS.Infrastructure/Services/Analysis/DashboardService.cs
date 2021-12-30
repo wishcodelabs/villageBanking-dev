@@ -8,42 +8,42 @@
             context = dbContext;
         }
 
-        public Task<int> GetBadEggs(int groupId)
+        public Task<int> GetBadEggs(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<double>> GetMonthlyInvestments(int groupId)
+        public Task<List<double>> GetMonthlyInvestments(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<int>> GetMonthlyLoanApplications(int groupId)
+        public Task<List<int>> GetMonthlyLoanApplications(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<double>> GetMonthlyRevenue(int groupId)
+        public Task<List<double>> GetMonthlyRevenue(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> GetNewLoanApplications(int groupId)
+        public Task<int> GetNewLoanApplications(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<int>> GetOverallPerf(int groupId)
+        public Task<List<int>> GetOverallPerf(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<double> GetTotalInvestments(int groupId)
+        public Task<double> GetTotalInvestments(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> GetTotalShares(int groupId)
+        public Task<int> GetTotalShares(int groupId, int investmentPeriodId)
         {
             throw new NotImplementedException();
         }
