@@ -36,19 +36,24 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
-            GroupMembershipModel.Roles = new();
-            foreach (var role in memberRoles)
+            if (VillageBankId != 0)
             {
-                GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
-            }
-            if (await membershipService.AddAsync(GroupMembershipModel))
-            {
-                snackBar.Add("Details Saved Successfully", Severity.Success);
-                MudDialog.Close(DialogResult.Ok(true));
-            }
-            else
-            {
-                snackBar.Add("Opps! Something went wrong.", Severity.Error);
+                GroupMembershipModel.VillageGroupId = VillageBankId;
+                GroupMembershipModel.Roles = new();
+                foreach (var role in memberRoles)
+                {
+                    GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
+                }
+
+                if (await membershipService.AddAsync(GroupMembershipModel))
+                {
+                    snackBar.Add("Details Saved Successfully", Severity.Success);
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
+                else
+                {
+                    snackBar.Add("Opps! Something went wrong.", Severity.Error);
+                }
             }
 
         }

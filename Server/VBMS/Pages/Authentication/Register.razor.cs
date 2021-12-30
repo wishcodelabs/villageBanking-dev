@@ -1,6 +1,4 @@
-﻿using VBMS.Domain.Models;
-
-namespace VBMS.Pages.Authentication
+﻿namespace VBMS.Pages.Authentication
 {
     public partial class Register
     {
@@ -13,6 +11,7 @@ namespace VBMS.Pages.Authentication
                 FirstName = RegisterModel.FirstName,
                 LastName = RegisterModel.LastName,
                 Email = RegisterModel.Email,
+                PhoneNumber = RegisterModel.PhoneNumber,
                 Password = RegisterModel.Password,
                 UserName = RegisterModel.UserName,
                 IsValid = true,

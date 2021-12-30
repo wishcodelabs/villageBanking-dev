@@ -11,10 +11,11 @@ public class VillageGroupMembership : Entity<int>
 
     public List<MembershipSubscription> Subscriptions { get; set; }
 
-    [ValidateComplexType]
+    [ForeignKey(nameof(VillageGroupId))]
     public virtual VillageBankGroup VillageBankGroup { get; set; }
 
     public virtual List<Investment> Investments { get; set; }
+    [ValidateComplexType]
     public virtual PersonalDetails PersonalDetails { get; set; }
     public virtual List<VillageGroupMemberRole> Roles { get; set; }
 }

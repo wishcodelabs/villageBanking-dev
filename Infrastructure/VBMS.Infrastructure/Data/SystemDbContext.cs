@@ -55,7 +55,7 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         {
             entity.ToTable("Users", "Identity");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.UserGuid).ValueGeneratedOnAdd();
+
         });
         modelBuilder.Entity<Role>(entity =>
         {

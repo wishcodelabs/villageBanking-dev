@@ -58,6 +58,7 @@ namespace VBMS.Pages
             {
                 snackBar.Add("Your group is now active", Severity.Success);
                 await Reload();
+                StateHasChanged();
             }
             else
             {

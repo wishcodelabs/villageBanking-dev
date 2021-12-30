@@ -40,7 +40,7 @@
                 user.LastName = request.LastName;
                 user.MiddleName = request.MiddleName;
                 user.EmailConfirmed = request.AutoConfirm;
-                user.UserGuid = new Guid();
+
                 if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
                 {
                     var userWithSamePhoneNumber = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
@@ -54,7 +54,7 @@
                 {
                     await userStore.SetUserNameAsync(user, request.UserName, CancellationToken.None);
                     await emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
-
+                    user.UserGuid = new Guid();
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
