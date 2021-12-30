@@ -126,11 +126,11 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="int"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.ProvinceId)"
+                                  For="(()=>ProvinceId)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.ProvinceId"
+                                  @bind-Value="@ProvinceId"
                                   Variant="Variant.Outlined"
                                   Label="Province" >
                     </MudSelect>

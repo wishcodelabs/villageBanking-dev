@@ -51,6 +51,8 @@
                     .AddTransient<InvestmentPeriodService>()
                     .AddTransient<InvestmentService>()
                     .AddTransient<GroupAdminService>()
+                    .AddTransient<CityService>()
+                    .AddTransient<ProvinceService>()
                     .AddTransient<MembershipService>();
 
 

@@ -7,6 +7,7 @@ namespace VBMS.Shared.Components
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid? UserGuid { get; set; }
+        int ProvinceId { get; set; } = 1;    
         [Parameter] public int VillageBankId { get; set; } = new();
         VillageGroupMembership GroupMembershipModel = new VillageGroupMembership();
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();

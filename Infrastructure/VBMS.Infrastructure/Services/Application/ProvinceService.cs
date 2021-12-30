@@ -5,5 +5,6 @@
         public ProvinceService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
         {
         }
+
     }
 }
