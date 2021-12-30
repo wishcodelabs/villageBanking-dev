@@ -107,6 +107,9 @@ namespace VBMS.Services
             throw new NotImplementedException();
         }
 
-
+        public async Task<User> GetUserAsync(Guid guid)
+        {
+            return await userManager.Users.FirstOrDefaultAsync(u => u.UserGuid == guid);
+        }
     }
 }

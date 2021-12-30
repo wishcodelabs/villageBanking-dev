@@ -8,6 +8,7 @@
         Task<string> GetFullName(string username);
 
         Task<User> GetUserAsync(int userId);
+        Task<User> GetUserAsync(Guid guid);
 
         Task<List<User>> GetAllUsers();
         Task<Guid> GetGuid(string userName);

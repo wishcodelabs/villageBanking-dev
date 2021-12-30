@@ -11,7 +11,7 @@
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
                                   Variant="Variant.Outlined"
                                   Label="First Name"
-                                  Clearable="true"
+                                  Clearable="UserGuid==null"
                                   ReadOnly="(UserGuid!=null)" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
@@ -20,7 +20,7 @@
                                   Immediate="true"
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
                                   Variant="Variant.Outlined"
-                                  Clearable="true"
+                                  Clearable="(UserGuid==null)"
                                   Label="Last Name"
                                   ReadOnly="(UserGuid!=null)" />
                 </MudItem>
@@ -48,7 +48,9 @@
                                   For="(()=>GroupMembershipModel.PersonalDetails.EmailAddress)"
                                   Immediate="true"
                                   InputMode="InputMode.email"
-                                  Clearable="true"
+                                  Clearable="(UserGuid==null)"
+                                  ReadOnly="(UserGuid!=null)"
+                                 
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.EmailAddress"
                                   Variant="Variant.Outlined"
                                   Label="E-mail" />
