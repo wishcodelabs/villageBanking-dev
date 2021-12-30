@@ -131,8 +131,13 @@
                                   InputMode="InputMode.text"
                                   Clearable="true"
                                   @bind-Value="@ProvinceId"
+                                  @onselectionchange="GetCities"
                                   Variant="Variant.Outlined"
                                   Label="Province" >
+                     @foreach (var item in ProvinceList)
+                     {
+                         <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
+                     }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4">
@@ -144,6 +149,11 @@
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId"
                                   Variant="Variant.Outlined"
                                   Label="City/District" >
+                        
+                       @foreach (var item in cityService.GetCities(ProvinceId))
+                     {
+                         <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
+                     }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4"></MudItem>

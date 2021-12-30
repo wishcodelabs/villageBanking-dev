@@ -5,9 +5,9 @@
         public CityService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
         {
         }
-        public async Task<List<City>> GetCities(int provinceId)
+        public List<City> GetCities(int provinceId)
         {
-            return await Repository.Entities().Where(c => c.ProvinceId == provinceId).ToListAsync();
+            return Repository.Entities().Where(c => c.ProvinceId == provinceId).ToList();
         }
     }
 }
