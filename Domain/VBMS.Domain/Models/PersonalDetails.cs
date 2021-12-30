@@ -2,7 +2,7 @@
 
 public class PersonalDetails
 {
-    const string nrc = @"^\d{6}\/d{2}\/d{1}$";
+    const string nrc = @"^[0 - 9][0 - 9][0 - 9][0 - 9][0 - 9][0 - 9] /[0 - 9][0 - 9] /[0 - 9]$";
 
     public int MembershipId { get; set; }
     [Required(ErrorMessage = "First name can't be empty")]
@@ -12,7 +12,7 @@ public class PersonalDetails
     public string LastName { get; set; }
     [Required]
     [StringLength(11)]
-    [RegularExpression(nrc, ErrorMessage = "Required format is 00000/00/0")]
+    [RegularExpression(nrc, ErrorMessage = "Required format is 000000/00/0")]
     public string NrcNumber { get; set; }
 
     [DataType(DataType.PhoneNumber)]

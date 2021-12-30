@@ -6,9 +6,10 @@
 
         [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
         GroupAdmin Admin { get; set; } = new();
+
         List<VillageGroupMembership> Members = new();
         ClaimsPrincipal claimsPrincipal = new();
-        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true, DisableBackdropClick = true };
         protected override async Task OnInitializedAsync()
         {
 

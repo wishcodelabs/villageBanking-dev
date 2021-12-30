@@ -1,7 +1,7 @@
 ﻿
 <MudDialog>
     <DialogContent>
-        <EditForm id="editForm" Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+        <EditForm id="editForm" Model="GroupMembershipModel" OnInvalidSubmit="ModelInvalid" OnValidSubmit="Submit">
             <ObjectGraphDataAnnotationsValidator />
             <FluentValidationValidator />
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
@@ -128,7 +128,6 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="int"
-                               For="(()=>ProvinceId)"
                                Immediate="true"
                                InputMode="InputMode.text"
                                Clearable="true"
@@ -164,11 +163,10 @@
                     </MudItem>
                     <MudItem xs="6" sm="4">
                         <MudTextField T="string"
-                                  For="(()=>RegisterRequest.UserName)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="RegisterRequest.UserName"
+                                  @bind-Value="userName"
                                   Variant="Variant.Outlined"
                                   Label="User Name" />
                     </MudItem>

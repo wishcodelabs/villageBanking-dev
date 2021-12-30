@@ -1,11 +1,14 @@
 ﻿
 
+using Microsoft.AspNetCore.Components.Forms;
+
 namespace VBMS.Shared.Components
 {
     public partial class AddGroupMemberModal
     {
-
+        [Inject] ISnackbar _snackbar { get; set; }
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+        string userName;
         [Parameter] public Guid? UserGuid { get; set; }
         [Parameter] public bool IsAdmin { get; set; }
         RegisterRequest RegisterRequest { get; set; } = new();
@@ -15,12 +18,15 @@ namespace VBMS.Shared.Components
         [Parameter] public int VillageBankId { get; set; } = new();
         VillageGroupMembership GroupMembershipModel = new VillageGroupMembership();
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
+        private EditContext? editContext;
+
         protected override async Task OnInitializedAsync()
         {
+            editContext = new(GroupMembershipModel);
             _attributes = new Dictionary<string, object>();
             await Init();
             ProvinceList = await provinceService.GetAllAsync();
-            _attributes.Add("for", "editForm");
+            _attributes.Add("form", "editForm");
         }
         async Task Init()
         {
@@ -42,6 +48,7 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
+
             if (VillageBankId != 0)
             {
                 if (IsAdmin)
@@ -57,25 +64,66 @@ namespace VBMS.Shared.Components
 
                     if (await membershipService.AddAsync(GroupMembershipModel))
                     {
-                        snackBar.Add("Details Saved Successfully", Severity.Success);
+                        _snackbar.Add("Details Saved Successfully", Severity.Success);
                         MudDialog.Close(DialogResult.Ok(true));
                     }
                     else
                     {
-                        snackBar.Add("Opps! Something went wrong.", Severity.Error);
+                        _snackbar.Add("Opps! Something went wrong.", Severity.Error);
                     }
                 }
                 else
                 {
                     //New user
+                    RegisterRequest.FirstName = GroupMembershipModel.PersonalDetails.FirstName;
+                    RegisterRequest.LastName = GroupMembershipModel.PersonalDetails.LastName;
+                    RegisterRequest.Email = GroupMembershipModel.PersonalDetails.EmailAddress;
+                    RegisterRequest.PhoneNumber = GroupMembershipModel.PersonalDetails.PhoneNumber;
+                    RegisterRequest.Password = @"Pa$$word1234";
+                    if (string.IsNullOrWhiteSpace(userName))
+                    {
+                        RegisterRequest.UserName = RegisterRequest.FirstName.ToLower() + "." + RegisterRequest.LastName.ToLower();
+                    }
+                    var result = await userRegisterService.RegisterAsync(RegisterRequest);
+                    if (result.Succeeded)
+                    {
+                        _snackbar.Add(result.Messages.First(), Severity.Success);
+                        var userGuid = await userService.GetGuid(RegisterRequest.UserName);
+
+                        GroupMembershipModel.VillageGroupId = VillageBankId;
+                        GroupMembershipModel.Roles = new();
+                        GroupMembershipModel.DateJoined = DateTime.Now;
+                        GroupMembershipModel.UserGuid = userGuid;
+                        foreach (var role in memberRoles)
+                        {
+                            GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
+                        }
+
+                        if (await membershipService.AddAsync(GroupMembershipModel))
+                        {
+                            _snackbar.Add("Details Saved Successfully", Severity.Success);
+                            MudDialog.Close(DialogResult.Ok(true));
+                        }
+                        else
+                        {
+                            _snackbar.Add("Opps! Something went wrong.", Severity.Error);
+                        }
+
+                    }
+                    else
+                    {
+                        _snackbar.Add(result.Messages.First(), Severity.Error);
+                    }
 
                 }
             }
 
+
+
         }
         void ModelInvalid()
         {
-            snackBar.Add("Please fill in all required field", Severity.Error);
+            _snackbar.Add("Please fill in all required fields", Severity.Error);
         }
         void Cancel() => MudDialog.Cancel();
 
