@@ -6,7 +6,9 @@ namespace VBMS.Shared.Components
     {
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        [Parameter] public Guid? UserGuid { get; set; }
+        [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        Guid UserGuid { get; set; }
+        [Parameter] public bool IsAdmin { get; set; }
         int ProvinceId { get; set; } = 1;
         List<Province> ProvinceList { get; set; } = new();
         [Parameter] public int VillageBankId { get; set; } = new();
@@ -14,8 +16,13 @@ namespace VBMS.Shared.Components
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
         protected override async Task OnInitializedAsync()
         {
-            await Init();
-            ProvinceList = await provinceService.GetAllAsync();
+            var claimsPrincipal = (await AuthenticationStateTask).User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+            {
+                UserGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+                await Init();
+                ProvinceList = await provinceService.GetAllAsync();
+            }
         }
         async Task Init()
         {

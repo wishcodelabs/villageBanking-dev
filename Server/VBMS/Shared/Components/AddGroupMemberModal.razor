@@ -11,8 +11,8 @@
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
                                   Variant="Variant.Outlined"
                                   Label="First Name"
-                                  Clearable="UserGuid==null"
-                                  ReadOnly="(UserGuid!=null)" />
+                                  Clearable="(!IsAdmin)"
+                                  ReadOnly="(IsAdmin)" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
@@ -20,9 +20,9 @@
                                   Immediate="true"
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
                                   Variant="Variant.Outlined"
-                                  Clearable="(UserGuid==null)"
+                                  Clearable="((!IsAdmin))"
                                   Label="Last Name"
-                                  ReadOnly="(UserGuid!=null)" />
+                                  ReadOnly="(IsAdmin)" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
@@ -48,8 +48,8 @@
                                   For="(()=>GroupMembershipModel.PersonalDetails.EmailAddress)"
                                   Immediate="true"
                                   InputMode="InputMode.email"
-                                  Clearable="(UserGuid==null)"
-                                  ReadOnly="(UserGuid!=null)"
+                                  Clearable="(!IsAdmin)"
+                                  ReadOnly="(IsAdmin)"
                                  
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.EmailAddress"
                                   Variant="Variant.Outlined"
