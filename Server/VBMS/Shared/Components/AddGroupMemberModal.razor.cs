@@ -6,7 +6,7 @@ namespace VBMS.Shared.Components
     {
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        [Parameter] public ClaimsPrincipal CurrentUser { get; set; } = new ClaimsPrincipal();
         Guid UserGuid { get; set; }
         [Parameter] public bool IsAdmin { get; set; }
         int ProvinceId { get; set; } = 1;
@@ -16,10 +16,10 @@ namespace VBMS.Shared.Components
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
         protected override async Task OnInitializedAsync()
         {
-            var claimsPrincipal = (await AuthenticationStateTask).User;
-            if (claimsPrincipal.Identity.IsAuthenticated)
+
+            if (CurrentUser.Identity.IsAuthenticated)
             {
-                UserGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+                UserGuid = await userService.GetGuid(CurrentUser.Identity.Name);
                 await Init();
                 ProvinceList = await provinceService.GetAllAsync();
             }
@@ -28,16 +28,18 @@ namespace VBMS.Shared.Components
         {
             GroupMembershipModel.PersonalDetails = new();
             GroupMembershipModel.PersonalDetails.PhysicalAddress = new();
-            var user = await userService.GetUserAsync((Guid)UserGuid);
-            if (user == null)
+            var user = await userService.GetUserAsync(UserGuid);
+            if (!IsAdmin)
             {
 
             }
-            GroupMembershipModel.PersonalDetails.FirstName = user.FirstName;
-            GroupMembershipModel.PersonalDetails.LastName = user.LastName;
-            GroupMembershipModel.PersonalDetails.EmailAddress = user.Email;
-            GroupMembershipModel.PersonalDetails.PhoneNumber = user.PhoneNumber;
-
+            if (user != null)
+            {
+                GroupMembershipModel.PersonalDetails.FirstName = user.FirstName;
+                GroupMembershipModel.PersonalDetails.LastName = user.LastName;
+                GroupMembershipModel.PersonalDetails.EmailAddress = user.Email;
+                GroupMembershipModel.PersonalDetails.PhoneNumber = user.PhoneNumber;
+            }
 
         }
         async Task Submit()

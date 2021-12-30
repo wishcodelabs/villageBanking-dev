@@ -1,86 +1,57 @@
 ﻿@page "/group/members"
 
 <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
-<MudGrid Spacing="3" Justify="Justify.Center">
-  <MudItem align="center" xs="12">
-      <MudPaper Elevation="20" Class="title-card p-4 ">
-          <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">Manage Memberships</MudText>
-      </MudPaper>
-  </MudItem>
-  <MudItem xs="12">
-      <MudButton OnClick="ToggleAdd" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.PersonAdd">Add</MudButton>
-  </MudItem>
-  <MudItem xs="12">
-      <table class="table table-striped table-hover table-responsive-sm">
-          <caption>List of Group Members</caption>
-          <thead class="thead-dark">
-              <tr>
-                  <th>Id</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>NRC Number</th>
-                  <th>Phone Number</th>
-                  <th>Date Joined</th>
-                  <th>Status</th>
-                  <th>Added By</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
-              @foreach (var item in Members)
-              {   
-                  Color color = (item.Status == VillageGroupMemberStatus.Active)? Color.Success : Color.Secondary;
-                 <tr class="text-white">
-                     <td>@item.Id</td>
-                     <td>@item.PersonalDetails.FirstName</td>
-                     <td>@item.PersonalDetails.LastName</td>
-                     <td>@item.PersonalDetails.NrcNumber</td>
-                     <td>@item.PersonalDetails.PhoneNumber</td>
-                     <td>@item.DateJoined</td>
-                     <td><MudChip Size="Size.Small" Color="color" Text="@item.Status.ToString()"/></td>
-                     <td>@item.CreatedBy</td>
-                     <td>
-                           <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                           <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
-                     </td>
-                 </tr> 
-              }
-          </tbody>
+    <MudGrid Spacing="3" Justify="Justify.Center">
+        <MudItem align="center" xs="12">
+            <MudPaper Elevation="20" Class="title-card p-4 ">
+                <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">Manage Memberships</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12">
+            <MudButton OnClick="ToggleAdd" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.PersonAdd">Add</MudButton>
+        </MudItem>
+        <MudItem xs="12">
+            <table class="table table-striped table-hover table-responsive-sm">
+                <caption>List of Group Members</caption>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>NRC Number</th>
+                        <th>Phone Number</th>
+                        <th>Date Joined</th>
+                        <th>Status</th>
+                        <th>Added By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Members)
+                    {
+                        Color color = (item.Status == VillageGroupMemberStatus.Active) ? Color.Success : Color.Secondary;
+                        <tr class="text-white">
+                            <td>@item.Id</td>
+                            <td>@item.PersonalDetails.FirstName</td>
+                            <td>@item.PersonalDetails.LastName</td>
+                            <td>@item.PersonalDetails.NrcNumber</td>
+                            <td>@item.PersonalDetails.PhoneNumber</td>
+                            <td>@item.DateJoined</td>
+                            <td><MudChip Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                            <td>@item.CreatedBy</td>
+                            <td>
+                                <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                                <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
 
-      </table>
-  </MudItem>
-</MudGrid>
+            </table>
+        </MudItem>
+    </MudGrid>
 </MudContainer>
 
-@code{
-
-    VillageBankGroup VillageBank { get; set; } = new();
-
-    [CascadingParameter] Task<AuthenticationState>AuthenticationStateTask{ get; set; }
-    GroupAdmin Admin { get; set; } = new();
-    List<VillageGroupMembership> Members = new();
-    ClaimsPrincipal claimsPrincipal;
-    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
-    protected override async Task OnInitializedAsync()
-    {
-
-        claimsPrincipal = (await AuthenticationStateTask).User;
-        if(claimsPrincipal.Identity.IsAuthenticated)
-        {
-            Admin = await groupAdminService.GetByUserGuid(await userService.GetGuid(claimsPrincipal.Identity.Name));
-            VillageBank = Admin.Group;
-            Members = await membershipService.GetMembers(VillageBank.Id);
-        }
-
-
-    }
-    void ToggleAdd()
-    {
-        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["UserGuid"]=null };
-        var dialog = dialogService.Show<AddGroupMemberModal>("Add New Group Member", parameters, maxWidth);
-    }
-
-}
 
 
 
@@ -106,12 +77,14 @@
     body {
         background-color: #13262F;
     }
-    .cont{
+
+    .cont {
         background-color: #13262F;
     }
-    .title-card{
-        max-width : fit-content;
-        border-radius : 10px;
-        background-color : #13262F;
+
+    .title-card {
+        max-width: fit-content;
+        border-radius: 10px;
+        background-color: #13262F;
     }
 </style>

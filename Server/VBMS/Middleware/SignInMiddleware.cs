@@ -102,8 +102,6 @@ namespace VBMS.Middleware
             //continue the http middleware chain
 
             await next.Invoke(context);
-
-
         }
 
     }

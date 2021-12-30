@@ -10,6 +10,8 @@ global using Microsoft.JSInterop;
 global using MudBlazor;
 global using MudBlazor.Services;
 
+global using System.Security.Claims;
+
 global using VBMS.Areas.Identity;
 global using VBMS.Domain.Enums;
 global using VBMS.Domain.Interfaces;
