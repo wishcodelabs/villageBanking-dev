@@ -23,7 +23,23 @@
               </tr>
           </thead>
           <tbody>
-
+              @foreach (var item in VillageBank.GroupMembers)
+              {
+                 <tr>
+                     <td>@item.Id</td>
+                     <td>@item.PersonalDetails.FirstName</td>
+                     <td>@item.PersonalDetails.LastName</td>
+                     <td>@item.PersonalDetails.NrcNumber</td>
+                     <td>@item.PersonalDetails.PhoneNumber</td>
+                     <td>@item.DateJoined</td>
+                     <td>@item.Status.ToString()</td>
+                     <td>@item.CreatedBy</td>
+                     <td>
+                           <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                           <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
+                     </td>
+                 </tr> 
+              }
           </tbody>
 
       </table>
@@ -32,7 +48,22 @@
 </MudContainer>
 
 @code{
+    VillageBankGroup VillageBank { get; set; } = new();
 
+    [CascadingParameter] Task<AuthenticationState>AuthenticationStateTask{ get; set; }
+    GroupAdmin Admin { get; set; } = new();
+    protected override async Task OnInitializedAsync()
+    {
+        VillageBank.GroupMembers = new();
+        var claimsPrincipal = (await AuthenticationStateTask).User;
+        if(claimsPrincipal.Identity.IsAuthenticated)
+        {
+            Admin = await groupAdminService.GetByUserGuid(await userService.GetGuid(claimsPrincipal.Identity.Name));
+            VillageBank = Admin.Group;
+        }
+
+          
+    }
 }
 
 
