@@ -40,6 +40,7 @@
                 user.LastName = request.LastName;
                 user.MiddleName = request.MiddleName;
                 user.EmailConfirmed = request.AutoConfirm;
+                user.UserGuid = new Guid();
                 if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
                 {
                     var userWithSamePhoneNumber = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
