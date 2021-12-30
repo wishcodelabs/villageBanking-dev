@@ -36,6 +36,20 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
+            GroupMembershipModel.Roles = new();
+            foreach (var role in memberRoles)
+            {
+                GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
+            }
+            if (await membershipService.AddAsync(GroupMembershipModel))
+            {
+                snackBar.Add("Details Saved Successfully", Severity.Success);
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+            else
+            {
+                snackBar.Add("Opps! Something went wrong.", Severity.Error);
+            }
 
         }
         void GetCities()
@@ -44,7 +58,7 @@ namespace VBMS.Shared.Components
         }
         void ModelInvalid()
         {
-
+            snackBar.Add("Please fill in all required field", Severity.Error);
         }
         void Cancel() => MudDialog.Cancel();
 

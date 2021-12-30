@@ -1,8 +1,8 @@
 ﻿<MudDialog>
     <DialogContent>
         <EditForm Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
-            <FluentValidationValidator />
-            <ObjectGraphDataAnnotationsValidator />
+           <ObjectGraphDataAnnotationsValidator />
+           <FluentValidationValidator />
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"

@@ -16,4 +16,5 @@ public class VillageGroupMembership : Entity<int>
 
     public virtual List<Investment> Investments { get; set; }
     public virtual PersonalDetails PersonalDetails { get; set; }
+    public virtual List<VillageGroupMemberRole> Roles { get; set; }
 }
