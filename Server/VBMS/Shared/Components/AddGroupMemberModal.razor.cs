@@ -9,7 +9,6 @@ namespace VBMS.Shared.Components
         [Parameter] public Guid? UserGuid { get; set; }
         int ProvinceId { get; set; } = 1;
         List<Province> ProvinceList { get; set; } = new();
-        List<City> CityList { get; set; } = new();
         [Parameter] public int VillageBankId { get; set; } = new();
         VillageGroupMembership GroupMembershipModel = new VillageGroupMembership();
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
@@ -40,6 +39,8 @@ namespace VBMS.Shared.Components
             {
                 GroupMembershipModel.VillageGroupId = VillageBankId;
                 GroupMembershipModel.Roles = new();
+                GroupMembershipModel.DateJoined = DateTime.Now;
+                GroupMembershipModel.UserGuid = (Guid)UserGuid;
                 foreach (var role in memberRoles)
                 {
                     GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
@@ -56,10 +57,6 @@ namespace VBMS.Shared.Components
                 }
             }
 
-        }
-        void GetCities()
-        {
-            CityList = cityService.GetCities(ProvinceId);
         }
         void ModelInvalid()
         {

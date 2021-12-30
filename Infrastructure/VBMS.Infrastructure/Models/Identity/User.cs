@@ -14,4 +14,8 @@ public class User : IdentityUser<int>, IAuditableEntity<int>
 
     public Guid UserGuid { get; set; }
     public bool IsActive { get; set; }
+    public User()
+    {
+        UserGuid = Guid.NewGuid();
+    }
 }

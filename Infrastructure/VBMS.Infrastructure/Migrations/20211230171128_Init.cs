@@ -315,14 +315,17 @@ namespace VBMS.Infrastructure.Migrations
                     UserGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateJoined = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    VillageBankGroupId = table.Column<int>(type: "int", nullable: false)
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Membership", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Membership_VillageBankGroups_VillageBankGroupId",
-                        column: x => x.VillageBankGroupId,
+                        name: "FK_Membership_VillageBankGroups_VillageGroupId",
+                        column: x => x.VillageGroupId,
                         principalTable: "VillageBankGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -380,7 +383,11 @@ namespace VBMS.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MemberId = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false)
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -401,7 +408,11 @@ namespace VBMS.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MemberId = table.Column<int>(type: "int", nullable: false),
                     InvestmentPeriodId = table.Column<int>(type: "int", nullable: false),
-                    NumberOfShares = table.Column<double>(type: "float", nullable: false)
+                    NumberOfShares = table.Column<double>(type: "float", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -624,9 +635,9 @@ namespace VBMS.Infrastructure.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Membership_VillageBankGroupId",
+                name: "IX_Membership_VillageGroupId",
                 table: "Membership",
-                column: "VillageBankGroupId");
+                column: "VillageGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MemberSubscriptions_MemberId",

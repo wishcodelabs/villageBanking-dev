@@ -54,7 +54,6 @@
                 {
                     await userStore.SetUserNameAsync(user, request.UserName, CancellationToken.None);
                     await emailStore.SetEmailAsync(user, request.Email, CancellationToken.None);
-                    user.UserGuid = new Guid();
                     var result = await userManager.CreateAsync(user, request.Password);
                     if (result.Succeeded)
                     {
