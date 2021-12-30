@@ -8,6 +8,8 @@ namespace VBMS.Shared.Components
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public Guid? UserGuid { get; set; }
         [Parameter] public bool IsAdmin { get; set; }
+        RegisterRequest RegisterRequest { get; set; } = new();
+        Dictionary<string, object> _attributes { get; set; }
         int ProvinceId { get; set; } = 1;
         List<Province> ProvinceList { get; set; } = new();
         [Parameter] public int VillageBankId { get; set; } = new();
@@ -15,11 +17,10 @@ namespace VBMS.Shared.Components
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
         protected override async Task OnInitializedAsync()
         {
-
-
+            _attributes = new Dictionary<string, object>();
             await Init();
             ProvinceList = await provinceService.GetAllAsync();
-
+            _attributes.Add("for", "editForm");
         }
         async Task Init()
         {
@@ -43,23 +44,31 @@ namespace VBMS.Shared.Components
         {
             if (VillageBankId != 0)
             {
-                GroupMembershipModel.VillageGroupId = VillageBankId;
-                GroupMembershipModel.Roles = new();
-                GroupMembershipModel.DateJoined = DateTime.Now;
-                GroupMembershipModel.UserGuid = (Guid)UserGuid;
-                foreach (var role in memberRoles)
+                if (IsAdmin)
                 {
-                    GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
-                }
+                    GroupMembershipModel.VillageGroupId = VillageBankId;
+                    GroupMembershipModel.Roles = new();
+                    GroupMembershipModel.DateJoined = DateTime.Now;
+                    GroupMembershipModel.UserGuid = (Guid)UserGuid;
+                    foreach (var role in memberRoles)
+                    {
+                        GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
+                    }
 
-                if (await membershipService.AddAsync(GroupMembershipModel))
-                {
-                    snackBar.Add("Details Saved Successfully", Severity.Success);
-                    MudDialog.Close(DialogResult.Ok(true));
+                    if (await membershipService.AddAsync(GroupMembershipModel))
+                    {
+                        snackBar.Add("Details Saved Successfully", Severity.Success);
+                        MudDialog.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Opps! Something went wrong.", Severity.Error);
+                    }
                 }
                 else
                 {
-                    snackBar.Add("Opps! Something went wrong.", Severity.Error);
+                    //New user
+
                 }
             }
 

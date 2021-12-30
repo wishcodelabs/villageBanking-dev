@@ -1,9 +1,9 @@
 ﻿
 <MudDialog>
     <DialogContent>
-        <EditForm Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
-           <ObjectGraphDataAnnotationsValidator />
-           <FluentValidationValidator />
+        <EditForm id="editForm" Model="@GroupMembershipModel" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+            <ObjectGraphDataAnnotationsValidator />
+            <FluentValidationValidator />
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
@@ -51,7 +51,6 @@
                                   InputMode="InputMode.email"
                                   Clearable="(!IsAdmin)"
                                   ReadOnly="(IsAdmin)"
-                                 
                                   @bind-Value="@GroupMembershipModel.PersonalDetails.EmailAddress"
                                   Variant="Variant.Outlined"
                                   Label="E-mail" />
@@ -64,10 +63,10 @@
                                @bind-Value="@GroupMembershipModel.PersonalDetails.Gender"
                                Variant="Variant.Outlined"
                                Label="Gender">
-                               @foreach (var item in (Gender[])Enum.GetValues(typeof(Gender)))
-                               {
-                                  <MudSelectItem T="Gender" Value="item">@item.ToString()</MudSelectItem>
-                               }
+                        @foreach (var item in (Gender[])Enum.GetValues(typeof(Gender)))
+                        {
+                            <MudSelectItem T="Gender" Value="item">@item.ToString()</MudSelectItem>
+                        }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4">
@@ -78,10 +77,10 @@
                                @bind-Value="@GroupMembershipModel.PersonalDetails.MaritalStatus"
                                Variant="Variant.Outlined"
                                Label="Marital Status">
-                               @foreach (var item in (MaritalStatus [])Enum.GetValues(typeof(MaritalStatus)))
-                               {
-                                  <MudSelectItem T="MaritalStatus" Value="item">@item.ToString()</MudSelectItem>
-                               }
+                        @foreach (var item in (MaritalStatus[])Enum.GetValues(typeof(MaritalStatus)))
+                        {
+                            <MudSelectItem T="MaritalStatus" Value="item">@item.ToString()</MudSelectItem>
+                        }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4">
@@ -95,30 +94,30 @@
                                   Label="Occupation" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
-                     <MudSelect T="VillageGroupRole"  
-                                Immediate="true"
-                                Clearable="true"
-                                MultiSelection="true"
-                                Variant="Variant.Outlined"
-                                @bind-SelectedValues="@memberRoles"
-                                Label="Group Role(s)">
-                               @foreach (var item in (VillageGroupRole [])Enum.GetValues(typeof(VillageGroupRole)))
-                               {
-                                  <MudSelectItem T="VillageGroupRole" Value="item">@item.ToString()</MudSelectItem>
-                               }
+                    <MudSelect T="VillageGroupRole"
+                               Immediate="true"
+                               Clearable="true"
+                               MultiSelection="true"
+                               Variant="Variant.Outlined"
+                               @bind-SelectedValues="@memberRoles"
+                               Label="Group Role(s)">
+                        @foreach (var item in (VillageGroupRole[])Enum.GetValues(typeof(VillageGroupRole)))
+                        {
+                            <MudSelectItem T="VillageGroupRole" Value="item">@item.ToString()</MudSelectItem>
+                        }
                     </MudSelect>
                     <MudChipSet>
-                    @foreach (var item in memberRoles)
-                    {
-                      <MudChip Color="Color.Secondary"  Text="@item.ToString()"></MudChip>  
-                    }
+                        @foreach (var item in memberRoles)
+                        {
+                            <MudChip Color="Color.Secondary" Text="@item.ToString()"></MudChip>
+                        }
                     </MudChipSet>
                 </MudItem>
                 <MudItem xs="12">
                     <MudText Typo="Typo.h5" Align="Align.Center">Residential Address</MudText>
                 </MudItem>
                 <MudItem xs="6" sm="4">
-                     <MudTextField T="string"
+                    <MudTextField T="string"
                                   For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.HouseNumber)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
@@ -129,55 +128,83 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="int"
-                                  For="(()=>ProvinceId)"
-                                  Immediate="true"
-                                  InputMode="InputMode.text"
-                                  Clearable="true"
-                                  @bind-Value="@ProvinceId"                                 
-                                  Variant="Variant.Outlined"
-                                  Label="Province" >
-                     @foreach (var item in ProvinceList)
-                     {
-                         <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
-                     }
+                               For="(()=>ProvinceId)"
+                               Immediate="true"
+                               InputMode="InputMode.text"
+                               Clearable="true"
+                               @bind-Value="@ProvinceId"
+                               Variant="Variant.Outlined"
+                               Label="Province">
+                        @foreach (var item in ProvinceList)
+                        {
+                            <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
+                        }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="int"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId)"
+                               For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId)"
+                               Immediate="true"
+                               InputMode="InputMode.text"
+                               Clearable="true"
+                               @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId"
+                               Variant="Variant.Outlined"
+                               Label="City/District">
+
+                        @foreach (var item in cityService.GetCities(ProvinceId))
+                        {
+                            <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                @if (!IsAdmin)
+                {
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h5" Align="Align.Center">New Account Details</MudText>
+                    </MudItem>
+                    <MudItem xs="6" sm="4">
+                        <MudTextField T="string"
+                                  For="(()=>RegisterRequest.UserName)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId"
+                                  @bind-Value="RegisterRequest.UserName"
                                   Variant="Variant.Outlined"
-                                  Label="City/District" >
-                        
-                       @foreach (var item in cityService.GetCities(ProvinceId))
-                     {
-                         <MudSelectItem T="int" Value="@item.Id">@item.Name</MudSelectItem>
-                     }
-                    </MudSelect>
-                </MudItem>
+                                  Label="User Name" />
+                    </MudItem>
+                    <MudItem xs="6" sm="4">
+                     
+                        <MudTextField T="string"
+                                  InputMode="InputMode.text"
+                                  Clearable="false"
+                                  ReadOnly="true"
+                                  Value='("Pa$$word1234")'
+                                  Variant="Variant.Outlined"
+                                  Label="Activation Password" />
+                    </MudItem>
+                }
                 <MudItem xs="6" sm="4">
                     <MudSelect T="VillageGroupMemberStatus"
-                                  For="(()=>GroupMembershipModel.Status)"
-                                  Immediate="true"
-                                  Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.Status"                                 
-                                  Variant="Variant.Outlined"
-                                  Label="Current Status" >
-                     @foreach (var item in (VillageGroupMemberStatus[]) Enum.GetValues(typeof(VillageGroupMemberStatus)))
-                     {
-                         <MudSelectItem T="VillageGroupMemberStatus" Value="@item">@item.ToString()</MudSelectItem>
-                     }
+                               For="(()=>GroupMembershipModel.Status)"
+                               Immediate="true"
+                               Clearable="IsAdmin"
+                               ReadOnly="(!IsAdmin)"
+                               @bind-Value="@GroupMembershipModel.Status"
+                               Variant="Variant.Outlined"
+                               Label="Current Status">
+                        @foreach (var item in (VillageGroupMemberStatus[])Enum.GetValues(typeof(VillageGroupMemberStatus)))
+                        {
+                            <MudSelectItem T="VillageGroupMemberStatus" Value="@item">@item.ToString()</MudSelectItem>
+                        }
                     </MudSelect>
                 </MudItem>
+
             </MudGrid>
         </EditForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" UserAttributes="_attributes"  ButtonType="ButtonType.Submit" Color="Color.Primary">Save</MudButton>
     </DialogActions>
 </MudDialog>
 

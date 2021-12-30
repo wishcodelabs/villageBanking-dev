@@ -9,7 +9,7 @@
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "User name can't be empty")]
         public string UserName { get; set; }
         [Display(Name = "Middle Name")]
         public string MiddleName { get; set; }
