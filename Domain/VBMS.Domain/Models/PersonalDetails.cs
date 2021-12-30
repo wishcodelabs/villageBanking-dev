@@ -12,7 +12,7 @@ public class PersonalDetails
     public string LastName { get; set; }
     [Required]
     [StringLength(11)]
-    [RegularExpression(nrc, ErrorMessage = "Required format is 000000/00/0")]
+    //[RegularExpression(nrc, ErrorMessage = "Required format is 000000/00/0")]
     public string NrcNumber { get; set; }
 
     [DataType(DataType.PhoneNumber)]

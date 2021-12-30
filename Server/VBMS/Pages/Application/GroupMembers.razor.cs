@@ -23,10 +23,15 @@
 
 
         }
-        void ToggleAdd()
+        async void ToggleAdd()
         {
             var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = false, ["UserGuid"] = new Guid() };
             var dialog = dialogService.Show<AddGroupMemberModal>("Add New Group Member", parameters, maxWidth);
+            var result = await dialog.Result;
+            if (!result.Cancelled)
+            {
+                Members = await membershipService.GetMembers(VillageBank.Id);
+            }
         }
     }
 }

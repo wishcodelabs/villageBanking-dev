@@ -84,6 +84,8 @@ namespace VBMS.Shared.Components
                     {
                         RegisterRequest.UserName = RegisterRequest.FirstName.ToLower() + "." + RegisterRequest.LastName.ToLower();
                     }
+                    RegisterRequest.UserName = userName;
+                    RegisterRequest.IsValid = true;
                     var result = await userRegisterService.RegisterAsync(RegisterRequest);
                     if (result.Succeeded)
                     {
