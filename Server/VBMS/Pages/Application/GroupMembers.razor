@@ -23,9 +23,9 @@
               </tr>
           </thead>
           <tbody>
-              @foreach (var item in VillageBank.GroupMembers)
+              @foreach (var item in Members)
               {
-                 <tr>
+                 <tr class="text-white">
                      <td>@item.Id</td>
                      <td>@item.PersonalDetails.FirstName</td>
                      <td>@item.PersonalDetails.LastName</td>
@@ -52,14 +52,16 @@
 
     [CascadingParameter] Task<AuthenticationState>AuthenticationStateTask{ get; set; }
     GroupAdmin Admin { get; set; } = new();
+    List<VillageGroupMembership> Members = new();
     protected override async Task OnInitializedAsync()
     {
-        VillageBank.GroupMembers = new();
+
         var claimsPrincipal = (await AuthenticationStateTask).User;
         if(claimsPrincipal.Identity.IsAuthenticated)
         {
             Admin = await groupAdminService.GetByUserGuid(await userService.GetGuid(claimsPrincipal.Identity.Name));
             VillageBank = Admin.Group;
+            Members = await membershipService.GetMembers(VillageBank.Id);
         }
 
           

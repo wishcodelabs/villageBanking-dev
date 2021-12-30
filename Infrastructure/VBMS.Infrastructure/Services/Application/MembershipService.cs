@@ -11,4 +11,10 @@ public class MembershipService : ServiceBase<VillageGroupMembership, int>
         var members = await Repository.Entities().Where(m => m.VillageGroupId == groupId).ToListAsync();
         return members.Count;
     }
+    public async Task<List<VillageGroupMembership>> GetMembers(int groupId)
+    {
+        return await Repository.Entities()
+                               .Where(m => m.VillageGroupId == groupId)
+                               .ToListAsync();
+    }
 }
