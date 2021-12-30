@@ -1,14 +1,15 @@
 ﻿@page "/admin/dashboard"
 
-<MudContainer  Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+    @if (!VillageBank.IsActive)
+    {
+       <MudAlert Class="group-inactive"  Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
+    }
     <div class="bg-gray-800 pt-3">
         <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
             <h3 class="font-bold pl-2 text-white">Group Analytics</h3>
-            <MudPaper Elevation="20" Class="@paperCss" >
-            <MudText Class="text-white" Style="font-size :medium" Align="Align.Start">Group Name: @VillageBank.GroupName</MudText>
-            <MudText Class="text-white" Align="Align.Start" Style="font-size :small">Status: @(VillageBank.IsActive?"Active":"Inactive")</MudText>
-           </MudPaper>
-           </div>
+
+        </div>
     </div>
     <div class="main-content flex-1 bg-gray-100 p-4">
 
@@ -21,7 +22,7 @@
                             <div class="rounded-full p-5 bg-green-600"><i class="fa fa-wallet fa-2x fa-inverse"></i></div>
                         </div>
                         <div class="flex-1 text-right md:text-center">
-                          <h5 class="font-bold uppercase text-gray-600">Total Investments</h5>
+                            <h5 class="font-bold uppercase text-gray-600">Total Investments</h5>
                             <h3 class="font-bold text-3xl">ZMW 3249 <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
                         </div>
                     </div>
@@ -166,8 +167,6 @@
                         <h5 class="font-bold uppercase text-gray-600">Chat</h5>
                     </div>
                     <div class="p-5">
-                        
-
                     </div>
                 </div>
                 <!--/table Card-->
@@ -195,23 +194,23 @@
 
 
 <style>
-   body{
-       background-color: #13262F;
-   }
-   .group-inactive{
-       max-width :fit-content; border-radius :10px;  background-color :#FF521B
-   }
-   .group-active{
-      max-width :fit-content; border-radius :10px;  background-color :#20BF55
-   }
+    body {
+        background-color: #13262F;
+    }
+
+    .group-inactive {
+        max-width: fit-content;
+    }
+
+   
 </style>
 
-@code{
-    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask{ get; set; }
+@code {
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
     VillageBankGroup VillageBank { get; set; } = new();
     int[] searchData, clicksData, applyChartData, admissionData, consolData;
     int memberCount = 0;
-    string paperCss = string.Empty;
+    
     protected override async Task OnInitializedAsync()
     {
         var claimsPrincipal = (await AuthenticationStateTask).User;
@@ -220,7 +219,6 @@
             var userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
             var admin = await groupAdminService.GetByUserGuid(userGuid);
             VillageBank = admin.Group;
-            paperCss = VillageBank.IsActive ? "group-active p-2" : "group-inactive p-2";
             memberCount = await membershipService.CountMembers(VillageBank.Id);
             searchData = new int[] { 10, 15, 25, 40 };
             clicksData = new int[] { 5, 30, 54, 40 };
@@ -228,6 +226,10 @@
             admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
             consolData = new int[] { 25, 40, 35 };
         }
+    }
+    async void ActivateGroup()
+    {
+        
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
