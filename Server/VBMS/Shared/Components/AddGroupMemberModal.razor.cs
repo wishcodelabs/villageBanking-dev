@@ -6,8 +6,7 @@ namespace VBMS.Shared.Components
     {
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        [Parameter] public ClaimsPrincipal CurrentUser { get; set; } = new ClaimsPrincipal();
-        Guid UserGuid { get; set; }
+        [Parameter] public Guid? UserGuid { get; set; }
         [Parameter] public bool IsAdmin { get; set; }
         int ProvinceId { get; set; } = 1;
         List<Province> ProvinceList { get; set; } = new();
@@ -17,22 +16,20 @@ namespace VBMS.Shared.Components
         protected override async Task OnInitializedAsync()
         {
 
-            if (CurrentUser.Identity.IsAuthenticated)
-            {
-                UserGuid = await userService.GetGuid(CurrentUser.Identity.Name);
-                await Init();
-                ProvinceList = await provinceService.GetAllAsync();
-            }
+
+            await Init();
+            ProvinceList = await provinceService.GetAllAsync();
+
         }
         async Task Init()
         {
             GroupMembershipModel.PersonalDetails = new();
             GroupMembershipModel.PersonalDetails.PhysicalAddress = new();
-            var user = await userService.GetUserAsync(UserGuid);
             if (!IsAdmin)
             {
 
             }
+            var user = await userService.GetUserAsync((Guid)UserGuid);
             if (user != null)
             {
                 GroupMembershipModel.PersonalDetails.FirstName = user.FirstName;

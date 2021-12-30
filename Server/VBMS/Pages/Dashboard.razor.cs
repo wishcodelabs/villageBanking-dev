@@ -19,7 +19,7 @@
         }
         async void ToggleActivateGroup()
         {
-            var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = true, ["CurrentUser"] = (await AuthenticationStateTask).User };
+            var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = true, ["UserGuid"] = userGuid };
             if (memberCount == 0)
             {
                 var dialog = dialogService.Show<AddGroupMemberModal>("Complete Your Membership Form", parameters, maxWidth);

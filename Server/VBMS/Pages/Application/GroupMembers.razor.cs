@@ -24,7 +24,7 @@
         }
         void ToggleAdd()
         {
-            var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = false, ["CurrentUser"] = claimsPrincipal };
+            var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = false, ["UserGuid"] = new Guid() };
             var dialog = dialogService.Show<AddGroupMemberModal>("Add New Group Member", parameters, maxWidth);
         }
     }
