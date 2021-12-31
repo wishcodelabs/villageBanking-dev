@@ -5,11 +5,11 @@ public class InvestmentPeriodService : ServiceBase<InvestmentPeriod, int>
     public InvestmentPeriodService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
     {
     }
-    public async Task<List<InvestmentPeriod>> GetByStatusAsync(PeriodStatus status)
+    public async Task<List<InvestmentPeriod>> GetByStatusAsync(PeriodStatus status, int groupId)
     {
         return await Repository
                      .Entities(false)
-                     .Where(x => x.Status == status)
+                     .Where(x => x.GroupId == groupId && x.Status == status)
                      .ToListAsync();
     }
     public async Task<bool> ClosePeriodAsync(InvestmentPeriod period)
@@ -21,5 +21,9 @@ public class InvestmentPeriodService : ServiceBase<InvestmentPeriod, int>
     {
         period.Status = PeriodStatus.Open;
         return await UpdateAsync(period);
+    }
+    public async Task<List<InvestmentPeriod>> GetInvestmentPeriodsAsync(int groupId)
+    {
+        return await Repository.Entities().Where(p => p.GroupId == groupId).ToListAsync();
     }
 }
