@@ -23,6 +23,7 @@ namespace VBMS.Shared.Components
         void Cancel() => MudDialog.Cancel();
         async Task Submit()
         {
+            Model.GroupId = VillageBankId;
             if (IsEditing)
             {
 
@@ -39,6 +40,7 @@ namespace VBMS.Shared.Components
             }
             else
             {
+
                 if (await investmentPeriodService.AddAsync(Model))
                 {
                     snackBar.Add("Saved Successifully", Severity.Success);

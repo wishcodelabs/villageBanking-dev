@@ -12,16 +12,23 @@ public class InvestmentPeriodService : ServiceBase<InvestmentPeriod, int>
                      .Where(x => x.GroupId == groupId && x.Status == status)
                      .ToListAsync();
     }
-    public async Task<bool> ClosePeriodAsync(InvestmentPeriod period)
+    public async Task<bool> ToggleStatusAsync(InvestmentPeriod period)
     {
-        period.Status = PeriodStatus.Closed;
+        if (period.Status == PeriodStatus.Closed)
+        {
+            period.Status = PeriodStatus.Open;
+
+        }
+        else
+        {
+            period.Status = PeriodStatus.Closed;
+
+        }
+
         return await UpdateAsync(period);
+
     }
-    public async Task<bool> OpenPeriodAsync(InvestmentPeriod period)
-    {
-        period.Status = PeriodStatus.Open;
-        return await UpdateAsync(period);
-    }
+
     public async Task<List<InvestmentPeriod>> GetInvestmentPeriodsAsync(int groupId)
     {
         return await Repository.Entities().Where(p => p.GroupId == groupId).ToListAsync();

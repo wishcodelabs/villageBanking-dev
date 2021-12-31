@@ -16,7 +16,7 @@
                         <caption>List of Investment Periods</caption>
                         <thead class="thead-dark">
                             <tr>
-                                <th>Id</th>
+                               
                                 <th>Begin Date</th>
                                 <th>End Date</th>
                                 <th>Duration</th>
@@ -34,17 +34,17 @@
                                 TimeSpan duration = Convert.ToDateTime(item.EndDate).Subtract(Convert.ToDateTime(item.BeginDate));
                                 Color color = (item.Status == PeriodStatus.Open) ? Color.Success : Color.Dark;
                                 <tr class="text-white">
-                                    <td>@item.Id</td>
+                                   
                                     <td>@Convert.ToDateTime(item.BeginDate).ToShortDateString()</td>
                                     <td>@Convert.ToDateTime(item.EndDate).ToShortDateString()</td>
                                     <td>@((int)duration.TotalDays) days </td>
                                     <td>@item.MinAmount ZMW</td>
                                     <td>@item.CreatedOn</td>
                                     <td>@item.CreatedBy</td>
-                                    <td><MudChip Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                                    <td><MudChip title="Change status" OnClick="()=>Activate(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
                                     <td>
-                                        <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                        <MudButton OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
+                                        <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                                        <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
                                     </td>
                                 </tr>
                             }
@@ -78,8 +78,46 @@
     Guid myGuid = new();
     VillageBankGroup VillageBank { get; set; } = new();
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
-    void ToggleDelete(InvestmentPeriod record)
+    async void ToggleDelete(InvestmentPeriod record)
     {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "this record");
+        parameters.Add("DialogType", DialogType.Delete);
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
+        var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
+        var response = await dialog.Result;
+        if (!response.Cancelled)
+        {
+            if ((bool)response.Data)
+            {
+                //do the delete
+                if (await investmentPeriodService.DeleteAsync(record))
+                {
+                    snackBar.Add("Record deleted successifully", Severity.Success);
+                    DataSource = new();
+                    DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
+                    StateHasChanged();
+                }
+                else
+                {
+                    snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
+                }
+            }
+        }
+
+    }
+    async void Activate(InvestmentPeriod period)
+    {
+        if (await investmentPeriodService.ToggleStatusAsync(period))
+        {
+            snackBar.Add("Operation Succeded", Severity.Success);
+            DataSource = new();
+            DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
+        }
+        else
+        {
+            snackBar.Add("Something went wrong..", Severity.Error);
+        }
 
     }
     protected async override Task OnInitializedAsync()
@@ -90,12 +128,24 @@
             myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
             var admin = await groupAdminService.GetByUserGuid(myGuid);
             VillageBank = admin.Group;
+            DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
 
         }
     }
-    async Task Init()
+    async void ToggleEdit(InvestmentPeriod record)
     {
-        DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true };
+        var dialog = dialogService.Show<AddPeriodModal>("Edit Record", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                DataSource = new();
+                DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
+            }
+        }
+        
     }
     async void ToggleAdd()
     {
