@@ -8,5 +8,5 @@ public class LoanInterestRate : AuditableEntity<int>
 
     public double InterestRate { get; set; }
 
-    public virtual Period Period { get; set; }
+    public virtual InvestmentPeriod Period { get; set; }
 }

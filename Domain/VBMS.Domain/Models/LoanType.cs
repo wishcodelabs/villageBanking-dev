@@ -3,7 +3,7 @@
 public class LoanType : AuditableEntity<int>
 {
     public string LoanName { get; set; }
-
+    public int GroupId { get; set; }
     public int LoanInterestRateId { get; set; }
 
     public decimal MaxLoanAmount { get; set; }
@@ -11,5 +11,7 @@ public class LoanType : AuditableEntity<int>
     [DataType(DataType.Duration)]
     public TimeSpan PaybackDuration { get; set; }
 
-    public LoanInterestRate LoanInterestRate { get; set; }
+    public virtual List<LoanInterestRate> InterestRates { get; set; }
+    [ForeignKey(nameof(GroupId))]
+    public virtual VillageBankGroup VillageBankGroup { get; set; }
 }
