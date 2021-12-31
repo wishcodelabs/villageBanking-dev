@@ -1,8 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Components.Forms;
-
-namespace VBMS.Shared.Components
+﻿namespace VBMS.Shared.Components
 {
     public partial class AddGroupMemberModal
     {
@@ -18,11 +14,10 @@ namespace VBMS.Shared.Components
         [Parameter] public int VillageBankId { get; set; } = new();
         VillageGroupMembership GroupMembershipModel = new VillageGroupMembership();
         IEnumerable<VillageGroupRole> memberRoles { get; set; } = new List<VillageGroupRole>();
-        private EditContext? editContext;
+
 
         protected override async Task OnInitializedAsync()
         {
-            editContext = new(GroupMembershipModel);
             _attributes = new Dictionary<string, object>();
             await Init();
             ProvinceList = await provinceService.GetAllAsync();
@@ -60,6 +55,7 @@ namespace VBMS.Shared.Components
                     foreach (var role in memberRoles)
                     {
                         GroupMembershipModel.Roles.Add(new VillageGroupMemberRole { Role = role });
+
                     }
 
                     if (await membershipService.AddAsync(GroupMembershipModel))
@@ -86,6 +82,7 @@ namespace VBMS.Shared.Components
                     }
                     RegisterRequest.UserName = userName;
                     RegisterRequest.IsValid = true;
+                    RegisterRequest.IsAdmin = memberRoles.Any(r => r == VillageGroupRole.Admin);
                     var result = await userRegisterService.RegisterAsync(RegisterRequest);
                     if (result.Succeeded)
                     {

@@ -15,6 +15,7 @@
                 Password = RegisterModel.Password,
                 UserName = RegisterModel.UserName,
                 IsValid = true,
+                IsAdmin = true,
                 AutoConfirm = true
             };
             var result = await userRegisterService.RegisterAsync(userRequest);
