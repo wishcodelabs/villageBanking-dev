@@ -111,7 +111,19 @@ namespace VBMS.Services
         {
             return await userManager.Users.FirstOrDefaultAsync(u => u.UserGuid == guid);
         }
+        public async Task<List<string>> GetMyRoles(User user)
+        {
+            var list = new List<string>();
+            foreach (var role in roleManager.Roles)
+            {
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    list.Add(role.Name);
+                }
+            }
+            return list;
 
+        }
         public async Task<bool> DeleteUser(Guid guid)
         {
             var user = await GetUserAsync(guid);
@@ -119,8 +131,10 @@ namespace VBMS.Services
             {
                 try
                 {
+                    var r = await userManager.RemoveFromRolesAsync(user, await GetMyRoles(user));
                     var result = await userManager.DeleteAsync(user);
-                    return result.Succeeded;
+
+                    return r.Succeeded && result.Succeeded;
                 }
                 catch
                 {

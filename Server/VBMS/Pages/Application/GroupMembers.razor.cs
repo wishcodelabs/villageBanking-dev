@@ -36,10 +36,9 @@
                 if ((bool)response.Data)
                 {
                     //do the delete
-                    if (await membershipService.DeleteAsync(member))
+                    if (await membershipService.DeleteAsync(member) && await userService.DeleteUser(member.UserGuid))
                     {
-                        if (await userService.rem)
-                            snackBar.Add("Record deleted successifully", Severity.Success);
+                        snackBar.Add("Record deleted successifully", Severity.Success);
                         Members = new();
                         Members = await membershipService.GetMembers(VillageBank.Id);
                         StateHasChanged();
