@@ -33,6 +33,8 @@
 
         public bool AutoConfirm { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public bool IsValid { get; set; }
 
     }

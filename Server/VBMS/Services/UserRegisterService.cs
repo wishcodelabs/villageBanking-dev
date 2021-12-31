@@ -9,6 +9,7 @@
         readonly SignInManager<User> signInManager;
         private readonly IUserEmailStore<User> emailStore;
         const string Basic_Role = "BasicUser";
+        const string Admin_Role = "GroupAdmin";
 
         public UserRegisterService(UserManager<User> userManager,
                            ILogger<UserRegisterService> logger,
@@ -60,17 +61,32 @@
                         logger.LogInformation("User created a account with password");
                         var roleResult = await roleManager.FindByNameAsync(Basic_Role);
                         var existingUser = await userManager.FindByEmailAsync(request.Email);
+                        var adminRole = await roleManager.FindByNameAsync(Admin_Role);
                         if (roleResult == null)
                         {
                             await roleManager.CreateAsync(new Role(Basic_Role, "Basic Role For AnyUser"));
                         }
-                        else
+                        if (adminRole == null)
                         {
-                            var uresult = await userManager.IsInRoleAsync(existingUser, Basic_Role);
-                            if (!uresult)
+                            await roleManager.CreateAsync(new Role(Admin_Role, "Role For Group Admins"));
+                        }
+
+
+                        var uresult = await userManager.IsInRoleAsync(existingUser, Basic_Role);
+                        if (!uresult)
+                        {
+                            await userManager.AddToRoleAsync(existingUser, Basic_Role);
+                        }
+
+                        if (request.IsAdmin)
+                        {
+
+                            var uesult = await userManager.IsInRoleAsync(existingUser, Admin_Role);
+                            if (!uesult)
                             {
-                                await userManager.AddToRoleAsync(existingUser, Basic_Role);
+                                await userManager.AddToRoleAsync(existingUser, Admin_Role);
                             }
+
                         }
                         var key = SignInMiddleware<User>.AnnounceLogin(new TokenRequest<User>()
                         {
