@@ -1,8 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
 <PageTitle>VBMS</PageTitle>
-<AuthorizeView  Context="authContext">
-   <NotAuthorized>
+<AuthorizeView Context="authContext">
+    <NotAuthorized>
         <ErrorBoundary>
             <ChildContent>
                 @{
@@ -31,6 +31,7 @@
                     <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
                 </MudToolBar>
                 <MudSpacer />
+
                 <MudSpacer />
                 <div class="flex w-full pt-2 content-center justify-between md:w-1/3 md:justify-end">
                     <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
@@ -60,20 +61,17 @@
                 </div>
 
             </MudAppBar>
-            <MudDrawer @bind-Open="@openDrawer" Style="background-color:#22333B;color:white" DisableOverlay="false" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="@DrawerVariant.Persistent">
-                <MudDrawerHeader>
-                    <MudText Class="text-white" Typo="Typo.h4">VBMS</MudText>
-                </MudDrawerHeader>
-                <NavMenu/>
+            <MudDrawer Color="Color.Dark" @bind-Open="@openDrawer" Elevation="1" ClipMode="DrawerClipMode.Docked" Variant="@DrawerVariant.Mini">
+                <NavMenu />
             </MudDrawer>
             <MudMainContent>
                 <MudContainer id="mainContainer" MaxWidth="MaxWidth.ExtraExtraLarge">
-                   @Body   
+                    @Body
                 </MudContainer>
             </MudMainContent>
         </MudLayout>
     </Authorized>
-   
+
 </AuthorizeView>
 
 @code {
@@ -94,11 +92,11 @@
             UserName = await userService.GetFullName(CurrentUser.Identity.Name);
         }
 
-    }   
-    
+    }
+
     protected void ToggleDrawer()
     {
         openDrawer = !openDrawer;
     }
-    
+
 }

@@ -2,27 +2,27 @@
     <AuthorizeView Roles="GroupAdmin">
       <Authorized>
           <MudDivider Class="my-2"/>
-          <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" IconColor="Color.Secondary">Home</MudNavLink>
-          <MudNavLink Href="dashboard" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
-          <MudNavGroup Title="My Village Bank" IconColor="Color.Success"  Icon="@Icons.Material.Filled.Business" >
-              <MudNavLink Href="/loan/applications" Icon="@Icons.Material.Filled.Approval" IconColor="Color.Warning">Loan Applications</MudNavLink>
-              <MudNavLink Href="/loan/approved" Icon="@Icons.Material.Filled.DoneAll" IconColor="Color.Tertiary">Approved Loans</MudNavLink>
-              <MudNavLink Href="/loan/payments" Icon="@Icons.Material.Filled.Payments" IconColor="Color.Secondary">Loan Payments</MudNavLink>
+          <MudNavLink title="Go to Homepage" Match="NavLinkMatch.Prefix" Href="/" Icon="@Icons.Material.Filled.Home" IconColor="Color.Secondary">Home</MudNavLink>
+          <MudNavLink title="Go to Dashboard" Href="dashboard" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+          <MudNavGroup  Title="My Village Bank" Expanded="true" IconColor="Color.Success"  Icon="@Icons.Material.Filled.Business" >
+              <MudNavLink title="Manage Loan Applications"  Href="/loan/applications" Icon="@Icons.Material.Filled.Approval" IconColor="Color.Warning">Loan Applications</MudNavLink>
+              <MudNavLink title="Manage Approved Loan Applications" Href="/loan/approved" Icon="@Icons.Material.Filled.DoneAll" IconColor="Color.Tertiary">Approved Loans</MudNavLink>
+              <MudNavLink title="Manage Loan Payments" Href="/loan/payments" Icon="@Icons.Material.Filled.Payments" IconColor="Color.Secondary">Loan Payments</MudNavLink>
               
           </MudNavGroup>
-          <MudNavGroup Title="Manage Memberships" Icon="@Icons.Material.Filled.VerifiedUser"  IconColor="Color.Warning"  >
-            <MudNavLink Href="/group/members" IconColor="Color.Success" Icon="@Icons.Material.Filled.Group">Group Members</MudNavLink>
-            <MudNavLink Href="/group/investments" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Money">Investments</MudNavLink>
-            <MudNavLink Href="/group/shares" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Group Shares</MudNavLink>
-            <MudNavLink Href="/group/roles" IconColor="Color.Warning" Icon="@Icons.Material.Filled.SupervisedUserCircle">Member Roles</MudNavLink>
+          <MudNavGroup Expanded="true" Title="Memberships" Icon="@Icons.Material.Filled.VerifiedUser"  IconColor="Color.Warning"  >
+            <MudNavLink title="Manage Group Members" Href="/group/members" IconColor="Color.Success" Icon="@Icons.Material.Filled.Group">Group Members</MudNavLink>
+            <MudNavLink title="Manage Group Investments" Href="/group/investments" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Money">Investments</MudNavLink>
+            <MudNavLink title="Manage Group Shares" Href="/group/shares" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Group Shares</MudNavLink>
+            <MudNavLink title="Manage Group Roles" Href="/group/roles" IconColor="Color.Warning" Icon="@Icons.Material.Filled.SupervisedUserCircle">Member Roles</MudNavLink>
           </MudNavGroup>
-          <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings"  IconColor="Color.Info">
-              <MudNavLink Href="/admin/memberships" Icon="@Icons.Material.Filled.Class" IconColor="Color.Info">Memberships</MudNavLink>
-              <MudNavLink Href="/settings/investment-periods" Icon="@Icons.Material.Filled.HistoryEdu" IconColor="Color.Info">Investment Periods</MudNavLink>
-              <MudNavLink Href="/settings/group-fees" Icon="@Icons.Material.Filled.Subscriptions" IconColor="Color.Inherit">Subscription Fees</MudNavLink>
-              <MudNavLink Href="/settings/loan-types" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Loan Types</MudNavLink>
-              <MudNavLink Href="/account/profile" IconColor="Color.Success" Icon="@Icons.Material.Filled.SupervisorAccount">Profile</MudNavLink>
-              <MudNavLink Href="/settings/themes" IconColor="Color.Warning" Icon="@Icons.Material.Filled.DarkMode">Theme</MudNavLink>
+          <MudNavGroup Expanded="true" Title="Settings" Icon="@Icons.Material.Filled.Settings"  IconColor="Color.Info">
+              <MudNavLink title="Manage Subscriptions" Href="/admin/memberships" Icon="@Icons.Material.Filled.Class" IconColor="Color.Info">Memberships</MudNavLink>
+              <MudNavLink title="Manage Investment periods" Href="/settings/investment-periods" Icon="@Icons.Material.Filled.HistoryEdu" IconColor="Color.Info">Investment Periods</MudNavLink>
+              <MudNavLink title="Manage Subscriptions Fees" Href="/settings/group-fees" Icon="@Icons.Material.Filled.Subscriptions" IconColor="Color.Inherit">Subscription Fees</MudNavLink>
+              <MudNavLink title="Manage Loan Types" Href="/settings/loan-types" IconColor="Color.Info" Icon="@Icons.Material.Filled.Inventory">Loan Types</MudNavLink>
+              <MudNavLink title="Manage Your Profile" Href="/account/profile" IconColor="Color.Success" Icon="@Icons.Material.Filled.SupervisorAccount">Profile</MudNavLink>
+              <MudNavLink title="Change Theme" Href="/settings/themes" IconColor="Color.Warning" Icon="@Icons.Material.Filled.DarkMode">Theme</MudNavLink>
           </MudNavGroup>
       </Authorized>
     </AuthorizeView>
