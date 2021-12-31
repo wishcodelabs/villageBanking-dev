@@ -14,6 +14,17 @@
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
                 userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+                var admin = await groupAdminService.GetByUserGuid(userGuid);
+                if (admin != null)
+                {
+                    VillageBank = admin.Group;
+                }
+                else
+                {
+                    VillageBank = await membershipService.GetMyVillageBankGroup(userGuid);
+                }
+
+
                 await Reload();
             }
         }
@@ -39,8 +50,7 @@
         async Task Reload()
         {
 
-            var admin = await groupAdminService.GetByUserGuid(userGuid);
-            VillageBank = admin.Group;
+
             memberCount = await membershipService.CountMembers(VillageBank.Id);
             searchData = new int[] { 10, 15, 25, 40 };
             clicksData = new int[] { 5, 30, 54, 40 };

@@ -1,5 +1,5 @@
 ﻿@page "/group/members"
-
+<AuthorizeView Roles="GroupAdmin">
 <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
     <MudGrid Spacing="3" Justify="Justify.Center">
         <MudItem align="center" xs="12">
@@ -51,8 +51,7 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
-
-
+</AuthorizeView>
 
 
 
