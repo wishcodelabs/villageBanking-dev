@@ -9,4 +9,9 @@ public class InvestmentPeriod : Period
 
     [ForeignKey(nameof(GroupId))]
     public virtual VillageBankGroup VillageBankGroup { get; set; }
+
+    public InvestmentPeriod()
+    {
+        BeginDate = DateTime.Today;
+    }
 }
