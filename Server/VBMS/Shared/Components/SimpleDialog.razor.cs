@@ -20,7 +20,7 @@
                     ButtonText = "Delete";
                     Color = Color.Error;
                     icon = Icons.Material.Filled.DeleteForever;
-                    BodyText = $"Do you want to remove {ContentText} ? this action is irreversable";
+                    BodyText = $"Do you want to delete {ContentText} ? this action can not be undone";
                     break;
                 case DialogType.Alert:
                     ButtonText = "Ok";

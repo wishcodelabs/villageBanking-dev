@@ -6,7 +6,7 @@
         Task<IResult<Guid>> LoginAsync(TokenRequest<User> request);
 
         Task<string> GetFullName(string username);
-
+        Task<bool> DeleteUser(Guid guid);
         Task<User> GetUserAsync(int userId);
         Task<User> GetUserAsync(Guid guid);
 

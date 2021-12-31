@@ -41,7 +41,7 @@
                             <td>@item.CreatedBy</td>
                             <td>
                                 <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                <MudButton StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
+                                <MudButton OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
                             </td>
                         </tr>
                     }
