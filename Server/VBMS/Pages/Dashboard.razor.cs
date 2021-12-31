@@ -32,7 +32,7 @@
                 }
                 else
                 {
-
+                    VillageBank = await membershipService.GetGroupAsync(userGuid);
                 }
 
             }

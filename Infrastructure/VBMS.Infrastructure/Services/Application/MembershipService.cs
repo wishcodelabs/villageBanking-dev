@@ -17,8 +17,9 @@ public class MembershipService : ServiceBase<VillageGroupMembership, int>
                                .Where(m => m.VillageGroupId == groupId)
                                .ToListAsync();
     }
-    public async Task<VillageGroupMembership> GetMembershipAsync(Guid guid)
+    public async Task<VillageBankGroup> GetGroupAsync(Guid guid)
     {
-        return await Repository.Entities(false).Include(m => m.VillageBankGroup).FirstOrDefaultAsync(m => m.UserGuid == guid);
+        var m = await Repository.Entities(true).FirstOrDefaultAsync(m => m.UserGuid == guid);
+        return m.VillageBankGroup;
     }
 }
