@@ -5,18 +5,22 @@
         internal static IServiceCollection AddCurrentUserService(this IServiceCollection services)
         {
             services.AddHttpContextAccessor()
-                    .AddTransient<ICurrentUserService, CurrentUserService>();
+                    .AddScoped<ICurrentUserService, CurrentUserService>();
             return services;
         }
         internal static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<SystemDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), options2 =>
-                {
-                    options2.MigrationsAssembly("VBMS.Infrastructure");
-                });
-            }, ServiceLifetime.Transient);
+          {
+              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), options2 =>
+              {
+                  options2.MigrationsAssembly("VBMS.Infrastructure");
+                  options2.EnableRetryOnFailure();
+
+              });
+
+          });
             return services;
         }
         internal static IServiceCollection AddIdentity(this IServiceCollection services)

@@ -1,7 +1,5 @@
 ﻿
 
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
 namespace VBMS.Infrastructure.Data;
 
 public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, RoleClaim, IdentityUserToken<int>>
@@ -11,6 +9,7 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
     public SystemDbContext(DbContextOptions<SystemDbContext> options, ICurrentUserService _currentUserService) : base(options)
     {
         currentUserService = _currentUserService;
+
     }
 
 

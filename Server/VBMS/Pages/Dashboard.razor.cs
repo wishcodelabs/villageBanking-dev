@@ -6,27 +6,37 @@
         VillageBankGroup VillageBank { get; set; } = new();
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
         int memberCount = 0;
+        ClaimsPrincipal claimsPrincipal = new();
         Guid userGuid;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         protected override async Task OnInitializedAsync()
         {
-            var claimsPrincipal = (await AuthenticationStateTask).User;
+            searchData = new int[] { 10, 15, 25, 40 };
+            clicksData = new int[] { 5, 30, 54, 40 };
+            applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
+            admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
+            consolData = new int[] { 25, 40, 35 };
+            claimsPrincipal = (await AuthenticationStateTask).User;
+
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
                 userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
-                var admin = await groupAdminService.GetByUserGuid(userGuid);
-                if (admin != null)
+                if ((await authorizationService.AuthorizeAsync(claimsPrincipal, this, "RequireAdminRole")).Succeeded)
                 {
-                    VillageBank = admin.Group;
+                    var admin = await groupAdminService.GetByUserGuid(userGuid);
+                    if (admin != null)
+                    {
+                        VillageBank = admin.Group;
+                        memberCount = await membershipService.CountMembers(VillageBank.Id);
+                    }
                 }
                 else
                 {
-                    VillageBank = await membershipService.GetMyVillageBankGroup(userGuid);
+
                 }
 
-
-                await Reload();
             }
+
         }
         async void ToggleActivateGroup()
         {
@@ -47,25 +57,15 @@
             }
 
         }
-        async Task Reload()
-        {
 
-
-            memberCount = await membershipService.CountMembers(VillageBank.Id);
-            searchData = new int[] { 10, 15, 25, 40 };
-            clicksData = new int[] { 5, 30, 54, 40 };
-            applyChartData = new int[] { 162, 200, 285, 400, 250, 50, 100 };
-            admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
-            consolData = new int[] { 25, 40, 35 };
-        }
         async void ActivateGroup()
         {
             if (await villageBankGroupService.ActivateGroup(VillageBank.Id))
             {
                 snackBar.Add("Your group is now active", Severity.Success);
                 var admin = await groupAdminService.GetByUserGuid(userGuid);
+                VillageBank = new();
                 VillageBank = admin.Group;
-                await Reload();
                 StateHasChanged();
             }
             else
@@ -75,7 +75,11 @@
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await jsRuntime.InvokeVoidAsync("setup", new object[] { searchData, clicksData, applyChartData, admissionData, consolData });
+            if ((await authorizationService.AuthorizeAsync(claimsPrincipal, this, "RequireAdminRole")).Succeeded)
+            {
+
+                await jsRuntime.InvokeVoidAsync("setup", new object[] { searchData, clicksData, applyChartData, admissionData, consolData });
+            }
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace VBMS.Infrastructure.Interfaces
+﻿
+
+using IResult = VBMS.Domain.Responses.IResult;
+
+namespace VBMS.Infrastructure.Interfaces
 {
     public interface IUserService : IIdentityService
     {

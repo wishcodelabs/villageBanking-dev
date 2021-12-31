@@ -16,5 +16,6 @@ namespace VBMS.Infrastructure.Services.Application
             group.IsActive = true;
             return await UpdateAsync(group);
         }
+
     }
 }

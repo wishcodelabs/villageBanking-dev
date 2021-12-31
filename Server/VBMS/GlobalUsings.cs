@@ -24,6 +24,7 @@ global using VBMS.Infrastructure.Interfaces;
 global using VBMS.Infrastructure.Models.Identity;
 global using VBMS.Infrastructure.Repositories;
 global using VBMS.Infrastructure.Services.Application;
+global using VBMS.Infrastructure.Services.Identity;
 global using VBMS.Middleware;
 global using VBMS.Services;
 global using VBMS.Shared.Components;

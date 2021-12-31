@@ -1,4 +1,5 @@
-﻿namespace VBMS.Services
+﻿
+namespace VBMS.Infrastructure.Services.Identity
 {
     public class CurrentUserService : ICurrentUserService
     {
