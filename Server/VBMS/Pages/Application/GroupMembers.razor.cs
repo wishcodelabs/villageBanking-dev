@@ -68,5 +68,20 @@
                 }
             }
         }
+        async void ToggleEdit(VillageGroupMembership record)
+        {
+            var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["IsAdmin"] = false, ["UserGuid"] = new Guid(), ["IsEditing"] = true, ["Model"] = record };
+            var dialog = dialogService.Show<AddGroupMemberModal>("Edit Record", parameters, maxWidth);
+            var result = await dialog.Result;
+            if (!result.Cancelled)
+            {
+                if ((bool)result.Data)
+                {
+                    Members = new();
+                    Members = await membershipService.GetMembers(VillageBank.Id);
+                    StateHasChanged();
+                }
+            }
+        }
     }
 }

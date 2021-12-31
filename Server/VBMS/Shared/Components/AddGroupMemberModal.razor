@@ -1,15 +1,15 @@
 ﻿
 <MudDialog>
     <DialogContent>
-        <EditForm id="editForm" Model="GroupMembershipModel" OnInvalidSubmit="ModelInvalid" OnValidSubmit="Submit">
+        <EditForm id="editForm" Model="Model" OnInvalidSubmit="ModelInvalid" OnValidSubmit="Submit">
             <ObjectGraphDataAnnotationsValidator />
             <FluentValidationValidator />
             <MudGrid Justify="Justify.SpaceBetween" Spacing="2">
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.FirstName)"
+                                  For="(()=>Model.PersonalDetails.FirstName)"
                                   Immediate="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.FirstName"
+                                  @bind-Value="@Model.PersonalDetails.FirstName"
                                   Variant="Variant.Outlined"
                                   Label="First Name"
                                   Clearable="(!IsAdmin)"
@@ -17,9 +17,9 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.LastName)"
+                                  For="(()=>Model.PersonalDetails.LastName)"
                                   Immediate="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.LastName"
+                                  @bind-Value="@Model.PersonalDetails.LastName"
                                   Variant="Variant.Outlined"
                                   Clearable="((!IsAdmin))"
                                   Label="Last Name"
@@ -27,40 +27,40 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.NrcNumber)"
+                                  For="(()=>Model.PersonalDetails.NrcNumber)"
                                   Immediate="true"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.NrcNumber"
+                                  @bind-Value="@Model.PersonalDetails.NrcNumber"
                                   Variant="Variant.Outlined"
                                   Label="NRC Number" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhoneNumber)"
+                                  For="(()=>Model.PersonalDetails.PhoneNumber)"
                                   Immediate="true"
                                   Clearable="true"
                                   InputMode="InputMode.tel"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhoneNumber"
+                                  @bind-Value="@Model.PersonalDetails.PhoneNumber"
                                   Variant="Variant.Outlined"
                                   Label="Phone Number" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.EmailAddress)"
+                                  For="(()=>Model.PersonalDetails.EmailAddress)"
                                   Immediate="true"
                                   InputMode="InputMode.email"
                                   Clearable="(!IsAdmin)"
                                   ReadOnly="(IsAdmin)"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.EmailAddress"
+                                  @bind-Value="@Model.PersonalDetails.EmailAddress"
                                   Variant="Variant.Outlined"
                                   Label="E-mail" />
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="Gender"
-                               For="(()=>GroupMembershipModel.PersonalDetails.Gender)"
+                               For="(()=>Model.PersonalDetails.Gender)"
                                Immediate="true"
                                Clearable="true"
-                               @bind-Value="@GroupMembershipModel.PersonalDetails.Gender"
+                               @bind-Value="@Model.PersonalDetails.Gender"
                                Variant="Variant.Outlined"
                                Label="Gender">
                         @foreach (var item in (Gender[])Enum.GetValues(typeof(Gender)))
@@ -71,10 +71,10 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="MaritalStatus"
-                               For="(()=>GroupMembershipModel.PersonalDetails.MaritalStatus)"
+                               For="(()=>Model.PersonalDetails.MaritalStatus)"
                                Immediate="true"
                                Clearable="true"
-                               @bind-Value="@GroupMembershipModel.PersonalDetails.MaritalStatus"
+                               @bind-Value="@Model.PersonalDetails.MaritalStatus"
                                Variant="Variant.Outlined"
                                Label="Marital Status">
                         @foreach (var item in (MaritalStatus[])Enum.GetValues(typeof(MaritalStatus)))
@@ -85,11 +85,11 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.Occupation)"
+                                  For="(()=>Model.PersonalDetails.Occupation)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.Occupation"
+                                  @bind-Value="@Model.PersonalDetails.Occupation"
                                   Variant="Variant.Outlined"
                                   Label="Occupation" />
                 </MudItem>
@@ -118,11 +118,11 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudTextField T="string"
-                                  For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.HouseNumber)"
+                                  For="(()=>Model.PersonalDetails.PhysicalAddress.HouseNumber)"
                                   Immediate="true"
                                   InputMode="InputMode.text"
                                   Clearable="true"
-                                  @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.HouseNumber"
+                                  @bind-Value="@Model.PersonalDetails.PhysicalAddress.HouseNumber"
                                   Variant="Variant.Outlined"
                                   Label="Address" />
                 </MudItem>
@@ -142,11 +142,11 @@
                 </MudItem>
                 <MudItem xs="6" sm="4">
                     <MudSelect T="int"
-                               For="(()=>GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId)"
+                               For="(()=>Model.PersonalDetails.PhysicalAddress.CityId)"
                                Immediate="true"
                                InputMode="InputMode.text"
                                Clearable="true"
-                               @bind-Value="@GroupMembershipModel.PersonalDetails.PhysicalAddress.CityId"
+                               @bind-Value="@Model.PersonalDetails.PhysicalAddress.CityId"
                                Variant="Variant.Outlined"
                                Label="City/District">
 
@@ -156,7 +156,7 @@
                         }
                     </MudSelect>
                 </MudItem>
-                @if (!IsAdmin)
+                @if (!IsAdmin && !IsEditing)
                 {
                     <MudItem xs="12">
                         <MudText Typo="Typo.h5" Align="Align.Center">New Account Details</MudText>
@@ -183,11 +183,11 @@
                 }
                 <MudItem xs="6" sm="4">
                     <MudSelect T="VillageGroupMemberStatus"
-                               For="(()=>GroupMembershipModel.Status)"
+                               For="(()=>Model.Status)"
                                Immediate="true"
                                Clearable="IsAdmin"
                                ReadOnly="(!IsAdmin)"
-                               @bind-Value="@GroupMembershipModel.Status"
+                               @bind-Value="@Model.Status"
                                Variant="Variant.Outlined"
                                Label="Current Status">
                         @foreach (var item in (VillageGroupMemberStatus[])Enum.GetValues(typeof(VillageGroupMemberStatus)))

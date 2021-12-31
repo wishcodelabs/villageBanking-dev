@@ -21,6 +21,7 @@
                         <th>NRC Number</th>
                         <th>Phone Number</th>
                         <th>Date Joined</th>
+                        <th>Gender</th>
                         <th>Status</th>
                         <th>Added By</th>
                         <th>Actions</th>
@@ -36,11 +37,12 @@
                             <td>@item.PersonalDetails.LastName</td>
                             <td>@item.PersonalDetails.NrcNumber</td>
                             <td>@item.PersonalDetails.PhoneNumber</td>
-                            <td>@item.DateJoined</td>
+                            <td>@item.DateJoined.ToShortDateString()</td>
+                            <td>@item.PersonalDetails.Gender.ToString()</td>
                             <td><MudChip Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
                             <td>@item.CreatedBy</td>
                             <td>
-                                <MudButton StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                                <MudButton OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
                                 <MudButton OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Remove</MudButton>
                             </td>
                         </tr>
