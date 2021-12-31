@@ -111,5 +111,28 @@ namespace VBMS.Services
         {
             return await userManager.Users.FirstOrDefaultAsync(u => u.UserGuid == guid);
         }
+
+        public async Task<bool> DeleteUser(Guid guid)
+        {
+            var user = await GetUserAsync(guid);
+            if (user != null)
+            {
+                try
+                {
+                    var result = await userManager.DeleteAsync(user);
+                    return result.Succeeded;
+                }
+                catch
+                {
+
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
