@@ -20,7 +20,7 @@
 
               });
 
-          });
+          }, ServiceLifetime.Transient);
             return services;
         }
         internal static IServiceCollection AddIdentity(this IServiceCollection services)

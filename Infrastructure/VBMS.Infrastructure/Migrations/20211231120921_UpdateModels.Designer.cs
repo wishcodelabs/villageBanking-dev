@@ -12,8 +12,8 @@ using VBMS.Infrastructure.Data;
 namespace VBMS.Infrastructure.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20211230171128_Init")]
-    partial class Init
+    [Migration("20211231120921_UpdateModels")]
+    partial class UpdateModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,6 +193,49 @@ namespace VBMS.Infrastructure.Migrations
                     b.ToTable("Investments", (string)null);
                 });
 
+            modelBuilder.Entity("VBMS.Domain.Models.InvestmentPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("MinAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("InvestmentPeriods", (string)null);
+                });
+
             modelBuilder.Entity("VBMS.Domain.Models.Loan", b =>
                 {
                     b.Property<int>("Id")
@@ -281,6 +324,8 @@ namespace VBMS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LoanTypeId");
+
                     b.HasIndex("PeriodId");
 
                     b.ToTable("LoanInterestRates", (string)null);
@@ -336,6 +381,9 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -357,7 +405,7 @@ namespace VBMS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LoanInterestRateId");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("LoanTypes", (string)null);
                 });
@@ -552,41 +600,6 @@ namespace VBMS.Infrastructure.Migrations
                     b.ToTable("Membership", (string)null);
                 });
 
-            modelBuilder.Entity("VBMS.Domain.SeedWork.Period", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("BeginDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Period");
-                });
-
             modelBuilder.Entity("VBMS.Infrastructure.Models.Identity.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -740,16 +753,6 @@ namespace VBMS.Infrastructure.Migrations
                     b.ToTable("Users", "Identity");
                 });
 
-            modelBuilder.Entity("VBMS.Domain.Models.InvestmentPeriod", b =>
-                {
-                    b.HasBaseType("VBMS.Domain.SeedWork.Period");
-
-                    b.Property<decimal>("MinAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToTable("InvestmentPeriods", (string)null);
-                });
-
             modelBuilder.Entity("VBMS.Domain.Models.Applicant", b =>
                 {
                     b.HasOne("VBMS.Domain.Models.VillageGroupMembership", "GroupMembership")
@@ -802,6 +805,17 @@ namespace VBMS.Infrastructure.Migrations
                     b.Navigation("Investor");
                 });
 
+            modelBuilder.Entity("VBMS.Domain.Models.InvestmentPeriod", b =>
+                {
+                    b.HasOne("VBMS.Domain.Models.VillageBankGroup", "VillageBankGroup")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VillageBankGroup");
+                });
+
             modelBuilder.Entity("VBMS.Domain.Models.Loan", b =>
                 {
                     b.HasOne("VBMS.Domain.Models.Applicant", "Applicant")
@@ -823,7 +837,13 @@ namespace VBMS.Infrastructure.Migrations
 
             modelBuilder.Entity("VBMS.Domain.Models.LoanInterestRate", b =>
                 {
-                    b.HasOne("VBMS.Domain.SeedWork.Period", "Period")
+                    b.HasOne("VBMS.Domain.Models.LoanType", null)
+                        .WithMany("InterestRates")
+                        .HasForeignKey("LoanTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VBMS.Domain.Models.InvestmentPeriod", "Period")
                         .WithMany()
                         .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -834,13 +854,13 @@ namespace VBMS.Infrastructure.Migrations
 
             modelBuilder.Entity("VBMS.Domain.Models.LoanType", b =>
                 {
-                    b.HasOne("VBMS.Domain.Models.LoanInterestRate", "LoanInterestRate")
+                    b.HasOne("VBMS.Domain.Models.VillageBankGroup", "VillageBankGroup")
                         .WithMany()
-                        .HasForeignKey("LoanInterestRateId")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LoanInterestRate");
+                    b.Navigation("VillageBankGroup");
                 });
 
             modelBuilder.Entity("VBMS.Domain.Models.MembershipSubscription", b =>
@@ -991,13 +1011,9 @@ namespace VBMS.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("VBMS.Domain.Models.InvestmentPeriod", b =>
+            modelBuilder.Entity("VBMS.Domain.Models.LoanType", b =>
                 {
-                    b.HasOne("VBMS.Domain.SeedWork.Period", null)
-                        .WithOne()
-                        .HasForeignKey("VBMS.Domain.Models.InvestmentPeriod", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                    b.Navigation("InterestRates");
                 });
 
             modelBuilder.Entity("VBMS.Domain.Models.Province", b =>
