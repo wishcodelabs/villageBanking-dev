@@ -86,9 +86,25 @@
                     var result = await userRegisterService.RegisterAsync(RegisterRequest);
                     if (result.Succeeded)
                     {
+
                         _snackbar.Add(result.Messages.First(), Severity.Success);
                         var userGuid = await userService.GetGuid(RegisterRequest.UserName);
+                        if (RegisterRequest.IsAdmin)
+                        {
+                            if (!await groupAdminService.IsAlreadyAdmin(userGuid))
+                            {
+                                var groupAdmin = new GroupAdmin
+                                {
+                                    UserGuid = userGuid,
+                                    GroupId = VillageBankId
+                                };
+                                if (await groupAdminService.AddAsync(groupAdmin))
+                                {
+                                    snackBar.Add($"{RegisterRequest.UserName} added as a group admin.", Severity.Success);
+                                }
+                            }
 
+                        }
                         GroupMembershipModel.VillageGroupId = VillageBankId;
                         GroupMembershipModel.Roles = new();
                         GroupMembershipModel.DateJoined = DateTime.Now;
