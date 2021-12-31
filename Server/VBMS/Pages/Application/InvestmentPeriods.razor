@@ -77,7 +77,7 @@
     ClaimsPrincipal claimsPrincipal = new();
     Guid myGuid = new();
     VillageBankGroup VillageBank { get; set; } = new();
-    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.TopCenter, DisableBackdropClick = true };
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
     void ToggleDelete(InvestmentPeriod record)
     {
 
@@ -102,5 +102,13 @@
         var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id };
         var dialog = dialogService.Show<AddPeriodModal>("Add New Investment Period", parameters, maxWidth);
         var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                DataSource = new();
+                DataSource = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBank.Id);
+            }
+        }
     }
 }

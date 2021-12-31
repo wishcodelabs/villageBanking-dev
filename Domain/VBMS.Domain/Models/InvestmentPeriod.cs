@@ -13,5 +13,7 @@ public class InvestmentPeriod : Period
     public InvestmentPeriod()
     {
         BeginDate = DateTime.Today;
+        EndDate = DateTime.Today.AddDays(30);
+        Status = PeriodStatus.Closed;
     }
 }
