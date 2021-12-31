@@ -1,0 +1,12 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>@BodyText</MudText>
+    </DialogContent>
+    <DialogActions>
+        @if (DialogType != DialogType.Alert)
+        {
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+        }
+        <MudButton StartIcon="@icon" Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
