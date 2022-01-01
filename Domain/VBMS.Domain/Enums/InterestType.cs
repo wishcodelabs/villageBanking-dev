@@ -2,7 +2,7 @@
 {
     public enum InterestType
     {
-        SimpleInterest,
-        CompoundInterest
+        Simple,
+        Compound
     }
 }

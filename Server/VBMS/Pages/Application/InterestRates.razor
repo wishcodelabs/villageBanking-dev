@@ -22,12 +22,12 @@
                                 </TitleContent>
                                 <ChildContent>
                                     <MudButton Variant="Variant.Filled" OnClick="()=>ToggleAdd(loanType)" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton><hr />
-                                    <table class="table table-hover table-stripped text-white table-responsive-sm">
+                                    <table class="table table-hover table-stripped table-responsive-sm">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Rate</th>
-                                                <th>Amortization Method</th>
+                                                <th>Interest Type &nbsp;<MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></th>
                                                 <th>Investment Period</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -38,10 +38,10 @@
                                             }
                                             @foreach (var item in loanInterestRateService.GetByLoanType(loanType.Id) )
                                             {
-                                                <tr>
+                                                <tr class="text-white">
                                                     <td>@i</td>
                                                     <td>@(item.InterestRate.ToString("N2")) %</td>
-                                                    <td><span>@item.InterestType.ToString() </span> <MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></td>
+                                                    <td>@item.InterestType.ToString()</td>
                                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                                     <td>
                                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
@@ -106,10 +106,8 @@
         if(!result.Cancelled)
         {
             if((bool)result.Data)
-            {
-                LoanTypesData = new();
-                LoanTypesData = await loanTypeService.GetLoanTypes(VillageBank.Id);
-                StateHasChanged();
+            {   
+               StateHasChanged();
             }
         }
     }
