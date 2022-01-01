@@ -9,13 +9,16 @@ namespace VBMS.Shared.Components
         [Parameter] public LoanType? Model { get; set; }
         [Parameter] public int VillageBankId { get; set; }
         public CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
+        Dictionary<string, object> _atri;
 
         protected override void OnInitialized()
         {
+            _atri = new Dictionary<string, object>();
             if (!IsEditing)
             {
                 Model = new LoanType();
             }
+            _atri.Add("form", "editForm");
         }
         async void Submit()
         {
@@ -23,7 +26,7 @@ namespace VBMS.Shared.Components
         }
         void ModelInvalid()
         {
-
+            snackBar.Add("Please fill in all the required fields.", Severity.Error);
         }
         void Cancel() => MudDialog.Cancel();
     }

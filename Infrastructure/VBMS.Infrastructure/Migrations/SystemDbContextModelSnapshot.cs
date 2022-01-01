@@ -382,14 +382,14 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LoanInterestRateId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LoanName")
                         .IsRequired()
@@ -398,8 +398,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<decimal>("MaxLoanAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<TimeSpan>("PaybackDuration")
-                        .HasColumnType("time");
+                    b.Property<int>("PaybackDuration")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

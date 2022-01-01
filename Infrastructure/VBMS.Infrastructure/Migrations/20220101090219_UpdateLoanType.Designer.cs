@@ -12,8 +12,8 @@ using VBMS.Infrastructure.Data;
 namespace VBMS.Infrastructure.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20211231151952_Update")]
-    partial class Update
+    [Migration("20220101090219_UpdateLoanType")]
+    partial class UpdateLoanType
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -384,14 +384,14 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LoanInterestRateId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LoanName")
                         .IsRequired()
@@ -400,8 +400,8 @@ namespace VBMS.Infrastructure.Migrations
                     b.Property<decimal>("MaxLoanAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<TimeSpan>("PaybackDuration")
-                        .HasColumnType("time");
+                    b.Property<int>("PaybackDuration")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

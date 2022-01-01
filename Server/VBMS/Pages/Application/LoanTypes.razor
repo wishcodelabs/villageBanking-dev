@@ -87,9 +87,19 @@
             DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
         }
     }
-    void ToggleAdd()
+    async void ToggleAdd()
     {
-
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id };
+        var dialog = dialogService.Show<AddLoanTypeModal>("Create New Loan Type", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                DataSource = new();
+                DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
+            }
+        }
     }
     void ToggleEdit(LoanType record)
     {

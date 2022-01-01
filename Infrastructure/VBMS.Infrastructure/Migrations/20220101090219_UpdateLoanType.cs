@@ -4,7 +4,7 @@
 
 namespace VBMS.Infrastructure.Migrations
 {
-    public partial class UpdateModels : Migration
+    public partial class UpdateLoanType : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -255,8 +255,8 @@ namespace VBMS.Infrastructure.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -278,9 +278,9 @@ namespace VBMS.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LoanName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: false),
-                    LoanInterestRateId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     MaxLoanAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaybackDuration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    PaybackDuration = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),

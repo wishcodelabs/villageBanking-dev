@@ -1,7 +1,7 @@
 ﻿<MudDialog>
     <DialogContent>
         <EditForm Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
-            <FluentValidationValidator/>
+             <FluentValidationValidator/>
              <DataAnnotationsValidator/>
              <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
                  <MudItem xs="12" sm="6">
@@ -42,7 +42,7 @@
                                    Variant="Variant.Outlined"/>
                  </MudItem>
                  <MudItem xs="12" sm="6">
-                    
+                   <MudCheckBox Size="Size.Medium" @bind-Checked="@Model.IsActive" Label="Activate" Dense="true" Color="Color.Secondary"></MudCheckBox> 
                  </MudItem>
              </MudGrid>
         </EditForm>
@@ -51,6 +51,6 @@
       
             <MudButton OnClick="Cancel">Cancel</MudButton>
        
-        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Save</MudButton>
+        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_atri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
     </DialogActions>
 </MudDialog>
