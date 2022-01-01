@@ -17,6 +17,10 @@ namespace VBMS.Shared.Components
         List<InvestmentPeriod> periods { get; set; } = new List<InvestmentPeriod>();
         protected override async Task OnInitializedAsync()
         {
+            _attri = new Dictionary<string, object>
+            {
+                { "form", "editForm" }
+            };
 
             if (!IsEditing)
             {
@@ -26,7 +30,7 @@ namespace VBMS.Shared.Components
             {
 
             }
-            periods = await investmentPeriodService.GetInvestmentPeriodsAsync(VillageBankId);
+            periods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBankId);
 
         }
         async Task Submit()

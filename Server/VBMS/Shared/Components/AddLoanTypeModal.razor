@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <EditForm @ref="form" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+        <EditForm id="editForm" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
             <FluentValidationValidator />
             <DataAnnotationsValidator />
             <MudGrid Spacing="3" Justify="Justify.SpaceBetween">

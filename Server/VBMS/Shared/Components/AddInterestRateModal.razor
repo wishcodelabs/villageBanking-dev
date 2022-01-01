@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <EditForm  Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+        <EditForm id="editForm" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
             <FluentValidationValidator />
             <DataAnnotationsValidator />
             <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
@@ -39,25 +39,39 @@
                                   Variant="Variant.Outlined" />
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudSelect T="int"
+                    @if (periods.Any())
+                    {
+                        <MudSelect T="int"
                                For="(()=>Model.PeriodId)"
                                Immediate="true"
                                @bind-Value="@Model.PeriodId"
                                Variant="Variant.Outlined"
+                               Placeholder="Choose .."
                                Label="Investment Period"
                                Required="true">
-                        @foreach (var item in periods)
-                        {
-                            <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
-                        }
-                    </MudSelect>
+                            @foreach (var item in periods)
+                            {
+                                <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                    }
                 </MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>
     <DialogActions>
-
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_attri" OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+        @if (periods.Any())
+        {
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_attri" OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+        }
+        else
+        {
+            <MudButton OnClick="Cancel">Close</MudButton>
+        }
     </DialogActions>
 </MudDialog>

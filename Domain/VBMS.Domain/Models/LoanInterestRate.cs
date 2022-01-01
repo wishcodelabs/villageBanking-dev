@@ -6,6 +6,7 @@ public class LoanInterestRate : AuditableEntity<int>
 
     public InterestType InterestType { get; set; }
 
+    [Required, Range(1, 10000000, ErrorMessage = "Can't be empty")]
     public int PeriodId { get; set; }
 
     public double InterestRate { get; set; }
