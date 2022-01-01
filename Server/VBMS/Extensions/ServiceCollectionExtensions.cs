@@ -17,7 +17,7 @@
               {
                   options2.MigrationsAssembly("VBMS.Infrastructure");
 
-              }).UseSecondLevelCache();
+              });
 
           }, ServiceLifetime.Transient);
             return services;
