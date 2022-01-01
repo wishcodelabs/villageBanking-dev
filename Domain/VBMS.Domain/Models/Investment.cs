@@ -1,20 +1,26 @@
 ﻿namespace VBMS.Domain.Models;
 
-public class Investment : Entity<int>
+public class Investment : AuditableEntity<int>
 {
-    public int InverstorId { get; set; }
+    [Required, Range(1, -1, ErrorMessage = "Can't be empty")]
+    public int InvestorId { get; set; }
 
-    public DateTime DateInvested { get; set; }
+    public DateTime? DateInvested { get; set; }
 
+    [Required, Range(1, -1, ErrorMessage = "Can't be empty")]
     public int InvestmentPeriodId { get; set; }
 
+    [Required, Range(1, -1, ErrorMessage = "Can't be empty or zero")]
     public decimal AmountInvested { get; set; }
 
     public Status Status { get; set; }
 
-    public InvestmentPeriod InvestmentPeriod { get; set; }
+    public InvestmentPeriod Period { get; set; }
 
-    [ForeignKey(nameof(InverstorId))]
+    [ForeignKey(nameof(InvestorId))]
     public virtual VillageGroupMembership Investor { get; set; }
-
+    public Investment()
+    {
+        DateInvested = DateTime.Now;
+    }
 }

@@ -17,7 +17,7 @@
         {
             var investments = await context.Set<Investment>()
                                                 .Include(s => s.Investor)
-                                                .Where(i => i.InvestmentPeriodId == investmentPeriodId && i.Investor.VillageGroupId == groupId && i.DateInvested.Month == month)
+                                                .Where(i => i.InvestmentPeriodId == investmentPeriodId && i.Investor.VillageGroupId == groupId && ((DateTime)i.DateInvested).Month == month)
                                                 .ToListAsync();
             var total = 0.0;
             investments.ForEach(x => { total += ((double)x.AmountInvested); });
