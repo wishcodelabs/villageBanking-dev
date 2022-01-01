@@ -34,9 +34,9 @@
                                         </thead>
                                         <tbody>
                                             @{
-                                                var i = 1;
+                                                var i = 1;                                             
                                             }
-                                            @foreach (var item in loanInterestRateService.GetByLoanType(loanType.Id) )
+                                            @foreach (var item in GetData(loanType.Id))
                                             {
                                                 <tr class="text-white">
                                                     <td>@i</td>
@@ -100,25 +100,26 @@
 
     async Task ToggleAdd(LoanType loanType)
     {
-      var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType,["IsEditing"]=false };
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType,["IsEditing"]=false };
         var dialog = dialogService.Show<AddInterestRateModal>("Add New Interest Rate", parameters, maxWidth);
         var result = await dialog.Result;
         if(!result.Cancelled)
         {
             if((bool)result.Data)
             {   
-               StateHasChanged();
+                StateHasChanged();
             }
         }
     }
     async Task ToggleEdit(LoanInterestRate record)
     {
-        
+
     }
     async Task ToggleDelete(LoanInterestRate record, int loanTypeId)
     {
-        
+
     }
+    List<LoanInterestRate> GetData(int id) => loanInterestRateService.GetByLoanType(id);
 
 
 }

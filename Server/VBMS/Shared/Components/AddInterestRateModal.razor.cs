@@ -1,12 +1,8 @@
-﻿
-
-using Microsoft.AspNetCore.Components.Forms;
-
-namespace VBMS.Shared.Components
+﻿namespace VBMS.Shared.Components
 {
     public partial class AddInterestRateModal
     {
-        EditForm form;
+
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public bool IsEditing { get; set; }
         [Parameter] public LoanInterestRate? Model { get; set; }
