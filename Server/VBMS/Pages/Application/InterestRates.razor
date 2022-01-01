@@ -22,7 +22,7 @@
                                 </TitleContent>
                                 <ChildContent>
                                     <MudButton Variant="Variant.Filled" OnClick="()=>ToggleAdd(loanType)" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton><hr />
-                                    <table class="table table-hover table-stripped text-white">
+                                    <table class="table table-hover table-stripped text-white table-responsive-sm">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>No.</th>
@@ -41,7 +41,7 @@
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@((item.InterestRate * 100).ToString("N2")) %</td>
-                                                    <td>@item.InterestType.ToString()</td>
+                                                    <td><span>@item.InterestType.ToString() </span> <MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></td>
                                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                                     <td>
                                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
