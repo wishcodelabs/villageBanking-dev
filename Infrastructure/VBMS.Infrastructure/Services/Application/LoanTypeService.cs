@@ -7,6 +7,7 @@
         }
         public async Task<List<LoanType>> GetLoanTypes(int groupId)
         {
+
             return await Repository.Entities().Where(l => groupId.Equals(l.GroupId)).ToListAsync();
         }
         public async Task<bool> ToggleActive(LoanType record)

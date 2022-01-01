@@ -1,4 +1,6 @@
-﻿namespace VBMS.Infrastructure.Interfaces
+﻿
+
+namespace VBMS.Infrastructure.Interfaces
 {
     public interface IUserRegisterService : IIdentityService
     {
