@@ -1,0 +1,63 @@
+﻿<MudDialog>
+    <DialogContent>
+        <EditForm  Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+            <FluentValidationValidator />
+            <DataAnnotationsValidator />
+            <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="InterestType"
+                               For="(()=>Model.InterestType)"
+                               Immediate="true"
+                               @bind-Value="@Model.InterestType"
+                               Variant="Variant.Outlined"
+                               Label="Interest Type"
+                               Required="true">
+                        @foreach (var item in (InterestType[])Enum.GetValues(typeof(InterestType)))
+                        {
+                            <MudSelectItem T="InterestType" Value="@item">@item.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="Model.InterestRate"
+                                     T="double"
+                                     For="()=>Model.InterestRate"
+                                     Format="N2" Culture="@_en"
+                                     Min="0"
+                                     Max="100"
+                                     Step="0.25"
+                                     Immediate="true"
+                                     Adornment="Adornment.End" AdornmentText="%"
+                                     Label="Interest Rate"
+                                     Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string"
+                                  ReadOnly="true"
+                                  Label="Loan Type"
+                                  Value="@Type.LoanName"
+                                  Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="int"
+                               For="(()=>Model.PeriodId)"
+                               Immediate="true"
+                               @bind-Value="@Model.PeriodId"
+                               Variant="Variant.Outlined"
+                               Label="Investment Period"
+                               Required="true">
+                        @foreach (var item in periods)
+                        {
+                            <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_attri" OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+    </DialogActions>
+</MudDialog>

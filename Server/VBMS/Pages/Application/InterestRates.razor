@@ -40,7 +40,7 @@
                                             {
                                                 <tr>
                                                     <td>@i</td>
-                                                    <td>@((item.InterestRate * 100).ToString("N2")) %</td>
+                                                    <td>@(item.InterestRate.ToString("N2")) %</td>
                                                     <td><span>@item.InterestType.ToString() </span> <MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></td>
                                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                                     <td>
@@ -100,7 +100,18 @@
 
     async Task ToggleAdd(LoanType loanType)
     {
-
+      var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType,["IsEditing"]=false };
+        var dialog = dialogService.Show<AddInterestRateModal>("Create New Loan Type", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                LoanTypesData = new();
+                LoanTypesData = await loanTypeService.GetLoanTypes(VillageBank.Id);
+                StateHasChanged();
+            }
+        }
     }
     async Task ToggleEdit(LoanInterestRate record)
     {

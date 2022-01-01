@@ -12,4 +12,5 @@ public class LoanInterestRate : AuditableEntity<int>
 
     [ForeignKey(nameof(PeriodId))]
     public virtual InvestmentPeriod Period { get; set; }
+    public virtual LoanType LoanType { get; set; }
 }

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-using System.Globalization;
-
 namespace VBMS.Shared.Components
 {
     public partial class AddLoanTypeModal
