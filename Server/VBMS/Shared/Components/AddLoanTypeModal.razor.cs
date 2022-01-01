@@ -1,50 +1,62 @@
-﻿using System.Globalization;
+﻿using Microsoft.AspNetCore.Components.Forms;
+
+using System.Globalization;
 
 namespace VBMS.Shared.Components
 {
     public partial class AddLoanTypeModal
     {
+        EditForm form;
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
         [Parameter] public bool IsEditing { get; set; }
         [Parameter] public LoanType? Model { get; set; }
         [Parameter] public int VillageBankId { get; set; }
+
+
         public CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
-        Dictionary<string, object> _atri;
+
+        Dictionary<string, object> _atri { get; set; }
 
         protected override void OnInitialized()
         {
-            _atri = new Dictionary<string, object>();
+            _atri = new Dictionary<string, object>
+            {
+                { "form", "editForm" }
+            };
             if (!IsEditing)
             {
                 Model = new LoanType();
             }
-            _atri.Add("form", "editForm");
+
         }
         async void Submit()
         {
-            Model.GroupId = VillageBankId;
-            if (IsEditing)
+            if (form.EditContext.Validate())
             {
-                if (await loanTypeService.UpdateAsync(Model))
+                Model.GroupId = VillageBankId;
+                if (IsEditing)
                 {
-                    snackBar.Add("Record Updated Successifully.", Severity.Success);
-                    MudDialog.Close(DialogResult.Ok(true));
+                    if (await loanTypeService.UpdateAsync(Model))
+                    {
+                        snackBar.Add("Record Updated Successifully.", Severity.Success);
+                        MudDialog.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Something went wrong, Try again.", Severity.Error);
+                    }
                 }
                 else
                 {
-                    snackBar.Add("Something went wrong, Try again.", Severity.Error);
-                }
-            }
-            else
-            {
-                if (await loanTypeService.AddAsync(Model))
-                {
-                    snackBar.Add("Record Created Successifully.", Severity.Success);
-                    MudDialog.Close(DialogResult.Ok(true));
-                }
-                else
-                {
-                    snackBar.Add("Something went wrong, Try again.", Severity.Error);
+                    if (await loanTypeService.AddAsync(Model))
+                    {
+                        snackBar.Add("Record Created Successifully.", Severity.Success);
+                        MudDialog.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Something went wrong, Try again.", Severity.Error);
+                    }
                 }
             }
 

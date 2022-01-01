@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <EditForm Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+        <EditForm @ref="form" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
             <FluentValidationValidator />
             <DataAnnotationsValidator />
             <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
@@ -20,7 +20,7 @@
                                      For="(()=>Model.PaybackDuration)"
                                      Immediate="true"
                                      Min="1"
-                                     Adornment="Adornment.End" AdornmentText="Weeks"
+                                     Adornment="Adornment.End" AdornmentText='@((Model.PaybackDuration<=1)?"Week" : "Weeks")'
                                      @bind-Value="@Model.PaybackDuration"
                                      Variant="Variant.Outlined"
                                      Label="Payback Duration"
@@ -29,6 +29,7 @@
                 <MudItem xs="12" sm="6">
                     <MudNumericField @bind-Value="Model.MaxLoanAmount"
                                      T="decimal"
+                                     For="()=>Model.MaxLoanAmount"
                                      Format="N2" Culture="@_en"
                                      Min="0"
                                      HideSpinButtons="true"
@@ -46,7 +47,6 @@
     <DialogActions>
 
         <MudButton OnClick="Cancel">Cancel</MudButton>
-
-        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_atri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_atri" OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
     </DialogActions>
 </MudDialog>
