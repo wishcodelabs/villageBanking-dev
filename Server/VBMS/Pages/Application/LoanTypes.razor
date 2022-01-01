@@ -117,11 +117,34 @@
             }
         }
     }
-    void ToggleDelete(LoanType record)
+    async Task ToggleDelete(LoanType record)
     {
-
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", record.LoanName);
+        parameters.Add("DialogType", DialogType.Delete);
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
+        var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
+        var response = await dialog.Result;
+        if (!response.Cancelled)
+        {
+            if ((bool)response.Data)
+            {
+                //do the delete
+                if (await loanTypeService.DeleteAsync(record))
+                {
+                    snackBar.Add("Record deleted successifully", Severity.Success);
+                    DataSource = new();
+                    DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
+                    StateHasChanged();
+                }
+                else
+                {
+                    snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
+                }
+            }
+        }
     }
-    void ToggleStatus(LoanType record)
+    async Task ToggleStatus(LoanType record)
     {
         
     }
