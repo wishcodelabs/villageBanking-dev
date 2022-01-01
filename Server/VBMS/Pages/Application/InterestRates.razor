@@ -10,17 +10,57 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12">
-                    
+                    <MudExpansionPanels MultiExpansion="false" Elevation="20" Dense="true">
+                        @foreach (var loanType in LoanTypesData)
+                        {
+                            <MudExpansionPanel Class="mt-6 text-white bg-dark">
+                                <TitleContent>
+                                    <MudGrid Justify="Justify.SpaceBetween">
+                                        <MudItem xs="6" sm="6"> <MudText Class="text-white" Typo="Typo.h6" Align="Align.Left">@loanType.LoanName</MudText></MudItem>
+                                        <MudItem xs="6" sm="6"><span>Status: </span> <MudChip Color="@(loanType.IsActive?Color.Success:Color.Surface)" Text='@(loanType.IsActive?"Active":"Inactive")'></MudChip></MudItem>
+                                    </MudGrid>
+                                </TitleContent>
+                                <ChildContent>
+                                    <MudButton Variant="Variant.Filled" OnClick="()=>ToggleAdd(loanType)" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton><hr />
+                                    <table class="table table-hover table-stripped text-white">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Rate</th>
+                                                <th>Amortization Method</th>
+                                                <th>Investment Period</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                var i = 1;
+                                            }
+                                            @foreach (var item in loanInterestRateService.GetByLoanType(loanType.Id) )
+                                         {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@((item.InterestRate * 100).ToString("N2")) %</td>
+                                                    <td>@item.InterestType.ToString()</td>
+                                                    <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
+                                                    <td>
+                                                        <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                                                        <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item,loanType.Id)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
+                                                    </td>
+                                                </tr>
+                                                i++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </ChildContent>
+                            </MudExpansionPanel>
+                        }
+                    </MudExpansionPanels>
                 </MudItem>
             </MudGrid>
         </MudContainer>
     </Authorized>
 </AuthorizeView>
-
-
-
-
-
 
 <style>
     body {
@@ -37,3 +77,39 @@
         background-color: #13262F;
     }
 </style>
+@code {
+
+    List<LoanType> LoanTypesData { get; set; } = new();
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    ClaimsPrincipal claimsPrincipal = new();
+    Guid myGuid = new();
+    VillageBankGroup VillageBank { get; set; } = new();
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        claimsPrincipal = (await AuthenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            var admin = await groupAdminService.GetByUserGuid(myGuid);
+            VillageBank = admin.Group;
+            LoanTypesData = await loanTypeService.GetLoanTypes(VillageBank.Id);
+        }
+    }
+
+    async Task ToggleAdd(LoanType loanType)
+    {
+
+    }
+    async Task ToggleEdit(LoanInterestRate record)
+    {
+        
+    }
+    async Task ToggleDelete(LoanInterestRate record, int loanTypeId)
+    {
+        
+    }
+
+
+}
