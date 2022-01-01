@@ -29,19 +29,16 @@
                         </thead>
                         <tbody>
                             @foreach (var item in DataSource)
-                            {
-
-                                TimeSpan duration = Convert.ToDateTime(item.EndDate).Subtract(Convert.ToDateTime(item.BeginDate));
-                                Color color = (item.Status == PeriodStatus.Open) ? Color.Success : Color.Dark;
+                            {                                
+                                Color color = (item.IsActive) ? Color.Success : Color.Dark;
                                 <tr class="text-white">
                                    
-                                    <td>@Convert.ToDateTime(item.BeginDate).ToShortDateString()</td>
-                                    <td>@Convert.ToDateTime(item.EndDate).ToShortDateString()</td>
-                                    <td>@((int)duration.TotalDays) days </td>
-                                    <td>@item.MinAmount ZMW</td>
+                                    <td>@item.LoanName</td>
+                                    <td>@item.PaybackDuration.TotalDays days</td>
+                                    <td>@item.MaxLoanAmount.ToString("N2") ZMW</td>
                                     <td>@item.CreatedOn</td>
                                     <td>@item.CreatedBy</td>
-                                    <td><MudChip title="Change status" OnClick="()=>Activate(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                                    <td><MudChip title="Change status" OnClick="()=>ToggleStatus(item)" Size="Size.Small" Color="color" Text='@(item.IsActive? "Active" : "Inactive")' /></td>
                                     <td>
                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
                                         <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
@@ -83,6 +80,10 @@
 
     }
     void ToggleDelete(LoanType record)
+    {
+
+    }
+    void ToggleStatus(LoanType record)
     {
         
     }
