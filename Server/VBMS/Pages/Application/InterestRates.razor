@@ -37,7 +37,7 @@
                                                 var i = 1;
                                             }
                                             @foreach (var item in loanInterestRateService.GetByLoanType(loanType.Id) )
-                                         {
+                                            {
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@((item.InterestRate * 100).ToString("N2")) %</td>
