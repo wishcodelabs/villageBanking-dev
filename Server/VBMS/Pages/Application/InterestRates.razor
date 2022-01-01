@@ -1,4 +1,27 @@
 ﻿@page "/settings/interest-rates"
+
+<AuthorizeView Roles="GroupAdmin">
+    <Authorized>
+        <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
+            <MudGrid Spacing="3" Justify="Justify.Center">
+                <MudItem align="center" xs="12">
+                    <MudPaper Elevation="20" Class="title-card p-4 ">
+                        <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">Manage Loan Interest Rates</MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </Authorized>
+</AuthorizeView>
+
+
+
+
+
+
 <style>
     body {
         background-color: #13262F;
