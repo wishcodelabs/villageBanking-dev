@@ -32,12 +32,12 @@
         async void Submit()
         {
             Model.LoanTypeId = Type.Id;
-            if (IsEditing)
+            if (!IsEditing)
             {
-                var result = await loanInterestRateService.UpdateAsync(Model);
-                if (result)
+
+                if (await loanInterestRateService.AddAsync(Model))
                 {
-                    snackBar.Add("Record Updated Successifully.", Severity.Success);
+                    snackBar.Add("Record Created Successifully.", Severity.Success);
                     MudDialog.Close(DialogResult.Ok(true));
                 }
                 else
@@ -47,10 +47,10 @@
             }
             else
             {
-                var result = await loanInterestRateService.AddAsync(Model);
-                if (result)
+
+                if (await loanInterestRateService.UpdateAsync(Model))
                 {
-                    snackBar.Add("Record Created Successifully.", Severity.Success);
+                    snackBar.Add("Record Updated Successifully.", Severity.Success);
                     MudDialog.Close(DialogResult.Ok(true));
                 }
                 else
