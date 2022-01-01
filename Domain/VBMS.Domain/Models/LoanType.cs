@@ -3,8 +3,10 @@
 public class LoanType : AuditableEntity<int>
 {
     public string LoanName { get; set; }
+
     public int GroupId { get; set; }
-    public int LoanInterestRateId { get; set; }
+
+    public bool IsActive { get; set; }
 
     public decimal MaxLoanAmount { get; set; }
 
