@@ -9,5 +9,11 @@
         {
             return await Repository.Entities().Where(l => groupId.Equals(l.GroupId)).ToListAsync();
         }
+        public async Task<bool> ToggleActive(LoanType record)
+        {
+            record.IsActive = !record.IsActive;
+
+            return await UpdateAsync(record);
+        }
     }
 }

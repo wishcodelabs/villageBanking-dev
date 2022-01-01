@@ -19,8 +19,7 @@
                                
                                 <th>Loan Name</th>
                                 <th>Payback Period</th>
-                                <th>Maximum Loan Amount</th>
-                                <th>Interest Rates</th>
+                                <th>Maximum Loan Amount</th>                                
                                 <th>Date Created</th>
                                 <th>Created By</th>
                                 <th>Status</th>
@@ -104,7 +103,7 @@
     }
     async Task ToggleEdit(LoanType record)
     {
-      var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true };
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true };
         var dialog = dialogService.Show<AddLoanTypeModal>($"Edit {record.LoanName}", parameters, maxWidth);
         var result = await dialog.Result;
         if(!result.Cancelled)
@@ -146,6 +145,13 @@
     }
     async Task ToggleStatus(LoanType record)
     {
-        
+        if(await loanTypeService.ToggleActive(record))
+        {
+            snackBar.Add("Action completed successifully", Severity.Success);
+        }
+        else
+        {
+             snackBar.Add("Something went wrong.. Try again later", Severity.Error);
+        }
     }
 }
