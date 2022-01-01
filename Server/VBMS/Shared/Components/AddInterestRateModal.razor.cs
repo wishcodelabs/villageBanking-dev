@@ -35,11 +35,35 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
-
+            Model.LoanTypeId = Type.Id;
+            if (IsEditing)
+            {
+                if (await loanInterestRateService.UpdateAsync(Model))
+                {
+                    snackBar.Add("Record Updated Successifully.", Severity.Success);
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
+                else
+                {
+                    snackBar.Add("Something went wrong, Try again.", Severity.Error);
+                }
+            }
+            else
+            {
+                if (await loanInterestRateService.AddAsync(Model))
+                {
+                    snackBar.Add("Record Created Successifully.", Severity.Success);
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
+                else
+                {
+                    snackBar.Add("Something went wrong, Try again.", Severity.Error);
+                }
+            }
         }
         void ModelInvalid()
         {
-
+            snackBar.Add("Please select all the required fields", Severity.Error);
         }
         void Cancel() => MudDialog.Cancel();
     }
