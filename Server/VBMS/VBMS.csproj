@@ -37,6 +37,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0" />
     <PackageReference Include="MudBlazor" Version="6.0.2" />
     <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.5" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="6.13.5" />
   </ItemGroup>
 
   <ItemGroup>

@@ -45,7 +45,7 @@
                                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                                     <td>
                                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                                        <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item,loanType.Id)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
+                                                        <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
                                                     </td>
                                                 </tr>
                                                 i++;
@@ -113,10 +113,41 @@
     }
     async Task ToggleEdit(LoanInterestRate record)
     {
-
+       var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true, ["Type"]=record.LoanType };
+        var dialog = dialogService.Show<AddInterestRateModal>($"Edit Record", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+               StateHasChanged();
+            }
+        }
     }
-    async Task ToggleDelete(LoanInterestRate record, int loanTypeId)
+    async Task ToggleDelete(LoanInterestRate record)
     {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "this record");
+        parameters.Add("DialogType", DialogType.Delete);
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
+        var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
+        var response = await dialog.Result;
+        if (!response.Cancelled)
+        {
+            if ((bool)response.Data)
+            {
+                //do the delete
+                if (await loanInterestRateService.DeleteAsync(record))
+                {
+                    snackBar.Add("Record deleted successifully", Severity.Success);
+                    StateHasChanged();
+                }
+                else
+                {
+                    snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
+                }
+            }
+        }
 
     }
     List<LoanInterestRate> GetData(int id) => loanInterestRateService.GetByLoanType(id);
