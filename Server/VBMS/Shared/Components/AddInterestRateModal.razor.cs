@@ -4,7 +4,7 @@
     {
 
         [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-        [Parameter] public bool IsEditing { get; set; }
+        [Parameter] public bool IsEditing { get; set; } = false;
         [Parameter] public LoanInterestRate? Model { get; set; }
         [Parameter] public LoanType Type { get; set; }
         [Parameter] public int VillageBankId { get; set; }
@@ -29,7 +29,7 @@
             periods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBankId);
 
         }
-        async Task Submit()
+        async void Submit()
         {
             Model.LoanTypeId = Type.Id;
             if (IsEditing)

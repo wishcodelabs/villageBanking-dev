@@ -6,10 +6,7 @@ public class UnitOfWork<TKey> : IUnitOfWork<TKey>
     bool disposed;
     readonly SystemDbContext database;
     Hashtable repositories;
-    public UnitOfWork(SystemDbContext _database)
-    {
-        database = _database ?? throw new ArgumentNullException(nameof(database));
-    }
+    public UnitOfWork(SystemDbContext _database) => database = _database ?? throw new ArgumentNullException(nameof(database));
     public async Task<int> Commit(CancellationToken cancellationToken)
     {
         return await database.SaveChangesAsync(cancellationToken);

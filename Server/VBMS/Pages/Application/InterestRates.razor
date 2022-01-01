@@ -100,7 +100,7 @@
 
     async Task ToggleAdd(LoanType loanType)
     {
-        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType,["IsEditing"]=false };
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType };
         var dialog = dialogService.Show<AddInterestRateModal>("Add New Interest Rate", parameters, maxWidth);
         var result = await dialog.Result;
         if(!result.Cancelled)
