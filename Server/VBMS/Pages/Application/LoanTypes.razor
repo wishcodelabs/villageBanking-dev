@@ -34,7 +34,7 @@
                                 <tr class="text-white">
                                    
                                     <td>@item.LoanName</td>
-                                    <td>@item.PaybackDuration.TotalDays days</td>
+                                    <td>@item.PaybackDuration weeks</td>
                                     <td>@item.MaxLoanAmount.ToString("N2") ZMW</td>
                                     <td>@item.CreatedOn</td>
                                     <td>@item.CreatedBy</td>
@@ -69,8 +69,24 @@
     }
 </style>
 @code{
-    List<LoanType> DataSource { get; set; } = new();
 
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    List<LoanType> DataSource { get; set; } = new();
+    ClaimsPrincipal claimsPrincipal = new();
+    Guid myGuid = new();
+    VillageBankGroup VillageBank { get; set; } = new();
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
+    protected override async Task OnInitializedAsync()
+    {
+        claimsPrincipal = (await AuthenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            var admin = await groupAdminService.GetByUserGuid(myGuid);
+            VillageBank = admin.Group;
+            DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
+        }
+    }
     void ToggleAdd()
     {
 
