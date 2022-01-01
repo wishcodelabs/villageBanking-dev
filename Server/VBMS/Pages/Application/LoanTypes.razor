@@ -87,7 +87,7 @@
             DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
         }
     }
-    async void ToggleAdd()
+    async Task ToggleAdd()
     {
         var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id };
         var dialog = dialogService.Show<AddLoanTypeModal>("Create New Loan Type", parameters, maxWidth);
@@ -98,12 +98,24 @@
             {
                 DataSource = new();
                 DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
+                StateHasChanged();
             }
         }
     }
-    void ToggleEdit(LoanType record)
+    async Task ToggleEdit(LoanType record)
     {
-
+      var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true };
+        var dialog = dialogService.Show<AddLoanTypeModal>($"Edit {record.LoanName}", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                DataSource = new();
+                DataSource = await loanTypeService.GetLoanTypes(VillageBank.Id);
+                StateHasChanged();
+            }
+        }
     }
     void ToggleDelete(LoanType record)
     {

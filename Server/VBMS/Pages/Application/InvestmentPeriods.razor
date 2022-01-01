@@ -78,7 +78,7 @@
     Guid myGuid = new();
     VillageBankGroup VillageBank { get; set; } = new();
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
-    async void ToggleDelete(InvestmentPeriod record)
+    async Task ToggleDelete(InvestmentPeriod record)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "this record");
@@ -132,7 +132,7 @@
 
         }
     }
-    async void ToggleEdit(InvestmentPeriod record)
+    async Task ToggleEdit(InvestmentPeriod record)
     {
         var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true };
         var dialog = dialogService.Show<AddPeriodModal>("Edit Record", parameters, maxWidth);
@@ -147,7 +147,7 @@
         }
         
     }
-    async void ToggleAdd()
+    async Task ToggleAdd()
     {
         var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id };
         var dialog = dialogService.Show<AddPeriodModal>("Add New Investment Period", parameters, maxWidth);

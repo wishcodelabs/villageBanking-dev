@@ -47,18 +47,19 @@
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    ActivateGroup();
+                    if ((bool)result.Data)
+                        await ActivateGroup();
                 }
 
             }
             else
             {
-                ActivateGroup();
+                await ActivateGroup();
             }
 
         }
 
-        async void ActivateGroup()
+        async Task ActivateGroup()
         {
             if (await villageBankGroupService.ActivateGroup(VillageBank.Id))
             {
