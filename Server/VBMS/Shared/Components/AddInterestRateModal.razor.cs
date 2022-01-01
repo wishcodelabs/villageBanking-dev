@@ -34,7 +34,8 @@
             Model.LoanTypeId = Type.Id;
             if (IsEditing)
             {
-                if (await loanInterestRateService.UpdateAsync(Model))
+                var result = await loanInterestRateService.UpdateAsync(Model);
+                if (result)
                 {
                     snackBar.Add("Record Updated Successifully.", Severity.Success);
                     MudDialog.Close(DialogResult.Ok(true));
@@ -46,7 +47,8 @@
             }
             else
             {
-                if (await loanInterestRateService.AddAsync(Model))
+                var result = await loanInterestRateService.AddAsync(Model);
+                if (result)
                 {
                     snackBar.Add("Record Created Successifully.", Severity.Success);
                     MudDialog.Close(DialogResult.Ok(true));

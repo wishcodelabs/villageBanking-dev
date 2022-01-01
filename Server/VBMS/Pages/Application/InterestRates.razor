@@ -11,50 +11,53 @@
                 </MudItem>
                 <MudItem xs="12">
                     <MudExpansionPanels MultiExpansion="false" Elevation="20" Dense="true">
-                        @foreach (var loanType in LoanTypesData)
-                        {
-                            <MudExpansionPanel Class="mt-6 text-white bg-dark">
-                                <TitleContent>
-                                    <MudGrid Justify="Justify.SpaceBetween">
-                                        <MudItem xs="6" sm="6"> <MudText Class="text-white" Typo="Typo.h6" Align="Align.Left">@loanType.LoanName</MudText></MudItem>
-                                        <MudItem xs="6" sm="6"><span>Status: </span> <MudChip Color="@(loanType.IsActive?Color.Success:Color.Surface)" Text='@(loanType.IsActive?"Active":"Inactive")'></MudChip></MudItem>
-                                    </MudGrid>
-                                </TitleContent>
-                                <ChildContent>
-                                    <MudButton Variant="Variant.Filled" OnClick="()=>ToggleAdd(loanType)" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton><hr />
-                                    <table class="table table-hover table-stripped table-responsive-sm">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Rate</th>
-                                                <th>Interest Type &nbsp;<MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></th>
-                                                <th>Investment Period</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                var i = 1;                                             
-                                            }
-                                            @foreach (var item in GetData(loanType.Id))
-                                            {
-                                                <tr class="text-white">
-                                                    <td>@i</td>
-                                                    <td>@(item.InterestRate.ToString("N2")) %</td>
-                                                    <td>@item.InterestType.ToString()</td>
-                                                    <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
-                                                    <td>
-                                                        <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                                        <MudButton title="Permanently delete this item?"  OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
-                                                    </td>
+                       
+                            @foreach (var loanType in LoanTypesData)
+                            {
+                                <MudExpansionPanel Class="mt-6 text-white bg-dark">
+                                    <TitleContent>
+                                        <MudGrid Justify="Justify.SpaceBetween">
+                                            <MudItem xs="6" sm="6"> <MudText Class="text-white" Typo="Typo.h6" Align="Align.Left">@loanType.LoanName</MudText></MudItem>
+                                            <MudItem xs="6" sm="6"><span>Status: </span> <MudChip Color="@(loanType.IsActive?Color.Success:Color.Surface)" Text='@(loanType.IsActive?"Active":"Inactive")'></MudChip></MudItem>
+                                        </MudGrid>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <MudButton Variant="Variant.Filled" OnClick="()=>ToggleAdd(loanType)" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton><hr />
+                                        <table class="table table-hover table-stripped table-responsive-sm">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Rate</th>
+                                                    <th>Interest Type &nbsp;<MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></th>
+                                                    <th>Investment Period</th>
+                                                    <th>Actions</th>
                                                 </tr>
-                                                i++;
-                                            }
-                                        </tbody>
-                                    </table>
-                                </ChildContent>
-                            </MudExpansionPanel>
-                        }
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    var i = 1;
+
+                                                }
+                                                @foreach (var item in loanInterestRateService.GetByLoanType(loanType.Id))
+                                                {
+                                                    <tr class="text-white">
+                                                        <td>@i</td>
+                                                        <td>@(item.InterestRate.ToString("N2")) %</td>
+                                                        <td>@item.InterestType.ToString()</td>
+                                                        <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
+                                                        <td>
+                                                            <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
+                                                            <MudButton title="Permanently delete this item?" OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            }
+                        
                     </MudExpansionPanels>
                 </MudItem>
             </MudGrid>
@@ -95,32 +98,33 @@
             var admin = await groupAdminService.GetByUserGuid(myGuid);
             VillageBank = admin.Group;
             LoanTypesData = await loanTypeService.GetLoanTypes(VillageBank.Id);
+
         }
     }
 
     async Task ToggleAdd(LoanType loanType)
     {
-        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Type"] = loanType };
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["Type"] = loanType };
         var dialog = dialogService.Show<AddInterestRateModal>("Add New Interest Rate", parameters, maxWidth);
         var result = await dialog.Result;
-        if(!result.Cancelled)
+        if (!result.Cancelled)
         {
-            if((bool)result.Data)
-            {   
+            if ((bool)result.Data)
+            {
                 StateHasChanged();
             }
         }
     }
     async Task ToggleEdit(LoanInterestRate record)
     {
-       var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id,["Model"]=record,["IsEditing"]=true, ["Type"]=record.LoanType };
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["Model"] = record, ["IsEditing"] = true, ["Type"] = record.LoanType };
         var dialog = dialogService.Show<AddInterestRateModal>($"Edit Record", parameters, maxWidth);
         var result = await dialog.Result;
-        if(!result.Cancelled)
+        if (!result.Cancelled)
         {
-            if((bool)result.Data)
+            if ((bool)result.Data)
             {
-               StateHasChanged();
+                StateHasChanged();
             }
         }
     }
@@ -150,7 +154,4 @@
         }
 
     }
-    List<LoanInterestRate> GetData(int id) => loanInterestRateService.GetByLoanType(id);
-
-
-}
+ }

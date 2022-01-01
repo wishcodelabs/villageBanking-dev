@@ -5,9 +5,14 @@
         public LoanInterestRateService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
         {
         }
-        public List<LoanInterestRate> GetByLoanType(int loanTypeId)
+        public IEnumerable<LoanInterestRate> GetByLoanType(int loanTypeId)
         {
-            return Repository.Entities().Where(r => r.LoanTypeId == loanTypeId).ToList();
+            if (loanTypeId == 0)
+            {
+                return new List<LoanInterestRate>();
+            }
+
+            return Repository.Entities().Where(i => i.LoanTypeId == loanTypeId).ToList();
         }
     }
 }
