@@ -16,18 +16,19 @@
                         <MudItem xs="6" md="4">
                             @if (openPeriods.Any())
                             {
-                                <MudSelect T="InvestmentPeriod"
+                                <MudSelect T="int"
                                        Dense="true"
                                        Class="dense"
+                                       ValueChanged="(e)=>Filter(e)"
                                        Immediate="true"
-                                       @bind-Value="@investmentPeriod"
                                        Variant="Variant.Outlined"
                                        Placeholder="Choose .."
                                        Label="Filter By Investment Period"
                                        Required="true">
+                                    <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
                                     @foreach (var item in openPeriods)
                                     {
-                                        <MudSelectItem T="InvestmentPeriod" Value="@item">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                        <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
                                     }
                                 </MudSelect>
                             }
@@ -61,7 +62,7 @@
                                 Color color = (item.Status == Status.Approved) ? Color.Success : Color.Dark;
                                 <tr class="text-white">
 
-                                    <td>@Convert.ToDateTime(item.DateInvested).ToShortDateString()</td>
+                                    <td>@String.Format("{0:D}",Convert.ToDateTime(item.DateInvested))</td>
                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                     <td>@item.Investor.PersonalDetails.FirstName @item.Investor.PersonalDetails.LastName</td>
                                     <td>@item.Investor.PersonalDetails.NrcNumber</td>
@@ -109,23 +110,22 @@
     ClaimsPrincipal claimsPrincipal = new();
     Guid myGuid = new();
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
-    InvestmentPeriod investmentPeriod = new();
+    int investmentPeriod;
     List<InvestmentPeriod> openPeriods { get; set; } = new();
-
-
     List<Investment> DataSource { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
+
         claimsPrincipal = (await AuthenticationStateTask).User;
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
             myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
             var admin = await groupAdminService.GetByUserGuid(myGuid);
             VillageBank = admin.Group;
-            DataSource = await investmentService.GetByGroup(VillageBank.Id);
+            DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
             openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
-            investmentPeriod = openPeriods.Any()? openPeriods.Last(): new();
+
 
         }
     }
@@ -140,7 +140,7 @@
             {
                 StateHasChanged();
                 DataSource =  new();
-                DataSource = await investmentService.GetByGroup(VillageBank.Id);
+                DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
             }
         }
     }
@@ -152,9 +152,12 @@
     {
 
     }
-    async void Filter()
+    async void Filter(int value)
     {
-
+        investmentPeriod = value;
+        DataSource =  new();
+        DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
+        StateHasChanged();
     }
     async void Approve(Investment record)
     {
