@@ -2,15 +2,15 @@
 
 public class Investment : AuditableEntity<int>
 {
-    [Required, Range(1, -1, ErrorMessage = "Can't be empty")]
+    [Required, Range(1, int.MaxValue, ErrorMessage = "Can't be empty")]
     public int InvestorId { get; set; }
 
     public DateTime? DateInvested { get; set; }
 
-    [Required, Range(1, -1, ErrorMessage = "Can't be empty")]
+    [Required, Range(1, int.MaxValue, ErrorMessage = "Can't be empty")]
     public int InvestmentPeriodId { get; set; }
 
-    [Required, Range(1, -1, ErrorMessage = "Can't be empty or zero")]
+    [Required, Range(1, int.MaxValue, ErrorMessage = "Can't be empty or zero")]
     public decimal AmountInvested { get; set; }
 
     public Status Status { get; set; }

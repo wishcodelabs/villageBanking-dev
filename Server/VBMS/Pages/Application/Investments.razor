@@ -131,7 +131,16 @@
     }
     async Task ToggleAdd()
     {
-
+        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id};
+        var dialog = dialogService.Show<AddInvestmentModal>("Add New Investmet", parameters, maxWidth);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            if ((bool)result.Data)
+            {
+                StateHasChanged();
+            }
+        }
     }
     async Task ToggleEdit(Investment record)
     {
