@@ -148,10 +148,6 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         {
             e.ToTable("GroupMemberRoles");
         });
-        modelBuilder.Entity<VillageGroupMemberShare>(e =>
-        {
-            e.ToTable("GroupMemberShares");
-        });
         modelBuilder.Entity<MembershipSubscription>(e =>
         {
             e.ToTable("MemberSubscriptions");

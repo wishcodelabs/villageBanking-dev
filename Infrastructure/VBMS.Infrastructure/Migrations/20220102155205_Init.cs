@@ -4,7 +4,7 @@
 
 namespace VBMS.Infrastructure.Migrations
 {
-    public partial class UpdateLoanType : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -330,6 +330,7 @@ namespace VBMS.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LoanTypeId = table.Column<int>(type: "int", nullable: false),
+                    InterestType = table.Column<int>(type: "int", nullable: false),
                     PeriodId = table.Column<int>(type: "int", nullable: false),
                     InterestRate = table.Column<double>(type: "float", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -398,47 +399,20 @@ namespace VBMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupMemberShares",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MemberId = table.Column<int>(type: "int", nullable: false),
-                    InvestmentPeriodId = table.Column<int>(type: "int", nullable: false),
-                    NumberOfShares = table.Column<double>(type: "float", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupMemberShares", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupMemberShares_InvestmentPeriods_InvestmentPeriodId",
-                        column: x => x.InvestmentPeriodId,
-                        principalTable: "InvestmentPeriods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_GroupMemberShares_Membership_MemberId",
-                        column: x => x.MemberId,
-                        principalTable: "Membership",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Investments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    InverstorId = table.Column<int>(type: "int", nullable: false),
-                    DateInvested = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InvestorId = table.Column<int>(type: "int", nullable: false),
+                    DateInvested = table.Column<DateTime>(type: "datetime2", nullable: true),
                     InvestmentPeriodId = table.Column<int>(type: "int", nullable: false),
                     AmountInvested = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -450,8 +424,8 @@ namespace VBMS.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Investments_Membership_InverstorId",
-                        column: x => x.InverstorId,
+                        name: "FK_Investments_Membership_InvestorId",
+                        column: x => x.InvestorId,
                         principalTable: "Membership",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
@@ -587,29 +561,19 @@ namespace VBMS.Infrastructure.Migrations
                 column: "MemberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupMemberShares_InvestmentPeriodId",
-                table: "GroupMemberShares",
-                column: "InvestmentPeriodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupMemberShares_MemberId",
-                table: "GroupMemberShares",
-                column: "MemberId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentPeriods_GroupId",
                 table: "InvestmentPeriods",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Investments_InverstorId",
-                table: "Investments",
-                column: "InverstorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Investments_InvestmentPeriodId",
                 table: "Investments",
                 column: "InvestmentPeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Investments_InvestorId",
+                table: "Investments",
+                column: "InvestorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoanInterestRates_LoanTypeId",
@@ -665,9 +629,6 @@ namespace VBMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "GroupMemberRoles");
-
-            migrationBuilder.DropTable(
-                name: "GroupMemberShares");
 
             migrationBuilder.DropTable(
                 name: "Investments");

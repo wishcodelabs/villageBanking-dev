@@ -73,15 +73,6 @@
 
         }
 
-        public async Task<double> GetTotalShares(int groupId, int investmentPeriodId)
-        {
-            var shares = await context.Set<VillageGroupMemberShare>()
-                                        .Include(s => s.Shareholder)
-                                        .Where(s => s.InvestmentPeriodId == investmentPeriodId && s.Shareholder.VillageGroupId == groupId)
-                                        .ToListAsync();
-            var total = 0.0;
-            shares.ForEach(s => { total += s.NumberOfShares; });
-            return total;
-        }
+
     }
 }

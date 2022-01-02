@@ -18,4 +18,7 @@ public class VillageGroupMembership : AuditableEntity<int>
     [ValidateComplexType]
     public virtual PersonalDetails PersonalDetails { get; set; }
     public virtual List<VillageGroupMemberRole> Roles { get; set; }
+
+    [NotMapped]
+    public VillageGroupMemberShare MemberShare { get; set; }
 }

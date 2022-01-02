@@ -5,7 +5,7 @@
         //Chat Data
         //Analysis Data etc
         Task<int> GetNewLoanApplications(int groupId, int investmentPeriodId);
-        Task<double> GetTotalShares(int groupId, int investmentPeriodId);
+
         Task<decimal> GetTotalInvestments(int groupId, int investmentPeriodId);
         Task<int> GetBadEggs(int groupId, int investmentPeriodId);
 

@@ -535,45 +535,6 @@ namespace VBMS.Infrastructure.Migrations
                     b.ToTable("GroupMemberRoles", (string)null);
                 });
 
-            modelBuilder.Entity("VBMS.Domain.Models.VillageGroupMemberShare", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InvestmentPeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("NumberOfShares")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvestmentPeriodId");
-
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("GroupMemberShares", (string)null);
-                });
-
             modelBuilder.Entity("VBMS.Domain.Models.VillageGroupMembership", b =>
                 {
                     b.Property<int>("Id")
@@ -899,25 +860,6 @@ namespace VBMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("VillageGroupMember");
-                });
-
-            modelBuilder.Entity("VBMS.Domain.Models.VillageGroupMemberShare", b =>
-                {
-                    b.HasOne("VBMS.Domain.Models.InvestmentPeriod", "InvestmentPeriod")
-                        .WithMany()
-                        .HasForeignKey("InvestmentPeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VBMS.Domain.Models.VillageGroupMembership", "Shareholder")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InvestmentPeriod");
-
-                    b.Navigation("Shareholder");
                 });
 
             modelBuilder.Entity("VBMS.Domain.Models.VillageGroupMembership", b =>

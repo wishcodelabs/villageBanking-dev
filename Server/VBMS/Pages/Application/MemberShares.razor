@@ -1,5 +1,58 @@
 ﻿@page "/group/shares"
+<AuthorizeView Roles="GroupAdmin">
+    <Authorized>
+        <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
+            <MudGrid Spacing="3" Justify="Justify.Center">
+                <MudItem align="center" xs="12">
+                    <MudPaper Elevation="20" Class="title-card p-4 ">
+                        <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">View Member Shares</MudText>
+                    </MudPaper>
+                </MudItem>
 
+                @foreach (var item in DataSource)
+                {
+                    var color = (item.Status == VillageGroupMemberStatus.Active) ? Color.Success : Color.Default;
+                    <MudItem md="4" xs="12" sm="6">
+                        <!--Graph Card-->
+                    <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">@item.PersonalDetails.FirstName @item.PersonalDetails.LastName  <span class="pull-right"><MudChip Color="color">@item.Status.ToString()</MudChip></span></h5>
+                            </div>
+                            <div class="p-2">
+                                <MudGrid Justify="Justify.FlexStart">
+                                    <MudItem xs="12" sm="4">
+                                        <MudIcon Style="width:100px;height:100px"
+                                             Color="color"
+                                             Size="Size.Large"
+                                             Icon="@Icons.Material.Filled.AccountCircle" />
+                                    </MudItem>
+                                    <MudItem xs="12" sm="6">
+                                        <MudGrid Spacing="1" Justify="Justify.FlexStart">
+                                            <MudItem xs="12">
+
+                                                <span>
+                                                    <h6 class="font-bold uppercase text-gray-600">Investments</h6>
+                                                </span><p class="font-bold text-2xl">ZMW @item.MemberShare.TotalInvestment.ToString("N2") <span class="text-green-500"><i class="fas fa-caret-up"></i></span></p>
+
+                                            </MudItem>
+                                            <MudItem xs="12">
+
+                                                <h6 class="font-bold uppercase text-gray-600">Shares</h6>
+                                                <p class="font-bold "> @item.MemberShare.NumberOfShares </p>
+
+                                            </MudItem>
+                                        </MudGrid>
+                                    </MudItem>
+                                </MudGrid>
+                            </div>
+                        </div>
+                        <!--/Graph Card-->
+                </MudItem>
+                }
+            </MudGrid>
+        </MudContainer>
+    </Authorized>
+</AuthorizeView>
 <style>
     body {
         background-color: #13262F;
@@ -15,3 +68,42 @@
         background-color: #13262F;
     }
 </style>
+@code {
+    List<VillageGroupMembership> DataSource { get; set; } = new();
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    VillageBankGroup VillageBank { get; set; } = new();
+    ClaimsPrincipal claimsPrincipal = new();
+    Guid myGuid = new();
+    int investmentPeriod;
+    List<InvestmentPeriod> openPeriods { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        claimsPrincipal = (await AuthenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            var admin = await groupAdminService.GetByUserGuid(myGuid);
+            VillageBank = admin.Group;
+            await Refresh();
+            openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+
+
+
+        }
+    }
+
+    async Task Refresh()
+    {
+        var collection = await membershipService.GetMembers(VillageBank.Id);
+        DataSource = new();
+        foreach (var item in collection)
+        {
+            var share = await memberShareService.GetMemberShare(investmentPeriod, VillageBank.Id, item.Id);
+            item.MemberShare = share;
+            DataSource.Add(item);
+        }
+
+    }
+}
