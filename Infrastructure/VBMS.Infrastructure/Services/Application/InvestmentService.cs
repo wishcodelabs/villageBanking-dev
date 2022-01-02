@@ -32,6 +32,11 @@ namespace VBMS.Infrastructure.Services.Application
                                                     ).ToList();
             return list;
         }
+        public async Task<List<Investment>> GetPeriodicallyByStatus(Status status, int groupId, int periodId)
+        {
+            var list = await GetByPeriod(periodId, groupId);
+            return list.Where(l => l.Status == status).ToList();
+        }
         public async Task<bool> ToggleStatus(Investment record)
         {
             if (record.Status == Status.Submitted)
