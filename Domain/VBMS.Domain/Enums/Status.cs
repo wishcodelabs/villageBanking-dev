@@ -2,11 +2,14 @@
 {
     public enum Status : int
     {
-
-        Submitted = 0,
-        Pending = 1,
-        Approved = 2,
-        Rejected = 3
-
+        Submitted,
+        Approved
+    }
+    public enum LoanApplicationStatus
+    {
+        Submitted,
+        Pending,
+        Approved,
+        Rejected
     }
 }

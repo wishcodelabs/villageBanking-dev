@@ -12,7 +12,7 @@
 
         public DateTime DateSubmitted { get; set; }
 
-        public Status Status { get; set; }
+        public LoanApplicationStatus Status { get; set; }
 
         public int LoanTypeId { get; set; }
 
