@@ -1,4 +1,6 @@
-﻿namespace VBMS.Infrastructure.Services.Application
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace VBMS.Infrastructure.Services.Application
 {
     public class InvestmentService : ServiceBase<Investment, int>
     {
@@ -16,6 +18,19 @@
                 return await GetByGroup(groupId);
             }
             return await Repository.Entities().OrderByDescending(i => i.DateInvested).Where(i => i.Investor.VillageGroupId == groupId && i.InvestmentPeriodId == period).ToListAsync();
+        }
+        public async Task<List<Investment>> SearchAsync(string searchString, int groupId)
+        {
+            var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(10) };
+            var items = await Repository.Entities().Where(i => i.Investor.VillageGroupId == groupId).FromCacheAsync(options);
+            var list = items.Where(i =>
+                                                    i.Investor.PersonalDetails.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                    i.Investor.PersonalDetails.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                    i.Investor.PersonalDetails.NrcNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                    ((DateTime)i.DateInvested).ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                    i.CreatedBy.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                                    ).ToList();
+            return list;
         }
     }
 }

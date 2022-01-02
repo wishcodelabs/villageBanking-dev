@@ -14,7 +14,7 @@
                     <MudGrid Justify="Justify.SpaceBetween">
                         <MudItem xs="6" md="3"><MudButton Class="m-2 mb-1" OnClick="ToggleAdd" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton></MudItem>
                         <MudItem xs="6" md="3">
-                            <MudTextField Class="bg-white bar"  Label="Search" Placeholder="Type to search" Clearable="true" T="string" Variant="Variant.Filled"/>
+                            <MudTextField OnBlur="Refresh" Immediate="true" ValueChanged="(e)=>Search(e)" Class="bg-white bar" T="string"  Label="Search" Placeholder="Type here to search" Clearable="true" T="string" Variant="Variant.Filled"/>
                         </MudItem>
                         <MudHidden Breakpoint="Breakpoint.MdAndDown">
                         <MudItem xs="6" md="3">
@@ -110,6 +110,7 @@
 </style>
 
 @code {
+
     [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
     VillageBankGroup VillageBank { get; set; } = new();
     ClaimsPrincipal claimsPrincipal = new();
@@ -118,7 +119,7 @@
     int investmentPeriod;
     List<InvestmentPeriod> openPeriods { get; set; } = new();
     List<Investment> DataSource { get; set; } = new();
-
+    HashSet<Investment> list;
     protected override async Task OnInitializedAsync()
     {
 
@@ -128,8 +129,9 @@
             myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
             var admin = await groupAdminService.GetByUserGuid(myGuid);
             VillageBank = admin.Group;
-            DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
+            await Refresh();
             openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+
 
 
         }
@@ -143,9 +145,8 @@
         {
             if ((bool)result.Data)
             {
-                StateHasChanged();
-                DataSource =  new();
-                DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
+
+                await Refresh();
             }
         }
     }
@@ -156,6 +157,25 @@
     async Task ToggleDelete(Investment record)
     {
 
+    }
+    void Search(string searchString)
+    {
+        DataSource = new();
+        DataSource = list.Where(i =>
+                                      i.Investor.PersonalDetails.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                      i.Investor.PersonalDetails.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                      i.Investor.PersonalDetails.NrcNumber.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                      ((DateTime)i.DateInvested).ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                       i.CreatedBy.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                     ).ToList();
+        StateHasChanged();
+    }
+    async Task Refresh()
+    {
+        DataSource =  new();
+        DataSource = await investmentService.GetByPeriod(investmentPeriod,VillageBank.Id);
+        list= new HashSet<Investment>(DataSource);
+        StateHasChanged(); 
     }
     async void Filter(int value)
     {
