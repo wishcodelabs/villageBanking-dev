@@ -2,10 +2,38 @@
 <AuthorizeView Roles="GroupAdmin">
     <Authorized>
         <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
-            <MudGrid Spacing="3" Justify="Justify.Center">
+            <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
                 <MudItem align="center" xs="12">
                     <MudPaper Elevation="20" Class="title-card p-4 ">
-                        <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">View Member Shares</MudText>
+                        <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
+                            <MudItem xs="12" md="6">
+                                <MudText Class="text-white" Align="Align.Start" Typo="Typo.h5">View Member Shares</MudText>
+                            </MudItem>
+                            @if (openPeriods.Any())
+                            {
+                                <MudItem xs="12" md="6">
+                                    <MudSelect T="int"
+                                           Dense="true"
+                                           Style="width :300px"
+                                           ValueChanged="(e)=>Filter(e)"
+                                           Immediate="true"
+                                           Class="bg-white bar"
+                                           Variant="Variant.Filled"
+                                           Label="Filter by Investment Period"
+                                           Required="true">
+                                        <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                        @foreach (var item in openPeriods)
+                                        {
+                                            <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                            }
+                        </MudGrid>
                     </MudPaper>
                 </MudItem>
 
@@ -61,9 +89,11 @@
     .cont {
         background-color: #13262F;
     }
-
+    .bar{
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px
+    }
     .title-card {
-        max-width: fit-content;
         border-radius: 10px;
         background-color: #13262F;
     }
@@ -105,5 +135,11 @@
             DataSource.Add(item);
         }
 
+    }
+    async void Filter(int value)
+    {
+        investmentPeriod = value;
+        await Refresh();
+        StateHasChanged();
     }
 }
