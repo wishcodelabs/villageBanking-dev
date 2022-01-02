@@ -49,7 +49,7 @@
                         <caption>List of Investments @selectedRow</caption>
                         <thead class="thead-dark">
                             <tr>
-                                
+
                                 <th>Date Invested</th>
                                 <th>Investment Period</th>
                                 <th>Investor Name</th>
@@ -66,14 +66,14 @@
 
                                 Color color = (item.Status == Status.Approved) ? Color.Success : Color.Dark;
                                 <tr class="text-white">
-                                    
+
                                     <td>@String.Format("{0:D}",Convert.ToDateTime(item.DateInvested))</td>
                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                     <td>@item.Investor.PersonalDetails.FirstName @item.Investor.PersonalDetails.LastName</td>
                                     <td>@item.Investor.PersonalDetails.NrcNumber</td>
                                     <td>@item.AmountInvested.ToString("N2") ZMW</td>
                                     <td>@item.CreatedBy</td>
-                                    <td><MudChip title="Change status" OnClick="()=>Approve(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                                    <td><MudChip title="Approve this investment?" OnClick="()=>Approve(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
                                     <td>
                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
                                         <MudButton title="Permanently delete this item?" OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
@@ -97,7 +97,7 @@
         background-color: #13262F;
     }
 
-    .bar{
+    .bar {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px
     }
@@ -171,27 +171,34 @@
 
     async Task ToggleDelete(Investment record)
     {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", "this record");
-        parameters.Add("DialogType", DialogType.Delete);
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
-        var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
-        var response = await dialog.Result;
-        if (!response.Cancelled)
+        if (await memberRoleService.IsChairperson(myGuid))
         {
-            if ((bool)response.Data)
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", "this record");
+            parameters.Add("DialogType", DialogType.Delete);
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
+            var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
+            var response = await dialog.Result;
+            if (!response.Cancelled)
             {
-                //do the delete
-                if (await investmentService.DeleteAsync(record))
+                if ((bool)response.Data)
                 {
-                    snackBar.Add("Record deleted successifully", Severity.Success);
-                    await Refresh();
-                }
-                else
-                {
-                    snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
+                    //do the delete
+                    if (await investmentService.DeleteAsync(record))
+                    {
+                        snackBar.Add("Record deleted successifully", Severity.Success);
+                        await Refresh();
+                    }
+                    else
+                    {
+                        snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
+                    }
                 }
             }
+        }
+        else
+        {
+            snackBar.Add("Only a group chairperson can delete these records.", Severity.Error);
         }
     }
     void Search(string searchString)
@@ -222,6 +229,45 @@
     }
     async void Approve(Investment record)
     {
+        if (record.Status == Status.Approved)
+        {
+            return;
+        }
+        else
+        {
+            if (await memberRoleService.IsChairperson(myGuid))
+            {
 
+                var parameters = new DialogParameters();
+                parameters.Add("ContentText", "Do you want to approve this investment?");
+                parameters.Add("DialogType", DialogType.Confirm);
+                var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
+                var dialog = dialogService.Show<SimpleDialog>("Approve Investment", parameters, options);
+                var response = await dialog.Result;
+                if (!response.Cancelled)
+                {
+
+
+                    if (await investmentService.ToggleStatus(record))
+                    {
+                        snackBar.Add("Investment Approved.", Severity.Success);
+                        await Refresh();
+                    }
+                    else
+                    {
+                        snackBar.Add("Oops, Something went wrong, try again later.", Severity.Error);
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                snackBar.Add("Only a group chairperson can approve investments.", Severity.Error);
+            }
+
+        }
     }
 }

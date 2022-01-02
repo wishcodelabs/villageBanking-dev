@@ -32,5 +32,17 @@ namespace VBMS.Infrastructure.Services.Application
                                                     ).ToList();
             return list;
         }
+        public async Task<bool> ToggleStatus(Investment record)
+        {
+            if (record.Status == Status.Submitted)
+            {
+                record.Status = Status.Approved;
+            }
+            else
+            {
+
+            }
+            return await UpdateAsync(record);
+        }
     }
 }
