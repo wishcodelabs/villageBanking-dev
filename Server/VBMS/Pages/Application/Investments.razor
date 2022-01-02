@@ -139,6 +139,8 @@
             if ((bool)result.Data)
             {
                 StateHasChanged();
+                DataSource =  new();
+                DataSource = await investmentService.GetByGroup(VillageBank.Id);
             }
         }
     }

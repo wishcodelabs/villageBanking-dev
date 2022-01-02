@@ -33,4 +33,10 @@ public class InvestmentPeriodService : ServiceBase<InvestmentPeriod, int>
     {
         return await Repository.Entities().Where(p => p.GroupId == groupId).ToListAsync();
     }
+
+    public async Task<decimal> GetCurrentThreshhold(int investmentPeriodId)
+    {
+        var record = await GetByIdAsync(investmentPeriodId);
+        return record.MinAmount;
+    }
 }

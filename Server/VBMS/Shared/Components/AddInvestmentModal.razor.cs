@@ -31,6 +31,39 @@
         }
         async Task Submit()
         {
+            var minA = await investmentPeriodService.GetCurrentThreshhold(Model.InvestmentPeriodId);
+            if (Model.AmountInvested < minA)
+            {
+                snackBar.Add($"The minimum amount to invest this period is {minA.ToString("N2")} ZMW", Severity.Error);
+                return;
+            }
+            else
+            {
+                if (!IsEditing)
+                {
+                    if (await investmentService.AddAsync(Model))
+                    {
+                        snackBar.Add("Record saved successifully.", Severity.Success);
+                        MudDialog.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Opps! Something went wrong, try again later.", Severity.Error);
+                    }
+                }
+                else
+                {
+                    if (await investmentService.UpdateAsync(Model))
+                    {
+                        snackBar.Add("Record updated successifully.", Severity.Success);
+                        MudDialog.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Opps! Something went wrong, try again later.", Severity.Error);
+                    }
+                }
+            }
 
         }
         void ModelInvalid()
