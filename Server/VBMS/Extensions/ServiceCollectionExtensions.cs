@@ -18,6 +18,7 @@ namespace VBMS.Extensions
               options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), options2 =>
               {
                   options2.MigrationsAssembly("VBMS.Infrastructure");
+                  options2.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
 
               });
 

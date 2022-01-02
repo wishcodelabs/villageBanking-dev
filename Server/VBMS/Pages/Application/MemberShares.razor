@@ -6,12 +6,17 @@
                 <MudItem align="center" xs="12">
                     <MudPaper Elevation="20" Class="title-card p-4 ">
                         <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
-                            <MudItem xs="12" md="6">
-                                <MudText Class="text-white" Align="Align.Start" Typo="Typo.h5">View Member Shares: Only those approved.</MudText>
+                            <MudItem xs="12" md="4">
+                                <MudText Class="text-white" Align="Align.Start" Typo="Typo.h3">Member Shares</MudText>
                             </MudItem>
+                            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                <MudItem xs="12" md="4">
+                                    <MudAlert Style="width:400px" Severity="Severity.Info" Variant="Variant.Filled">Only approved investments are shown.<a class="active" href="/group/investments">&nbsp; more</a></MudAlert>
+                                </MudItem>
+                            </MudHidden>
                             @if (openPeriods.Any())
                             {
-                                <MudItem xs="12" md="6">
+                                <MudItem xs="12" md="4">
                                     <MudSelect T="int"
                                            Dense="true"
                                            Style="width :300px"
@@ -31,7 +36,9 @@
                             }
                             else
                             {
-                                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                                <MudItem xs="12" md="4">
+                                    <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                                </MudItem>
                             }
                         </MudGrid>
                     </MudPaper>
@@ -89,10 +96,12 @@
     .cont {
         background-color: #13262F;
     }
-    .bar{
+
+    .bar {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px
     }
+
     .title-card {
         border-radius: 10px;
         background-color: #13262F;
