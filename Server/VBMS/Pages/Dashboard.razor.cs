@@ -5,10 +5,18 @@
         [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         VillageBankGroup VillageBank { get; set; } = new();
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
-        int memberCount = 0;
+        int memberCount, currentPeriod = 0;
+        decimal totalInvestments = 0;
+        List<InvestmentPeriod> openPeriods { get; set; } = new();
         ClaimsPrincipal claimsPrincipal = new();
         Guid userGuid;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        async Task Refresh()
+        {
+            memberCount = await membershipService.CountMembers(VillageBank.Id);
+            totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
+            StateHasChanged();
+        }
         protected override async Task OnInitializedAsync()
         {
             searchData = new int[] { 10, 15, 25, 40 };
@@ -27,7 +35,8 @@
                     if (admin != null)
                     {
                         VillageBank = admin.Group;
-                        memberCount = await membershipService.CountMembers(VillageBank.Id);
+                        openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+                        await Refresh();
                     }
                 }
                 else
@@ -58,7 +67,12 @@
             }
 
         }
-
+        async void Filter(int value)
+        {
+            currentPeriod = value;
+            await Refresh();
+            StateHasChanged();
+        }
         async Task ActivateGroup()
         {
             if (await villageBankGroupService.ActivateGroup(VillageBank.Id))

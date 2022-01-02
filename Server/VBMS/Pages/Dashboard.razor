@@ -3,14 +3,49 @@
 <AuthorizeView Roles="GroupAdmin">
     <Authorized>
         <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-            @if (!VillageBank.IsActive)
-            {
-                <MudAlert Class="group-inactive" Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
-            }
+            
+
+
             <div class="bg-gray-800 pt-3">
                 <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
                     <h3 class="font-bold pl-2 text-white">Group Analytics</h3>
+                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
 
+                @if (!VillageBank.IsActive)
+                {
+                    <MudItem xs="6" md="3">
+                        <MudAlert Class="group-inactive" Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
+                    </MudItem>
+                }
+                else
+                {
+
+                    @if (openPeriods.Any())
+                    {
+                           <MudItem xs="6" md="3">
+                            <MudSelect T="int"
+                               Dense="true"
+                               ValueChanged="(e)=>Filter(e)"
+                               Immediate="true"
+                               Variant="Variant.Filled"
+                               Label="Filter By Investment Period"
+                               Required="true">
+                                <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                @foreach (var item in openPeriods)
+                                {
+                                    <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                    }       
+                    
+                }
+
+            </MudGrid>
                 </div>
             </div>
             <div class="main-content flex-1 bg-gray-100 p-4">
@@ -25,7 +60,7 @@
                                 </div>
                                 <div class="flex-1 text-right md:text-center">
                                     <h5 class="font-bold uppercase text-gray-600">Total Investments</h5>
-                                    <h3 class="font-bold text-3xl">ZMW 3249 <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                    <h3 class="font-bold text-3xl">ZMW @totalInvestments.ToString("N2") <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
                                 </div>
                             </div>
                         </div>

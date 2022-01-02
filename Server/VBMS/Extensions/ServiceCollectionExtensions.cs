@@ -1,4 +1,6 @@
-﻿namespace VBMS.Extensions
+﻿
+
+namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
@@ -54,6 +56,7 @@
                     .AddTransient<InvestmentPeriodService>()
                     .AddTransient<InvestmentService>()
                     .AddTransient<GroupAdminService>()
+                    .AddTransient<IDashboardService, DashboardService>()
                     .AddTransient<CityService>()
                     .AddTransient<ProvinceService>()
                     .AddTransient<MembershipService>();
