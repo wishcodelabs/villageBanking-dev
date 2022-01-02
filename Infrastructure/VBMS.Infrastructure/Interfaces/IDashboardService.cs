@@ -15,6 +15,7 @@
 
         Task<List<double>> GetMonthlyRevenue(int groupId, int investmentPeriodId);
         Task<List<int>> GetOverallPerf(int groupId, int investmentPeriodId);
+        Task<decimal> GetByStatusAsync(Status status, int groupId, int investmentPeriodId);
 
     }
 }

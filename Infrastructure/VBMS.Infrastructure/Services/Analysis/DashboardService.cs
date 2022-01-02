@@ -72,6 +72,30 @@
             return total;
 
         }
+        public async Task<decimal> GetByStatusAsync(Status status, int groupId, int investmentPeriodId)
+        {
+
+            var total = 0.0M;
+            if (investmentPeriodId == 0)
+            {
+                var nvestments = await context.Set<Investment>()
+                                                     .Include(s => s.Investor)
+                                                     .Where(i => i.Investor.VillageGroupId == groupId && i.Status == status)
+                                                     .ToListAsync();
+                nvestments.ForEach(x => { total += x.AmountInvested; });
+            }
+            else
+            {
+                var investments = await context.Set<Investment>()
+                                                    .Include(s => s.Investor)
+                                                    .Where(i => i.InvestmentPeriodId == investmentPeriodId && i.Investor.VillageGroupId == groupId && i.Status == status)
+                                                    .ToListAsync();
+                investments.ForEach(x => { total += x.AmountInvested; });
+            }
+
+            return total;
+
+        }
 
 
     }

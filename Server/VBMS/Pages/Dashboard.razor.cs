@@ -6,7 +6,7 @@
         VillageBankGroup VillageBank { get; set; } = new();
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
         int memberCount, currentPeriod = 0;
-        decimal totalInvestments = 0;
+        decimal totalInvestments, approvedInvestments, unApprovedInvestments = 0;
         List<InvestmentPeriod> openPeriods { get; set; } = new();
         ClaimsPrincipal claimsPrincipal = new();
         Guid userGuid;
@@ -15,6 +15,8 @@
         {
             memberCount = await membershipService.CountMembers(VillageBank.Id);
             totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
+            approvedInvestments = await dashboardService.GetByStatusAsync(Status.Approved, VillageBank.Id, currentPeriod);
+            unApprovedInvestments = await dashboardService.GetByStatusAsync(Status.Submitted, VillageBank.Id, currentPeriod);
             StateHasChanged();
         }
         protected override async Task OnInitializedAsync()
