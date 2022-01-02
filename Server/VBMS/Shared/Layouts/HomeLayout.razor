@@ -41,13 +41,15 @@
                     </li>
 
                     <form action="#" class="form-inline ml-lg-3">
-                       @if(!isSignedIn)
+                        @if (!isSignedIn)
                         {
                             <a href="login" title="Already a member? Login" class="btn btn-danger">Login Now</a>
-                        }else{
-                               <a href="logout" @onclick='(()=>snackBar.Add("Logout Success",Severity.Success))' title="Sign out if the application" class="btn btn-primary">Logout</a>  
-                            }
-                            </form>
+                        }
+                        else
+                        {
+                            <a href="logout" @onclick='(()=>snackBar.Add("Logout Success",Severity.Success))' title="Sign out if the application" class="btn btn-primary">Logout</a>
+                        }
+                    </form>
                 </div>
             </div>
         </div>
@@ -56,9 +58,19 @@
         <h1 class="display-3 text-white">Village Banking Management System</h1>
         <p class="h3 font-weight-light text-white">Working together toward a common goal. Alive and prospering.</p>
         <p class="mt-4">
-            <a href="register" title="Register as a village group" class="btn btn-danger btn-pill mr-2">
-                Join Now
-            </a> <button title="Apply for a loan from your group" class="btn btn-success btn-pill">Apply for a Loan</button>
+            @if (!isSignedIn)
+            {
+                <a href="register" title="Register as a village group" class="btn btn-danger btn-pill mr-2">
+                    Join Now
+                </a>
+            }
+            else
+            {
+               <a href="/dashboard" title="View your dashboard" class="btn btn-danger btn-pill mr-2">
+                    Dashboard
+                </a> 
+            }
+            <button title="Apply for a loan from your group" class="btn btn-success btn-pill">Apply for a Loan</button>
         </p>
     </div>
 </header>
@@ -101,7 +113,7 @@
                     Achieve prosperity with an all-in-one digital solution for village banks.
                 </h2>
                 <p class="mb-5">
-                    We help village banks manage their members, loan lifecycle and time-consuming task such as tracking repayments. We provide a complete solution to help in validating memberships and loan applications and determine eligibility. 
+                    We help village banks manage their members, loan lifecycle and time-consuming task such as tracking repayments. We provide a complete solution to help in validating memberships and loan applications and determine eligibility.
                 </p>
                 <p>
                     <button class="btn btn-rounded btn-danger raise-on-hover" data-toggle="lightbox" data-target="#demoVideoLightbox"><i class="mdi mdi-play"></i></button><span class="button-label text-danger font-weight-medium ml-3">SEE HOW WE WORKS</span>
@@ -224,11 +236,11 @@
 <footer class="footer">
     <MudGrid Justify="Justify.SpaceBetween">
         <MudItem md="4" sm="12" Class="footer-navigation">
-            <MudText Typo ="Typo.h4" Class="text-white">VBMS Zambia</MudText>
+            <MudText Typo="Typo.h4" Class="text-white">VBMS Zambia</MudText>
             <p class="links"><a href="#">Home</a><strong> · </strong><a href="#">Blog</a><strong> · </strong><a href="#">Pricing</a><strong> · </strong><a href="#">About</a><strong> · </strong><a href="#">Faq</a><strong> · </strong><a href="#">Contact</a></p>
-            
+
         </MudItem>
-        <MudItem md="4" sm="12"Class="footer-contacts">
+        <MudItem md="4" sm="12" Class="footer-contacts">
             <div>
                 <span class="fa fa-map-marker footer-contacts-icon"> </span>
                 <p><span class="new-line-span">21 Riverside, Kitwe</span>Copperbelt, ZAMBIA</p>
@@ -247,10 +259,10 @@
             <h4>About the company</h4>
             <p>VBMS is a Zambian leading Village Banking Software.</p>
             <div class="social-links social-icons">
-                <a href="#"><MudIcon Icon="@Icons.Material.Filled.Facebook"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.Twitter"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.LinkedIn"/></a>
-                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp"/></a>
+                <a href="#"><MudIcon Icon="@Icons.Material.Filled.Facebook" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.Twitter" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.LinkedIn" /></a>
+                <a href="#"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp" /></a>
             </div>
         </MudItem>
         <MudItem xs="12">
@@ -260,17 +272,17 @@
 
 </footer>
 <PageTitle>Home - Village Banking Management System</PageTitle>
-@code{
+@code {
 
-    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask{ get; set; }
+    [CascadingParameter] protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
     bool isSignedIn;
     protected override async Task OnInitializedAsync()
     {
-        var user = (await AuthenticationStateTask).User; 
-        if(user.Identity.IsAuthenticated)
+        var user = (await AuthenticationStateTask).User;
+        if (user.Identity.IsAuthenticated)
         {
             isSignedIn = true;
-            snackBar.Add($"Welcome {await userService.GetFullName(user.Identity.Name)}",Severity.Success);
+            snackBar.Add($"Welcome {await userService.GetFullName(user.Identity.Name)}", Severity.Success);
         }
     }
 }
