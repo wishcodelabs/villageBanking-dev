@@ -66,7 +66,7 @@
                                             <MudItem xs="12">
 
                                                 <h6 class="font-bold uppercase text-gray-600">Shares</h6>
-                                                <p class="font-bold "> @item.MemberShare.NumberOfShares </p>
+                                                <p class="font-bold "> @((item.MemberShare.NumberOfShares * 100).ToString("N2")) % </p>
 
                                             </MudItem>
                                         </MudGrid>
