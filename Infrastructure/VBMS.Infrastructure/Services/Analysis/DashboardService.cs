@@ -52,11 +52,23 @@
         public async Task<decimal> GetTotalInvestments(int groupId, int investmentPeriodId)
         {
             var total = 0.0M;
-            var investments = await context.Set<Investment>()
+            if (investmentPeriodId == 0)
+            {
+                var nvestments = await context.Set<Investment>()
+                                                     .Include(s => s.Investor)
+                                                     .Where(i => i.Investor.VillageGroupId == groupId)
+                                                     .ToListAsync();
+                nvestments.ForEach(x => { total += x.AmountInvested; });
+            }
+            else
+            {
+                var investments = await context.Set<Investment>()
                                                     .Include(s => s.Investor)
                                                     .Where(i => i.InvestmentPeriodId == investmentPeriodId && i.Investor.VillageGroupId == groupId)
                                                     .ToListAsync();
-            investments.ForEach(x => { total += x.AmountInvested; });
+                investments.ForEach(x => { total += x.AmountInvested; });
+            }
+
             return total;
 
         }

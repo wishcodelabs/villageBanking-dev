@@ -8,12 +8,12 @@
 
             <div class="bg-gray-800 pt-3">
                 <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                    <h3 class="font-bold pl-2 text-white">Group Analytics</h3>
+                   
                     <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
-
+                    <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
                 @if (!VillageBank.IsActive)
                 {
-                    <MudItem xs="6" md="3">
+                    <MudItem xs="12" md="3">
                         <MudAlert Class="group-inactive" Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
                     </MudItem>
                 }
@@ -24,12 +24,13 @@
                     {
                            <MudItem xs="6" md="3">
                             <MudSelect T="int"
-                               Dense="true"
-                               ValueChanged="(e)=>Filter(e)"
-                               Immediate="true"
-                               Variant="Variant.Filled"
-                               Label="Filter By Investment Period"
-                               Required="true">
+                                       Dense="true"
+                                       ValueChanged="(e)=>Filter(e)"
+                                       Immediate="true"
+                                       Class="bg-white bar"
+                                       Variant="Variant.Filled"
+                                       Label="Filter by Investment Period"
+                                       Required="true">
                                 <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
                                 @foreach (var item in openPeriods)
                                 {
@@ -242,5 +243,8 @@
     .group-inactive {
         max-width: fit-content;
     }
-
+    .bar{
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px
+    }
 </style>

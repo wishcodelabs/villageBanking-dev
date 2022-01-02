@@ -10,7 +10,7 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudPaper Elevation="24" Class="p-1 banner-color mud-theme-dark bar">
+                    <MudPaper Elevation="24" Class="p-1 bg-gradient-to-r from-blue-900 to-gray-800 shadow text-2xl text-white">
                         <MudGrid Justify="Justify.SpaceBetween">
                             <MudItem xs="6" md="3"><MudButton Class="m-2 mb-1" OnClick="ToggleAdd" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton></MudItem>
                             <MudItem xs="6" md="3">
@@ -97,8 +97,9 @@
         background-color: #13262F;
     }
 
-    .bar {
-        border-radius: 8px
+    .bar{
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px
     }
 
     .title-card {
