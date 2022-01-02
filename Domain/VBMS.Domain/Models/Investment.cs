@@ -23,4 +23,6 @@ public class Investment : AuditableEntity<int>
     {
         DateInvested = DateTime.Now;
     }
+    [NotMapped]
+    public bool IsSelected { get; set; }
 }

@@ -49,6 +49,7 @@
                                Placeholder="Choose .."
                                Label="Investment Period"
                                Required="true">
+                            <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
                             @foreach (var item in periods)
                             {
                                 <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>

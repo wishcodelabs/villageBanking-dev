@@ -13,6 +13,7 @@
                             Clearable="(!IsEditing)"
                             ReadOnly="(IsEditing)"
                             Label="Investor">
+                            <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
                             @foreach (var item in groupMemberships)
                             {
                               <MudSelectItem T="int" Value="@item.Id">@item.PersonalDetails.FirstName  @item.PersonalDetails.LastName (@item.PersonalDetails.NrcNumber)</MudSelectItem>
@@ -26,6 +27,7 @@
                                      For="()=>Model.AmountInvested"
                                      Format="N2" Culture="@_en"
                                      Min="0"
+                                     ReadOnly="(IsEditing)"
                                      HideSpinButtons="true"
                                      Immediate="true"
                                      Adornment="Adornment.End" AdornmentText="ZMW"
@@ -52,6 +54,7 @@
                                Placeholder="Choose .."
                                Label="Investment Period"
                                Required="true">
+                        <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
                             @foreach (var item in periods)
                             {
                                 <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>

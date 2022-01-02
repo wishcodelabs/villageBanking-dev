@@ -26,7 +26,7 @@
 
             }
             periods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBankId);
-            groupMemberships = await membershipService.GetMembers(VillageBankId);
+            groupMemberships = await membershipService.GetMembersByStatus(VillageGroupMemberStatus.Active, VillageBankId);
 
         }
         async Task Submit()
