@@ -22,9 +22,8 @@ public class MembershipService : ServiceBase<VillageGroupMembership, int>
         var list = await GetMembers(groupId);
         return list.Where(m => m.Status == status).ToList();
     }
-    public async Task<VillageBankGroup> GetGroupAsync(Guid guid)
+    public async Task<VillageGroupMembership> GetByGuid(Guid userGuid)
     {
-        var m = await Repository.Entities(true).FirstOrDefaultAsync(m => m.UserGuid == guid);
-        return m.VillageBankGroup;
+        return await Repository.Entities(true).FirstOrDefaultAsync(m => m.UserGuid == userGuid);
     }
 }

@@ -7,6 +7,7 @@
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
         int memberCount, currentPeriod, newLoanApplications, approvedLoans = 0;
         bool isAdmin = false;
+        VillageGroupMembership Membership = new();
         double totalShares;
         decimal totalInvestments, totalDebt, totalEarnings, approvedPayments, newPayments, totalDeptors, totalRevenue, approvedInvestments, unApprovedInvestments = 0;
         List<InvestmentPeriod> openPeriods { get; set; } = new();
@@ -25,7 +26,11 @@
             }
             else
             {
-
+                var share = await memberShareService.GetMemberShare(currentPeriod, Membership.VillageGroupId, Membership.Id);
+                approvedInvestments = share.TotalInvestment;
+                totalShares = share.NumberOfShares;
+                totalInvestments = await investmentService.GetUserTotalInvestments(Membership.UserGuid, currentPeriod);
+                unApprovedInvestments = totalInvestments - approvedInvestments;
             }
         }
         protected override async Task OnInitializedAsync()
@@ -52,7 +57,8 @@
                 }
                 else
                 {
-                    VillageBank = await membershipService.GetGroupAsync(userGuid);
+                    Membership = await membershipService.GetByGuid(userGuid);
+                    VillageBank = Membership.VillageBankGroup;
                 }
                 openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
                 await Refresh();

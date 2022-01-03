@@ -37,6 +37,21 @@ namespace VBMS.Infrastructure.Services.Application
             var list = await GetByPeriod(periodId, groupId);
             return list.Where(l => l.Status == status).ToList();
         }
+        public async Task<decimal> GetUserTotalInvestments(Guid userGuid, int periodId)
+        {
+            var total = 0M;
+            var myInvest = new List<Investment>();
+            if (periodId == 0)
+            {
+                myInvest = await Repository.Entities().Where(i => i.Investor.UserGuid == userGuid).ToListAsync();
+            }
+            else
+            {
+                myInvest = await Repository.Entities().Where(i => i.Investor.UserGuid == userGuid && i.InvestmentPeriodId == periodId).ToListAsync();
+            }
+            myInvest.ForEach(i => total += i.AmountInvested);
+            return total;
+        }
         public async Task<bool> ToggleStatus(Investment record)
         {
             if (record.Status == Status.Pending)
