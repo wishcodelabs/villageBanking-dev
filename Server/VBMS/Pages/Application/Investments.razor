@@ -17,9 +17,10 @@
                                 <MudTextField OnBlur="Refresh" Immediate="true" ValueChanged="(e)=>Search(e)" Class="bg-white bar" T="string" Label="Search" Placeholder="Type here to search" Clearable="true" T="string" Variant="Variant.Filled" />
                             </MudItem>
                             <MudHidden Breakpoint="Breakpoint.MdAndDown">
-                                <MudItem xs="6" md="3">
-                                    @if (openPeriods.Any())
-                                    {
+                                @if (openPeriods.Any())
+                                {
+                                    <MudItem xs="6" md="3">
+
                                         <MudSelect T="int"
                                                Dense="true"
                                                Class="bg-white bar"
@@ -34,12 +35,15 @@
                                                 <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
                                             }
                                         </MudSelect>
-                                    }
-                                    else
-                                    {
-                                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
-                                    }
-                                </MudItem>
+                                    </MudItem>
+                                }
+                                else
+                                {
+                                    <MudItem xs="6" md="6">
+                                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group .</MudAlert>
+
+                                    </MudItem>
+                                }
                             </MudHidden>
                         </MudGrid>
                     </MudPaper>
