@@ -96,6 +96,10 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         {
             entity.ToTable("Loans");
         });
+        modelBuilder.Entity<LoanApplication>(entity =>
+        {
+            entity.ToTable("LoanApplications");
+        });
         modelBuilder.Entity<Investment>(e =>
         {
             e.ToTable("Investments");
