@@ -78,7 +78,7 @@
                                     <td>@item.CreatedBy</td>
                                     <td><MudChip title="Approve this investment?" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
                                     <td>
-                                        
+                                        @(!string.IsNullOrEmpty(item.ApprovedBy)?item.ApprovedBy:"N/A")
                                     </td>
                                 </tr>
                             }

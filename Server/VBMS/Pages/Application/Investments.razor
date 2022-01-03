@@ -61,6 +61,7 @@
                                 <th>Amount Invested</th>
                                 <th>Added By</th>
                                 <th>Status</th>
+                                <th>Approved By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -78,6 +79,9 @@
                                     <td>@item.AmountInvested.ToString("N2") ZMW</td>
                                     <td>@item.CreatedBy</td>
                                     <td><MudChip title="Approve this investment?" OnClick="()=>Approve(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                                    <td>
+                                        @(!string.IsNullOrEmpty(item.ApprovedBy)?item.ApprovedBy:"N/A")
+                                    </td>
                                     <td>
                                         <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
                                         <MudButton title="Permanently delete this item?" OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
