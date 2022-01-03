@@ -2,22 +2,46 @@
 @page "/dashboard"
 <AuthorizeView Policy="RequireAdminRole">
     <NotAuthorized>
-        <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+        <MudContainer Class="mt-16 px-5" MaxWidth="MaxWidth.False">
+            <div class="bg-white shadow rounded overflow-hidden sticky-md-top">
+                <div class="px-4 pt-0 pb-2 cover">
+                    <div class="media align-items-end profile-head">
+                        <div class="profile mr-3"><img src="@image" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                        <div class="media-body mb-5 text-white">
+                            <h3 class="mt-0 mb-4 text-white">Hi, @Membership.PersonalDetails.FirstName @Membership.PersonalDetails.LastName</h3>
+                            <p class="large mb-6 mt-n2 text-black"> <i class="fas fa-map-marker-alt mr-2"></i>@VillageBank.GroupName</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-4 d-flex justify-content-end text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">215</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Photos</small>
+                        </li>
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">745</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Followers</small>
+                        </li>
+                        <li class="list-inline-item">
+                            <h5 class="font-weight-bold mb-0 d-block">340</h5><small class="text-muted"> <i class="fas fa-user mr-1"></i>Following</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="bg-gray-800 pt-3">
                 <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                   
-                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
-                    <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
-                @if (!VillageBank.IsActive)
-                {
-                }
-                else
-                {
 
-                    @if (openPeriods.Any())
-                    {
-                           <MudItem xs="6" md="3">
-                            <MudSelect T="int"
+                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
+                        <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
+                        @if (!VillageBank.IsActive)
+                        {
+                        }
+                        else
+                        {
+
+                            @if (openPeriods.Any())
+                            {
+                                <MudItem xs="6" md="3">
+                                    <MudSelect T="int"
                                        Dense="true"
                                        ValueChanged="(e)=>Filter(e)"
                                        Immediate="true"
@@ -25,22 +49,22 @@
                                        Variant="Variant.Filled"
                                        Label="Filter by Investment Period"
                                        Required="true">
-                                <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
-                                @foreach (var item in openPeriods)
-                                {
-                                    <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                    }
-                    else
-                    {
-                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
-                    }       
-                    
-                }
+                                        <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                        @foreach (var item in openPeriods)
+                                        {
+                                            <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                            }
 
-            </MudGrid>
+                        }
+
+                    </MudGrid>
                 </div>
             </div>
             <div class="main-content flex-1 bg-gray-100 p-4">
@@ -181,7 +205,7 @@
                         </div>
                         <!--/Metric Card-->
                     </MudItem>
-                     
+
                     <MudItem md="4" xs="12" sm="12">
 
                         <!--Graph Card-->
@@ -272,22 +296,22 @@
         <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
             <div class="bg-gray-800 pt-3">
                 <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                   
-                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
-                    <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
-                @if (!VillageBank.IsActive)
-                {
-                    <MudItem xs="12" md="3">
-                        <MudAlert Class="group-inactive" Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
-                    </MudItem>
-                }
-                else
-                {
 
-                    @if (openPeriods.Any())
-                    {
-                           <MudItem xs="6" md="3">
-                            <MudSelect T="int"
+                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
+                        <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
+                        @if (!VillageBank.IsActive)
+                        {
+                            <MudItem xs="12" md="3">
+                                <MudAlert Class="group-inactive" Variant="Variant.Filled" Severity="Severity.Warning" OnClick="ToggleActivateGroup">@VillageBank.GroupName is currently inactive click here to activate</MudAlert>
+                            </MudItem>
+                        }
+                        else
+                        {
+
+                            @if (openPeriods.Any())
+                            {
+                                <MudItem xs="6" md="3">
+                                    <MudSelect T="int"
                                        Dense="true"
                                        ValueChanged="(e)=>Filter(e)"
                                        Immediate="true"
@@ -295,22 +319,22 @@
                                        Variant="Variant.Filled"
                                        Label="Filter by Investment Period"
                                        Required="true">
-                                <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
-                                @foreach (var item in openPeriods)
-                                {
-                                    <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>
-                    }
-                    else
-                    {
-                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
-                    }       
-                    
-                }
+                                        <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                        @foreach (var item in openPeriods)
+                                        {
+                                            <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                            }
 
-            </MudGrid>
+                        }
+
+                    </MudGrid>
                 </div>
             </div>
             <div class="main-content flex-1 bg-gray-100 p-4">
@@ -451,7 +475,7 @@
                         </div>
                         <!--/Metric Card-->
                     </MudItem>
-                     
+
                     <MudItem md="4" xs="12" sm="12">
 
                         <!--Graph Card-->
@@ -548,10 +572,21 @@
         background-color: #13262F;
     }
 
+    .profile-head {
+        transform: translateY(5rem)
+    }
+
+    .cover {
+        background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+        background-size: cover;
+        background-repeat: no-repeat
+    }
+
     .group-inactive {
         max-width: fit-content;
     }
-    .bar{
+
+    .bar {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px
     }

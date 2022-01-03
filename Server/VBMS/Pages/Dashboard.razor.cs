@@ -13,6 +13,7 @@
         List<InvestmentPeriod> openPeriods { get; set; } = new();
         ClaimsPrincipal claimsPrincipal = new();
         Guid userGuid;
+        string image;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         async Task Refresh()
         {
@@ -29,6 +30,7 @@
                 var share = await memberShareService.GetMemberShare(currentPeriod, Membership.VillageGroupId, Membership.Id);
                 approvedInvestments = share.TotalInvestment;
                 totalShares = share.NumberOfShares;
+                image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";
                 totalInvestments = await investmentService.GetUserTotalInvestments(Membership.UserGuid, currentPeriod);
                 unApprovedInvestments = totalInvestments - approvedInvestments;
             }
@@ -41,6 +43,7 @@
             admissionData = new int[] { 56, 100, 150, 63, 58, 300, 30 };
             consolData = new int[] { 25, 40, 35 };
             claimsPrincipal = (await AuthenticationStateTask).User;
+            Membership.PersonalDetails = new();
 
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
