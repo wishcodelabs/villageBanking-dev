@@ -1,7 +1,6 @@
-﻿@page "/group/investments"
-
+﻿@page "/member/investments"
 <AuthorizeView Roles="GroupAdmin">
-    <Authorized>
+    <NotAuthorized>
         <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
             <MudGrid Spacing="3" Justify="Justify.Center">
                 <MudItem align="center" xs="12">
@@ -12,7 +11,7 @@
                 <MudItem xs="12">
                     <MudPaper Elevation="24" Class="p-1 mt-4 bg-gradient-to-r from-blue-900 to-gray-800 shadow text-2xl text-white">
                         <MudGrid Justify="Justify.SpaceBetween">
-                            <MudItem xs="6" md="3"><MudButton Class="m-2 mb-1" OnClick="ToggleAdd" Color="Color.Tertiary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AddCircle">Add</MudButton></MudItem>
+                            <MudItem xs="6" md="3"><MudText Class="m-2 mb-1 text-white">Group Name: @VillageBank.GroupName</MudText></MudItem>
                             <MudItem xs="6" md="3">
                                 <MudTextField OnBlur="Refresh" Immediate="true" ValueChanged="(e)=>Search(e)" Class="bg-white bar" T="string" Label="Search" Placeholder="Type here to search" Clearable="true" T="string" Variant="Variant.Filled" />
                             </MudItem>
@@ -59,9 +58,9 @@
                                 <th>Investor Name</th>
                                 <th>Investor NRC</th>
                                 <th>Amount Invested</th>
-                                <th>Added By</th>
+                                <th>Recieved By</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Approved By</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,10 +76,9 @@
                                     <td>@item.Investor.PersonalDetails.NrcNumber</td>
                                     <td>@item.AmountInvested.ToString("N2") ZMW</td>
                                     <td>@item.CreatedBy</td>
-                                    <td><MudChip title="Approve this investment?" OnClick="()=>Approve(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
+                                    <td><MudChip title="Approve this investment?" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
                                     <td>
-                                        <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                        <MudButton title="Permanently delete this item?" OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
+                                        
                                     </td>
                                 </tr>
                             }
@@ -90,8 +88,9 @@
                 </MudItem>
             </MudGrid>
         </MudContainer>
-    </Authorized>
+    </NotAuthorized>
 </AuthorizeView>
+
 <style>
     body {
         background-color: #13262F;
@@ -125,7 +124,8 @@
     Guid myGuid = new();
     string selectedRow;
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
-    int investmentPeriod;
+    int currentPeriod;
+    VillageGroupMembership Membership { get; set; } = new();
     List<InvestmentPeriod> openPeriods { get; set; } = new();
     List<Investment> DataSource { get; set; } = new();
     HashSet<Investment> list;
@@ -136,8 +136,8 @@
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
             myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
-            var admin = await groupAdminService.GetByUserGuid(myGuid);
-            VillageBank = admin.Group;
+            Membership = await membershipService.GetByGuid(myGuid);
+            VillageBank = Membership.VillageBankGroup;
             await Refresh();
             openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
 
@@ -145,66 +145,7 @@
 
         }
     }
-    async Task ToggleAdd()
-    {
-        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id };
-        var dialog = dialogService.Show<AddInvestmentModal>("Add New Investmet", parameters, maxWidth);
-        var result = await dialog.Result;
-        if (!result.Cancelled)
-        {
-            if ((bool)result.Data)
-            {
-
-                await Refresh();
-            }
-        }
-    }
-    async Task ToggleEdit(Investment record)
-    {
-        var parameters = new DialogParameters { ["VillageBankId"] = VillageBank.Id, ["Model"] = record, ["IsEditing"] = true };
-        var dialog = dialogService.Show<AddInvestmentModal>($"Edit Record", parameters, maxWidth);
-        var result = await dialog.Result;
-        if (!result.Cancelled)
-        {
-            if ((bool)result.Data)
-            {
-                StateHasChanged();
-            }
-        }
-    }
-
-    async Task ToggleDelete(Investment record)
-    {
-        if (await memberRoleService.IsChairperson(myGuid))
-        {
-            var parameters = new DialogParameters();
-            parameters.Add("ContentText", "this record");
-            parameters.Add("DialogType", DialogType.Delete);
-            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
-            var dialog = dialogService.Show<SimpleDialog>("Delete", parameters, options);
-            var response = await dialog.Result;
-            if (!response.Cancelled)
-            {
-                if ((bool)response.Data)
-                {
-                    //do the delete
-                    if (await investmentService.DeleteAsync(record))
-                    {
-                        snackBar.Add("Record deleted successifully", Severity.Success);
-                        await Refresh();
-                    }
-                    else
-                    {
-                        snackBar.Add("Something went wrong while trying to delete the record", Severity.Error);
-                    }
-                }
-            }
-        }
-        else
-        {
-            snackBar.Add("Only a group chairperson can delete these records.", Severity.Error);
-        }
-    }
+    
     void Search(string searchString)
     {
         DataSource = new();
@@ -220,57 +161,15 @@
     async Task Refresh()
     {
         DataSource = new();
-        DataSource = await investmentService.GetByPeriod(investmentPeriod, VillageBank.Id);
+        DataSource = await investmentService.GetByUserGuid(Membership.UserGuid,currentPeriod);
         list = new HashSet<Investment>(DataSource);
         StateHasChanged();
     }
     async void Filter(int value)
     {
-        investmentPeriod = value;
+        currentPeriod = value;
         await Refresh();
         StateHasChanged();
     }
-    async void Approve(Investment record)
-    {
-        if (record.Status == Status.Approved)
-        {
-            return;
-        }
-        else
-        {
-            if (await memberRoleService.IsChairperson(myGuid))
-            {
-
-                var parameters = new DialogParameters();
-                parameters.Add("ContentText", "Do you want to approve this investment?");
-                parameters.Add("DialogType", DialogType.Confirm);
-                var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, DisableBackdropClick = true };
-                var dialog = dialogService.Show<SimpleDialog>("Approve Investment", parameters, options);
-                var response = await dialog.Result;
-                if (!response.Cancelled)
-                {
-
-
-                    if (await investmentService.ToggleStatus(record))
-                    {
-                        snackBar.Add("Investment Approved.", Severity.Success);
-                        await Refresh();
-                    }
-                    else
-                    {
-                        snackBar.Add("Oops, Something went wrong, try again later.", Severity.Error);
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                snackBar.Add("Only a group chairperson can approve investments.", Severity.Error);
-            }
-
-        }
-    }
+   
 }

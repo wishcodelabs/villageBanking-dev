@@ -4,8 +4,10 @@ namespace VBMS.Infrastructure.Services.Application
 {
     public class InvestmentService : ServiceBase<Investment, int>
     {
-        public InvestmentService(IUnitOfWork<int> _unitOfWork) : base(_unitOfWork)
+        readonly ICurrentUserService currentUserService;
+        public InvestmentService(IUnitOfWork<int> _unitOfWork, ICurrentUserService currentUserService) : base(_unitOfWork)
         {
+            this.currentUserService = currentUserService;
         }
         public async Task<List<Investment>> GetByGroup(int groupId)
         {
@@ -37,6 +39,19 @@ namespace VBMS.Infrastructure.Services.Application
             var list = await GetByPeriod(periodId, groupId);
             return list.Where(l => l.Status == status).ToList();
         }
+        public async Task<List<Investment>> GetByUserGuid(Guid userGuid, int periodId)
+        {
+            var myInvest = new List<Investment>();
+            if (periodId == 0)
+            {
+                myInvest = await Repository.Entities().Where(i => i.Investor.UserGuid == userGuid).ToListAsync();
+            }
+            else
+            {
+                myInvest = await Repository.Entities().Where(i => i.Investor.UserGuid == userGuid && i.InvestmentPeriodId == periodId).ToListAsync();
+            }
+            return myInvest;
+        }
         public async Task<decimal> GetUserTotalInvestments(Guid userGuid, int periodId)
         {
             var total = 0M;
@@ -57,6 +72,7 @@ namespace VBMS.Infrastructure.Services.Application
             if (record.Status == Status.Pending)
             {
                 record.Status = Status.Approved;
+                record.ApprovedBy = await currentUserService.GetUserName();
             }
             else
             {
