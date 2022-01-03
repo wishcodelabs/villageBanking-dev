@@ -39,7 +39,7 @@ namespace VBMS.Infrastructure.Services.Application
         }
         public async Task<bool> ToggleStatus(Investment record)
         {
-            if (record.Status == Status.Submitted)
+            if (record.Status == Status.Pending)
             {
                 record.Status = Status.Approved;
             }

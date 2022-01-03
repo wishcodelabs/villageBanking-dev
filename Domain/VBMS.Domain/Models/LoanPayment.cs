@@ -2,7 +2,6 @@
 
 public class LoanPayment : Entity<int>
 {
-    public string LoanNumber { get; set; }
 
     public int ApplicantId { get; set; }
 
@@ -15,5 +14,7 @@ public class LoanPayment : Entity<int>
     [DataType(DataType.Currency)]
     public decimal Amount { get; set; }
 
+    public Status Status { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
+    public virtual Loan Loan { get; set; }
 }

@@ -10,6 +10,8 @@
 
         public decimal ApprovedAmount { get; set; }
 
+        public DateTime DateDue { get; set; }
+
         public DateTime DateSubmitted { get; set; }
 
         public LoanApplicationStatus Status { get; set; }
@@ -19,6 +21,7 @@
         public string Details { get; set; }
         public virtual LoanType LoanType { get; set; }
         public virtual Applicant Applicant { get; set; }
+        public virtual List<LoanPayment> Payments { get; set; }
 
     }
 }

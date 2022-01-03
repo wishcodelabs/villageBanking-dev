@@ -2,7 +2,7 @@
 {
     public enum Status : int
     {
-        Submitted,
+        Pending,
         Approved
     }
     public enum LoanApplicationStatus
