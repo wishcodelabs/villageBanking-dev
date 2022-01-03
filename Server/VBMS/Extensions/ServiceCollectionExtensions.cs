@@ -1,6 +1,4 @@
-﻿
-
-namespace VBMS.Extensions
+﻿namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
@@ -49,6 +47,7 @@ namespace VBMS.Extensions
                     .AddTransient<GroupMemberRoleService>()
                     .AddTransient<GroupMemberShareService>()
                     .AddTransient<LoanApplicantService>()
+                    .AddTransient<LoanApplicationService>()
                     .AddTransient<LoanTypeService>()
                     .AddTransient<LoanPaymentService>()
                     .AddTransient<LoanInterestRateService>()
