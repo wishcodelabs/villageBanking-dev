@@ -6,18 +6,27 @@
         VillageBankGroup VillageBank { get; set; } = new();
         int[] searchData, clicksData, applyChartData, admissionData, consolData;
         int memberCount, currentPeriod, newLoanApplications, approvedLoans = 0;
-        decimal totalInvestments, newPayments, totalDeptors, totalRevenue, approvedInvestments, unApprovedInvestments = 0;
+        bool isAdmin = false;
+        double totalShares;
+        decimal totalInvestments, totalDebt, totalEarnings, approvedPayments, newPayments, totalDeptors, totalRevenue, approvedInvestments, unApprovedInvestments = 0;
         List<InvestmentPeriod> openPeriods { get; set; } = new();
         ClaimsPrincipal claimsPrincipal = new();
         Guid userGuid;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         async Task Refresh()
         {
-            memberCount = await membershipService.CountMembers(VillageBank.Id);
-            totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
-            approvedInvestments = await dashboardService.GetByStatusAsync(Status.Approved, VillageBank.Id, currentPeriod);
-            unApprovedInvestments = await dashboardService.GetByStatusAsync(Status.Pending, VillageBank.Id, currentPeriod);
-            StateHasChanged();
+            if (isAdmin)
+            {
+                memberCount = await membershipService.CountMembers(VillageBank.Id);
+                totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
+                approvedInvestments = await dashboardService.GetByStatusAsync(Status.Approved, VillageBank.Id, currentPeriod);
+                unApprovedInvestments = await dashboardService.GetByStatusAsync(Status.Pending, VillageBank.Id, currentPeriod);
+                StateHasChanged();
+            }
+            else
+            {
+
+            }
         }
         protected override async Task OnInitializedAsync()
         {
@@ -37,15 +46,16 @@
                     if (admin != null)
                     {
                         VillageBank = admin.Group;
-                        openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
-                        await Refresh();
+                        isAdmin = true;
+
                     }
                 }
                 else
                 {
                     VillageBank = await membershipService.GetGroupAsync(userGuid);
                 }
-
+                openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+                await Refresh();
             }
 
         }

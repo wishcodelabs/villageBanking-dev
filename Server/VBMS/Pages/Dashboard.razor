@@ -1,11 +1,275 @@
 ﻿@page "/admin/dashboard"
 @page "/dashboard"
-<AuthorizeView Roles="GroupAdmin">
+<AuthorizeView Policy="RequireAdminRole">
+    <NotAuthorized>
+        <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
+            <div class="bg-gray-800 pt-3">
+                <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
+                   
+                    <MudGrid Justify="Justify.SpaceBetween" Spacing="3">
+                    <MudItem xs="12" md="3"><h3 class="font-bold pl-2 text-white">Group Analytics</h3></MudItem>
+                @if (!VillageBank.IsActive)
+                {
+                }
+                else
+                {
+
+                    @if (openPeriods.Any())
+                    {
+                           <MudItem xs="6" md="3">
+                            <MudSelect T="int"
+                                       Dense="true"
+                                       ValueChanged="(e)=>Filter(e)"
+                                       Immediate="true"
+                                       Class="bg-white bar"
+                                       Variant="Variant.Filled"
+                                       Label="Filter by Investment Period"
+                                       Required="true">
+                                <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                @foreach (var item in openPeriods)
+                                {
+                                    <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group . <a class="active" href="/settings/investment-periods">Click here to open</a></MudAlert>
+                    }       
+                    
+                }
+
+            </MudGrid>
+                </div>
+            </div>
+            <div class="main-content flex-1 bg-gray-100 p-4">
+
+                <MudGrid Spacing="3" Justify="Justify.FlexStart">
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-green-600"><i class="fa fa-coins fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">My Investments</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @totalInvestments.ToString("N2") <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-pink-200 to-pink-100 border-b-4 border-pink-500 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-pink-600"><i class="fas fa-users fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Total Shares</h5>
+                                    <h3 class="font-bold text-3xl">@((totalShares * 100).ToString("N2")) <span class="text-pink-500"><i class="fas fa-exchange-alt"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-yellow-200 to-yellow-100 border-b-4 border-yellow-600 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-yellow-600"><i class="fas fa-folder-plus fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Pending Loan Applications</h5>
+                                    <h3 class="font-bold text-3xl">@newLoanApplications <span class="text-yellow-600"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-blue-200 to-blue-100 border-b-4 border-blue-500 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-blue-600"><i class="fas fa-clipboard-check fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Approved Loans</h5>
+                                    <h3 class="font-bold text-3xl">@approvedLoans <span class="text-blue-600"><i class="fas fa-caret-up"></i></span> </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-indigo-200 to-indigo-100 border-b-4 border-indigo-500 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-indigo-600"><i class="fas fa-tasks fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Approved Investments</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @approvedInvestments.ToString("N2") <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-red-200 to-red-100 border-b-4 border-red-500 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-red-600"><i class="fas fa-inverse fa-2x fa-business-time"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Pending Investments</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @unApprovedInvestments.ToString("N2") <span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-green-600"><i class="fa fa-hand-holding-usd fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Approved Payments</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @approvedPayments.ToString("N2")<span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-yellow-200 to-yellow-100 border-b-4 border-yellow-600 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-yellow-600"><i class="fas fa-file-invoice-dollar fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">My Earnings</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @totalEarnings.ToString("N2")<span class="text-yellow-600"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Metric Card-->
+                        <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-3">
+                            <div class="flex flex-row items-center">
+                                <div class="flex-shrink pr-2">
+                                    <div class="rounded-full p-5 bg-green-600"><i class="fa fa-wallet fa-2x fa-inverse"></i></div>
+                                </div>
+                                <div class="flex-1 text-right md:text-center">
+                                    <h5 class="font-bold uppercase text-gray-600">Total Debt</h5>
+                                    <h3 class="font-bold text-3xl">ZMW @totalDebt.ToString("N2")<span class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Metric Card-->
+                    </MudItem>
+                     
+                    <MudItem md="4" xs="12" sm="12">
+
+                        <!--Graph Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Monthly Investments</h5>
+                            </div>
+                            <div class="p-5">
+                                <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
+
+                            </div>
+                        </div>
+                        <!--/Graph Card-->
+                    </MudItem>
+
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Graph Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Loan Applications</h5>
+                            </div>
+                            <div class="p-5">
+                                <canvas id="chartjs-0" class="chartjs" width="undefined" height="undefined"></canvas>
+
+                            </div>
+                        </div>
+                        <!--/Graph Card-->
+                    </MudItem>
+
+                    <MudItem md="4" xs="12" sm="12">
+                        <!--Graph Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Monthly Earnings</h5>
+                            </div>
+                            <div class="p-5">
+                                <canvas id="chartjs-1" class="chartjs" width="undefined" height="undefined"></canvas>
+
+                            </div>
+                        </div>
+                        <!--/Graph Card-->
+                    </MudItem>
+
+                    <MudItem md="6" xs="12" sm="12">
+                        <!--Graph Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Performance</h5>
+                            </div>
+                            <div class="p-5">
+                                <canvas id="chartjs-4" class="chartjs" width="undefined" height="undefined"></canvas>
+
+                            </div>
+                        </div>
+                        <!--/Graph Card-->
+                    </MudItem>
+
+                    <MudItem md="6" xs="12" sm="12">
+                        <!--Table Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Chat</h5>
+                            </div>
+                            <div class="p-5">
+                            </div>
+                        </div>
+                        <!--/table Card-->
+                    </MudItem>
+
+                    <MudItem md="6" xs="12" sm="12">
+                        <!--Advert Card-->
+                        <div class="bg-white border-transparent rounded-lg shadow-xl">
+                            <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                <h5 class="font-bold uppercase text-gray-600">Advert</h5>
+                            </div>
+                            <div class="p-5 text-center">
+                            </div>
+                        </div>
+                        <!--/Advert Card-->
+                    </MudItem>
+
+                </MudGrid>
+            </div>
+
+        </MudContainer>
+    </NotAuthorized>
     <Authorized>
         <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
-            
-
-
             <div class="bg-gray-800 pt-3">
                 <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
                    
@@ -274,9 +538,6 @@
 
         </MudContainer>
     </Authorized>
-    <NotAuthorized>
-        <h5 class="text-white">Only Basic Users Can See but you are in @VillageBank.GroupName</h5>
-    </NotAuthorized>
 </AuthorizeView>
 
 
