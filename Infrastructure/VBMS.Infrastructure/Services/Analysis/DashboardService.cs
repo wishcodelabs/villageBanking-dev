@@ -36,12 +36,7 @@
 
         public async Task<int> GetNewLoanApplications(int groupId, int investmentPeriodId)
         {
-            var loans = await context.Set<Loan>()
-                                        .Include(l => l.Applicant)
-                                        .ThenInclude(a => a.GroupMembership)
-                                        .Where(l => l.DateSubmitted.Day == DateTime.Today.Day && l.Applicant.GroupMembership.VillageGroupId == groupId && l.Status == LoanApplicationStatus.Pending)
-                                        .ToListAsync();
-            return loans.Count;
+            return 0;
         }
 
         public Task<List<int>> GetOverallPerf(int groupId, int investmentPeriodId)

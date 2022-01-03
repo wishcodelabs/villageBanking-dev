@@ -53,12 +53,12 @@
 
                         @foreach (var loan in Loans)
                         {
-                            var color = (loan.Status == LoanApplicationStatus.Approved) ? Color.Success : Color.Surface;
+                           
                             <MudExpansionPanel Class="mt-6 text-white bg-dark">
                                 <TitleContent>
                                     <MudGrid Justify="Justify.SpaceBetween">
                                         <MudItem xs="6" sm="6"> <MudText Class="text-white" Typo="Typo.h6" Align="Align.Left">@loan.LoanType.LoanName</MudText></MudItem>
-                                        <MudItem xs="6" sm="6"><span>Status: </span> <MudChip Color="@color" Text="@loan.Status.ToString()"></MudChip></MudItem>
+                                        <MudItem xs="6" sm="6"><span>Status: </span> <MudChip Color="@getColor(loan)" Text="@loan.Status.ToString()"></MudChip></MudItem>
                                     </MudGrid>
                                 </TitleContent>
                                 <ChildContent>
@@ -139,6 +139,7 @@
 </style>
 @code {
 
+
     [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
     VillageBankGroup VillageBank { get; set; } = new();
     ClaimsPrincipal claimsPrincipal = new();
@@ -150,7 +151,7 @@
     List<LoanPayment> DataSource { get; set; } = new();
     HashSet<LoanPayment> list;
     List<Loan> Loans { get; set; } = new();
-    
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -196,5 +197,16 @@
     {
 
     }
+    Color getColor(Loan loan)
+       => loan.Status switch
+        {
+            LoanStatus.Due=>Color.Secondary,
+            LoanStatus.Paid => Color.Success,
+            LoanStatus.Pending=>Color.Info,
+            LoanStatus.Defaulted=>Color.Error,
+            _ => Color.Default
+
+        };
+
 
 }

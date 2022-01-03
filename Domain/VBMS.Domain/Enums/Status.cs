@@ -12,4 +12,11 @@
         Approved,
         Rejected
     }
+    public enum LoanStatus
+    {
+        Pending,
+        Due,
+        Paid,
+        Defaulted
+    }
 }

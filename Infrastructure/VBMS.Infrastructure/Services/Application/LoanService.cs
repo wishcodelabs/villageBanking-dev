@@ -13,7 +13,7 @@
                          .Where(l => l.Applicant.MembershipId == memberId)
                          .ToListAsync();
         }
-        public async Task<List<Loan>> GetByStatusAsync(LoanApplicationStatus loanStatus)
+        public async Task<List<Loan>> GetByStatusAsync(LoanStatus loanStatus)
         {
             return await Repository
                          .Entities()
