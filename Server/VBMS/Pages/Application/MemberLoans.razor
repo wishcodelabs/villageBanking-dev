@@ -1,0 +1,95 @@
+﻿@page "/loan/my-applications"
+<AuthorizeView Roles="GroupAdmin">
+    <NotAuthorized>
+        <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
+            <MudGrid Spacing="3" Justify="Justify.Center">
+                <MudItem xs="12">
+                    <div class="bg-white title-card shadow rounded overflow-hidden sticky-md-top">
+                        <div class="px-4 pt-0 pb-2 cover">
+                            <div class="media align-items-end profile-head">
+                                <div class="profile mr-3"><img src="@image" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                                <div class="media-body mb-5 text-white">
+                                    <h3 class="mt-0 mb-4 text-white">Hi, @Membership.PersonalDetails.FirstName @Membership.PersonalDetails.LastName</h3>
+                                    <p class="large mb-6 mt-n2 text-black"> <i class="fas fa-map-marker-alt mr-2"></i>@VillageBank.GroupName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-light d-flex p-4 justify-content-center text-center">
+                            <h3 class="text-black font-bold text-3xl">Loans</h3>
+                        </div>
+                    </div>
+                </MudItem>
+                <MudItem align="center" xs="12">
+
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </NotAuthorized>
+</AuthorizeView>
+
+<style>
+    body {
+        background-color: #13262F;
+    }
+    .title-card {
+      
+        background-color: #13262F;
+    }
+
+    .profile-head {
+        transform: translateY(5rem)
+    }
+
+    .cover {
+        background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+        background-size: cover;
+        background-repeat: no-repeat
+    }
+
+    .group-inactive {
+        max-width: fit-content;
+    }
+
+    .bar {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px
+    }
+</style>
+
+@code {
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    VillageBankGroup VillageBank { get; set; } = new();
+    ClaimsPrincipal claimsPrincipal = new();
+    Guid myGuid = new();
+    string selectedRow;
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
+    int currentPeriod;
+    VillageGroupMembership Membership { get; set; } = new();
+    List<InvestmentPeriod> openPeriods { get; set; } = new();
+    List<Investment> DataSource { get; set; } = new();
+    HashSet<Investment> list;
+    string image;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Membership.PersonalDetails = new();
+        claimsPrincipal = (await AuthenticationStateTask).User;
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            Membership = await membershipService.GetByGuid(myGuid);
+            VillageBank = Membership.VillageBankGroup;
+            await Refresh();
+            openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+
+
+
+        }
+    }
+    async Task Refresh()
+    {
+        image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";
+
+    }
+
+}
