@@ -65,15 +65,14 @@
                             <tr>
 
                                 <th>Date Submitted</th>
+                                <th>Operating Period</th>
                                 <th>Loan Type</th>
                                 <th>Maximum Amount</th>
                                 <th>Requested Amount</th>
                                 <th>Interest Rate</th>
-                                <th>Status</th>
-                                <th>Operating Period</th>
+                                <th>Status</th>                                
                                 <th>Payback Period</th>
                                 <th>Status</th>
-                                <th>Approved By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -85,17 +84,16 @@
 
                                     <td>@String.Format("{0:D:HH:MM}",item.DateSubmitted)</td>
                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
-                                    <td>@item.Investor.PersonalDetails.FirstName @item.Investor.PersonalDetails.LastName</td>
-                                    <td>@item.Investor.PersonalDetails.NrcNumber</td>
-                                    <td>@item.AmountInvested.ToString("N2") ZMW</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td><MudChip title="Approve this investment?" OnClick="()=>Approve(item)" Size="Size.Small" Color="color" Text="@item.Status.ToString()" /></td>
-                                    <td>
-                                        @(!string.IsNullOrEmpty(item.ApprovedBy)?item.ApprovedBy:"N/A")
-                                    </td>
-                                    <td>
-                                        <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>
-                                        <MudButton title="Permanently delete this item?" OnClick="()=>ToggleDelete(item)" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Color="Color.Error">Delete</MudButton>
+                                    <td>@item.LoanType.LoanName</td>
+                                    <td>@item.LoanType.MaxLoanAmount</td>
+                                    <td>@item.RequestedAmount.ToString("N2") ZMW</td>
+                                    <td> %</td>
+                                    <td><MudChip  Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
+                                    <td>@item.LoanType.PaybackDuration  @(item.LoanType.PaybackDuration<=1? "week":"weeks")</td>                                 
+                                    
+                                     <td>
+                                        <MudButton title="edit this record" OnClick="()=>ViewDetails(item)" StartIcon="@Icons.Material.Filled.ViewAgenda" Size="Size.Small" Color="Color.Tertiary">Details</MudButton>
+                                       
                                     </td>
                                 </tr>
                             }
@@ -161,7 +159,7 @@
             Membership = await membershipService.GetByGuid(myGuid);
             VillageBank = Membership.VillageBankGroup;
             await Refresh();
-            openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
+            
 
 
 
@@ -186,12 +184,13 @@
     Color GetColor(LoanApplication loanApplication)=>
      loanApplication.Status switch {
         LoanApplicationStatus.Approved => Color.Success,
-        LoanApplicationStatus.Pending=>Color.Tertiary,
+        LoanApplicationStatus.Pending=>Color.Surface,
         LoanApplicationStatus.Rejected=>Color.Error,
         _=>Color.Default
     };
     async Task Refresh()
-    {
+    {    
+        openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
         image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";
 
     }
