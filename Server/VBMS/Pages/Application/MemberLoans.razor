@@ -83,7 +83,7 @@
 
                                 <tr class="text-white">
 
-                                    <td>@String.Format("{0:D}",Convert.ToDateTime(item.DateInvested))</td>
+                                    <td>@String.Format("{0:D:HH:MM}",item.DateSubmitted)</td>
                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                     <td>@item.Investor.PersonalDetails.FirstName @item.Investor.PersonalDetails.LastName</td>
                                     <td>@item.Investor.PersonalDetails.NrcNumber</td>
