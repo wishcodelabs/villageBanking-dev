@@ -1,5 +1,16 @@
-﻿<h3>LoanApplicationFormModal</h3>
+﻿<MudDialog>
+    <DialogContent>
+        <EditForm id="editForm" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+            <FluentValidationValidator />
+            <DataAnnotationsValidator />
+            <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
+             
+            </MudGrid>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
 
-@code {
-
-}
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton ButtonType="ButtonType.Submit" UserAttributes="@_atri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+    </DialogActions>
+</MudDialog>
