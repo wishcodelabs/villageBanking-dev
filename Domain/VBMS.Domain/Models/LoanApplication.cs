@@ -19,6 +19,6 @@
         public string Details { get; set; }
         public virtual LoanType LoanType { get; set; }
         public virtual Applicant Applicant { get; set; }
-        public virtual List<UploadRequest> Files { get; set; }
+        public virtual List<UploadFile> Files { get; set; }
     }
 }

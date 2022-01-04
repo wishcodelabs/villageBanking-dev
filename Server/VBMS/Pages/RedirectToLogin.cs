@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace VBMS.Pages
+﻿namespace VBMS.Pages
 {
     public class RedirectToLogin : ComponentBase
     {

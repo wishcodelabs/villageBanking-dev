@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace VBMS.Shared.Components
+﻿namespace VBMS.Shared.Components
 {
     public partial class AddPeriodModal
     {

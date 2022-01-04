@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.Extensions.Options;
 
-using System.Security.Claims;
-
 namespace VBMS.Areas.Identity
 {
     public class RevalidatingIdentityAuthenticationStateProvider<TUser>
