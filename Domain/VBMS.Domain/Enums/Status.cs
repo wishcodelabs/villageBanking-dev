@@ -7,7 +7,6 @@
     }
     public enum LoanApplicationStatus
     {
-        Submitted,
         Pending,
         Approved,
         Rejected
