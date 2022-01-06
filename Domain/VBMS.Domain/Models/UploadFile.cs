@@ -6,7 +6,7 @@
 
         public string Description { get; set; }
 
-        public ContentType ContentType { get; set; }
+        public string FilePath { get; set; }
 
         public string FileId { get; set; }
 

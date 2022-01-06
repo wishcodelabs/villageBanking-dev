@@ -30,6 +30,7 @@ namespace VBMS.Shared.Components
             if (!IsEditing)
             {
                 Model = new();
+                Model.Files = new();
             }
             else
             {
@@ -40,7 +41,22 @@ namespace VBMS.Shared.Components
 
         public async void OnFileRemove(RemovingEventArgs args)
         {
-
+            foreach (var file in args.FilesData)
+            {
+                var userfile = Model.Files.FirstOrDefault(f => f.FileId == file.Id);
+                if (!string.IsNullOrEmpty(userfile.FilePath))
+                {
+                    if (await uploadService.DeleteFileAsync(userfile.FilePath))
+                    {
+                        Model.Files.Remove(userfile);
+                        snackBar.Add("File removed successifully", Severity.Success);
+                    }
+                    else
+                    {
+                        snackBar.Add("Could not delete the specified file. Try again later", Severity.Error);
+                    }
+                }
+            }
 
 
         }
@@ -49,12 +65,26 @@ namespace VBMS.Shared.Components
 
             foreach (var file in e.Files)
             {
-
-                var userFile = new UploadFile
+                var fileName = await uploadService.UploadFileAsync(file.FileInfo.Name);
+                if (!string.IsNullOrEmpty(fileName))
                 {
-                    FileName = file.FileInfo.Name,
-                    FileId = file.FileInfo.Id
-                };
+                    snackBar.Add("File uploaded successifully", Severity.Success);
+                    var userFile = new UploadFile
+                    {
+                        FileName = file.FileInfo.Name,
+                        FileId = file.FileInfo.Id,
+                        OwnerGuid = Membership.UserGuid,
+                        FilePath = fileName,
+
+                    };
+                    Model.Files.Add(userFile);
+
+                }
+                else
+                {
+                    snackBar.Add("Could not upload the specified file. Try again later.", Severity.Error);
+                }
+
 
 
 
