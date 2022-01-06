@@ -14,7 +14,8 @@
         Dictionary<string, object> _atri { get; set; }
 
         List<LoanType> loanTypes = new List<LoanType>();
-        int currentPeriod;
+
+        List<InvestmentPeriod> periods { get; set; } = new();
 
 
 
@@ -38,6 +39,8 @@
         async Task Refresh()
         {
             loanTypes = await loanTypeService.GetActive(Membership.VillageGroupId);
+            periods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, Membership.VillageGroupId);
+            StateHasChanged();
         }
         async Task Submit()
         {

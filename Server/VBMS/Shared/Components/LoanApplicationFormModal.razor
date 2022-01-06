@@ -3,36 +3,75 @@
         <EditForm id="editForm" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
             <FluentValidationValidator />
             <DataAnnotationsValidator />
-            <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
-              <MudItem xs="6" md="3">
-                  <MudSelect T="int" 
-                             @bind-Value="Model.LoanTypeId"
-                             Label="Loan Name" 
-                             Required="true"
-                             Clearable="(!IsEditing)"
-                             ReadOnly="(IsEditing)"
-                             For="()=>Model.LoanTypeId"
-                             Variant="Variant.Outlined">
-                             <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
-                            @foreach (var item in loanTypes)
+            <MudGrid Justify="Justify.SpaceBetween">
+                <MudItem xs="6"sm="6" md="4">
+                    <MudSelect T="int"
+                               @bind-Value="Model.LoanTypeId"
+                               Label="Loan Name"
+                               Required="true"
+                               Clearable="(!IsEditing)"
+                               ReadOnly="(IsEditing)"
+                               For="()=>Model.LoanTypeId"
+                               Variant="Variant.Outlined">
+                        <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
+                        @foreach (var item in loanTypes)
+                        {
+                            <MudSelectItem T="int" Value="@item.Id">@item.LoanName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="6"sm="6" md="4">
+                    <MudNumericField @bind-Value="@Model.RequestedAmount"
+                                     T="decimal"
+                                     For="()=>Model.RequestedAmount"
+                                     Format="N2" Culture="@_en"
+                                     Min="0"
+                                     ReadOnly="(IsEditing)"
+                                     HideSpinButtons="true"
+                                     Immediate="true"
+                                     Adornment="Adornment.End" AdornmentText="ZMW"
+                                     Label="Requested Amount"
+                                     Variant="Variant.Outlined" />
+                </MudItem>
+                @if (periods.Any())
+                {
+                    <MudItem xs="6"sm="6" md="4">
+                        <MudSelect T="int"
+                               For="(()=>Model.PeriodId)"
+                               Immediate="true"
+                               @bind-Value="@Model.PeriodId"
+                               Variant="Variant.Outlined"
+                               Label="Operating Period"
+                               Required="true">
+                            <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
+                            @foreach (var item in periods)
                             {
-                              <MudSelectItem T="int" Value="@item.Id">@item.LoanName</MudSelectItem>
-                            
+                                <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
                             }
-                  </MudSelect>
-              </MudItem>
-              <MudItem xs="6" md="3"></MudItem>
-              <MudItem xs="6" md="3"></MudItem>
-              <MudItem xs="6" md="3"></MudItem>
-              <MudItem xs="6" md="3"></MudItem>
-              <MudItem xs="6" md="3"></MudItem>
-              <MudItem xs="6" md="3"></MudItem>
+                        </MudSelect>
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="6"sm="6" md="4">
+                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group .</MudAlert>
+                    </MudItem>
+                }
+
+                <MudItem xs="12">
+                    <MudText Align="Align.Center" Typo="Typo.h5">Attached Files</MudText>
+                    <MudDivider/>
+                </MudItem>
+                <MudItem xs="6"sm="6" md="4">
+
+                </MudItem>
+                <MudItem xs="6"sm="6" md="4"></MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>
     <DialogActions>
 
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton ButtonType="MudBlazor.ButtonType.Submit" UserAttributes="@_atri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+        <MudButton ButtonType="MudBlazor.ButtonType.Submit" UserAttributes="@_atri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Submit</MudButton>
     </DialogActions>
 </MudDialog>
