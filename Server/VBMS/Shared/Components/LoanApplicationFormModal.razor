@@ -4,7 +4,29 @@
             <FluentValidationValidator />
             <DataAnnotationsValidator />
             <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
-             
+              <MudItem xs="6" md="3">
+                  <MudSelect T="int" 
+                             @bind-Value="Model.LoanTypeId"
+                             Label="Loan Name" 
+                             Required="true"
+                             Clearable="(!IsEditing)"
+                             ReadOnly="(IsEditing)"
+                             For="()=>Model.LoanTypeId"
+                             Variant="Variant.Outlined">
+                             <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
+                            @foreach (var item in loanTypes)
+                            {
+                              <MudSelectItem T="int" Value="@item.Id">@item.LoanName</MudSelectItem>
+                            
+                            }
+                  </MudSelect>
+              </MudItem>
+              <MudItem xs="6" md="3"></MudItem>
+              <MudItem xs="6" md="3"></MudItem>
+              <MudItem xs="6" md="3"></MudItem>
+              <MudItem xs="6" md="3"></MudItem>
+              <MudItem xs="6" md="3"></MudItem>
+              <MudItem xs="6" md="3"></MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>

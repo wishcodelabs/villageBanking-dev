@@ -13,6 +13,11 @@
         CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
         Dictionary<string, object> _atri { get; set; }
 
+        List<LoanType> loanTypes = new List<LoanType>();
+        int currentPeriod;
+
+
+
         protected override async void OnInitialized()
         {
             _atri = new Dictionary<string, object>
@@ -32,7 +37,7 @@
 
         async Task Refresh()
         {
-
+            loanTypes = await loanTypeService.GetActive(Membership.VillageGroupId);
         }
         async Task Submit()
         {

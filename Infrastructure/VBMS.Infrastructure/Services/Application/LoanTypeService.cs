@@ -16,5 +16,12 @@
 
             return await UpdateAsync(record);
         }
+
+        public async Task<List<LoanType>> GetActive(int villageGroupId)
+        {
+            var list = await GetLoanTypes(villageGroupId);
+
+            return list.Where(l => l.IsActive).ToList();
+        }
     }
 }
