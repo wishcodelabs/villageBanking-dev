@@ -78,6 +78,7 @@ namespace VBMS.Shared.Components
 
                     };
                     Model.Files.Add(userFile);
+                    StateHasChanged();
 
                 }
                 else
