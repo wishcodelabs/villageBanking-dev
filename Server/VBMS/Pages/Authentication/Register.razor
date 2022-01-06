@@ -47,7 +47,7 @@
                 <MudTextField T="string" 
                               @bind-Value="@RegisterModel.PhoneNumber"
                               For="(()=>RegisterModel.PhoneNumber)"
-                              InputType="InputType.Telephone" 
+                              InputType="MudBlazor.InputType.Password"  
                               InputMode="InputMode.tel" 
                               Variant="Variant.Outlined" 
                               Label="Phone Number" 
@@ -66,7 +66,7 @@
                 <MudTextField T="string" 
                               @bind-Value="@RegisterModel.Password"
                               For ="(()=>RegisterModel.Password)"
-                              InputType="InputType.Password" 
+                              InputType="MudBlazor.InputType.Password" 
                               Variant="Variant.Outlined" 
                               Label="Password" />
             </MudItem>
@@ -74,12 +74,12 @@
                 <MudTextField T="string" 
                               @bind-Value="@RegisterModel.ConfirmPassword"
                               For = "(()=>RegisterModel.ConfirmPassword)"
-                              InputType="InputType.Password" 
+                              InputType="MudBlazor.InputType.Password"  
                               Variant='Variant.Outlined' 
                               Label="Confirm Password" />
             </MudItem>
        </MudGrid>
-       <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign Up</MudButton>
+       <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true">Sign Up</MudButton>
     </EditForm>
    
 </div>
