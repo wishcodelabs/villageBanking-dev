@@ -159,7 +159,7 @@
             Membership = await membershipService.GetByGuid(myGuid);
             VillageBank = Membership.VillageBankGroup;
             await Refresh();
-            
+
 
 
 
@@ -167,7 +167,16 @@
     }
     async Task ToggleAdd()
     {
-
+        var parameters = new DialogParameters { ["Membership"] = Membership,["IsEditing"] = false };
+        var dialog = dialogService.Show<LoanApplicationFormModal>("Apply for Loan", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                await Refresh();
+            }
+        }
     }
     async Task ViewDetails(LoanApplication record)
     {
@@ -179,19 +188,24 @@
     }
     async Task Filter(int value)
     {
-        
+
     }
     Color GetColor(LoanApplication loanApplication)=>
      loanApplication.Status switch {
-        LoanApplicationStatus.Approved => Color.Success,
-        LoanApplicationStatus.Pending=>Color.Surface,
-        LoanApplicationStatus.Rejected=>Color.Error,
-        _=>Color.Default
-    };
+         LoanApplicationStatus.Approved => Color.Success,
+         LoanApplicationStatus.Pending=>Color.Surface,
+         LoanApplicationStatus.Rejected=>Color.Error,
+         _=>Color.Default
+     };
     async Task Refresh()
     {    
         openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
         image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";
+        DataSource = new();
+        DataSource = await loanApplicationService.GetAllByUserGuid(Membership.UserGuid, currentPeriod);
+        list = new HashSet<LoanApplication>(DataSource);
+        StateHasChanged();
+
 
     }
 
