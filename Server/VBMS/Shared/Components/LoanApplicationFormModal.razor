@@ -4,7 +4,7 @@
             <FluentValidationValidator />
             <DataAnnotationsValidator />
             <MudGrid Justify="Justify.SpaceBetween">
-                <MudItem xs="6"sm="6" md="4">
+                <MudItem xs="6" sm="6" md="4">
                     <MudSelect T="int"
                                @bind-Value="Model.LoanTypeId"
                                Label="Loan Name"
@@ -20,7 +20,7 @@
                         }
                     </MudSelect>
                 </MudItem>
-                <MudItem xs="6"sm="6" md="4">
+                <MudItem xs="6" sm="6" md="4">
                     <MudNumericField @bind-Value="@Model.RequestedAmount"
                                      T="decimal"
                                      For="()=>Model.RequestedAmount"
@@ -35,7 +35,7 @@
                 </MudItem>
                 @if (periods.Any())
                 {
-                    <MudItem xs="6"sm="6" md="4">
+                    <MudItem xs="6" sm="6" md="4">
                         <MudSelect T="int"
                                For="(()=>Model.PeriodId)"
                                Immediate="true"
@@ -53,19 +53,23 @@
                 }
                 else
                 {
-                    <MudItem xs="6"sm="6" md="4">
+                    <MudItem xs="6" sm="6" md="4">
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group .</MudAlert>
                     </MudItem>
                 }
 
                 <MudItem xs="12">
                     <MudText Align="Align.Center" Typo="Typo.h5">Attached Files</MudText>
-                    <MudDivider/>
+                    <MudDivider />
                 </MudItem>
-                <MudItem xs="6"sm="6" md="4">
+                <MudItem xs="6" sm="6" md="4">
+                    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Tertiary"><MudIcon Icon="@Icons.Material.Filled.CloudUpload"></MudIcon>&nbsp;NRC (Back and Front)</MudText>
 
+                    <SfUploader AutoUpload=false AllowedExtensions=".jpg, .jpeg, .png, .pdf" MinFileSize=10000 MaxFileSize=40000000>
+                        <UploaderEvents ValueChange="UploadResults" OnRemove="OnFileRemove"></UploaderEvents>
+                    </SfUploader>
                 </MudItem>
-                <MudItem xs="6"sm="6" md="4"></MudItem>
+                <MudItem xs="6" sm="6" md="4"></MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>

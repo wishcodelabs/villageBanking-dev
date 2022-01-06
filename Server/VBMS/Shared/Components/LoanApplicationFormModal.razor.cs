@@ -1,4 +1,6 @@
-﻿namespace VBMS.Shared.Components
+﻿using Syncfusion.Blazor.Inputs;
+
+namespace VBMS.Shared.Components
 {
     public partial class LoanApplicationFormModal
     {
@@ -17,7 +19,7 @@
 
         List<InvestmentPeriod> periods { get; set; } = new();
 
-
+        List<UploadFile> uploadFiles { get; set; } = new List<UploadFile>();
 
         protected override async void OnInitialized()
         {
@@ -36,6 +38,28 @@
             await Refresh();
         }
 
+        public async void OnFileRemove(RemovingEventArgs args)
+        {
+
+
+
+        }
+        async void UploadResults(UploadChangeEventArgs e)
+        {
+
+            foreach (var file in e.Files)
+            {
+
+                var userFile = new UploadFile
+                {
+                    FileName = file.FileInfo.Name,
+                    FileId = file.FileInfo.Id
+                };
+
+
+
+            }
+        }
         async Task Refresh()
         {
             loanTypes = await loanTypeService.GetActive(Membership.VillageGroupId);
