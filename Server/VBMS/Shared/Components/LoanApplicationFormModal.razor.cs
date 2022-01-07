@@ -15,7 +15,8 @@ namespace VBMS.Shared.Components
         CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
         Dictionary<string, object> _atri { get; set; }
 
-        List<LoanType> loanTypes = new List<LoanType>();
+        List<LoanType> loanTypes = new();
+        List<LoanInterestRate> loanInterestRates = new();
 
 
         List<InvestmentPeriod> periods { get; set; } = new();

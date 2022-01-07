@@ -57,7 +57,23 @@
                         <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group .</MudAlert>
                     </MudItem>
                 }
-
+                 <MudItem xs="6" sm="6" md="4">
+                   <MudItem xs="6" sm="6" md="4">
+                        <MudSelect T="int"
+                               For="(()=>Model.InterestRateId)"
+                               Immediate="true"
+                               @bind-Value="@Model.InterestRateId"
+                               Variant="Variant.Outlined"
+                               Label="Interest Rate"
+                               Required="true">
+                            <MudSelectItem T="int" Value="0">--- None ---</MudSelectItem>
+                            @foreach (var item in loanInterestRateService.GetByLoanType(Model.LoanTypeId))
+                            {
+                                <MudSelectItem T="int" Value="@item.Id">@item.InterestRate % (Payback Duration: @item.PaybackDuration week(s))</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                 </MudItem>
                 <MudItem xs="12">
                     <MudText Align="Align.Center" Typo="Typo.h5">Attached Files</MudText>
                     <MudDivider />
