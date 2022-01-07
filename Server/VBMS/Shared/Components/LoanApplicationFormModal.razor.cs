@@ -17,6 +17,8 @@ namespace VBMS.Shared.Components
 
         List<LoanType> loanTypes = new List<LoanType>();
 
+        Applicant Applicant { get; set; } = new Applicant();
+
         List<InvestmentPeriod> periods { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
@@ -99,15 +101,18 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
+            if (Model.Files.Any())
+            {
+                if (!IsEditing)
+                {
 
-        }
-        async void AddFile()
-        {
-
-        }
-        async void RemoveFile()
-        {
-
+                }
+            }
+            else
+            {
+                snackBar.Add("Please attach the required files before submiting your application", Severity.Error);
+                return;
+            }
         }
         void ModelInvalid()
         {

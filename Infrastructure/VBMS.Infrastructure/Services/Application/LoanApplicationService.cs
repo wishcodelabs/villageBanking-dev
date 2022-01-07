@@ -10,11 +10,11 @@
             var myApplications = new List<LoanApplication>();
             if (periodid == 0)
             {
-                myApplications = await Repository.Entities().Where(l => l.Applicant.GroupMembership.UserGuid == userGuid).ToListAsync();
+                myApplications = await Repository.Entities().Where(l => l.Applicant.UserGuid == userGuid).ToListAsync();
             }
             else
             {
-                myApplications = await Repository.Entities().Where(l => l.Applicant.GroupMembership.UserGuid == userGuid && l.PeriodId == periodid).ToListAsync();
+                myApplications = await Repository.Entities().Where(l => l.Applicant.UserGuid == userGuid && l.PeriodId == periodid).ToListAsync();
             }
 
             return myApplications;
@@ -24,11 +24,11 @@
             var list = new List<LoanApplication>();
             if (periodId == 0)
             {
-                list = await Repository.Entities().Where(l => l.Applicant.GroupMembership.VillageGroupId == groupId).ToListAsync();
+                list = await Repository.Entities().Where(l => l.Applicant.VillageGroupId == groupId).ToListAsync();
             }
             else
             {
-                list = await Repository.Entities().Where(l => l.Applicant.GroupMembership.VillageGroupId == groupId && l.PeriodId == periodId).ToListAsync();
+                list = await Repository.Entities().Where(l => l.Applicant.VillageGroupId == groupId && l.PeriodId == periodId).ToListAsync();
             }
 
             return list;

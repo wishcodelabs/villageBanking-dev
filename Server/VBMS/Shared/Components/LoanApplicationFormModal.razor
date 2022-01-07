@@ -63,13 +63,11 @@
                     <MudDivider />
                 </MudItem>
                 <MudItem xs="6" sm="6" md="4">
-                    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Tertiary"><MudIcon Icon="@Icons.Material.Filled.CloudUpload"></MudIcon>&nbsp;NRC (Back and Front)</MudText>
-
+                    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Tertiary"><MudIcon Icon="@Icons.Material.Filled.CloudUpload"></MudIcon>&nbsp;NRC (Back and Front)</MudText><br />
                     <SfUploader AutoUpload=false AllowedExtensions=".jpg, .jpeg, .png, .pdf" MinFileSize=10000 MaxFileSize=40000000>
                         <UploaderEvents ValueChange="UploadResults" OnRemove="OnFileRemove"></UploaderEvents>
                     </SfUploader>
                 </MudItem>
-                <MudItem xs="6" sm="6" md="4"></MudItem>
             </MudGrid>
         </EditForm>
     </DialogContent>

@@ -19,7 +19,8 @@
 
         public string Details { get; set; }
         public virtual LoanType LoanType { get; set; }
-        public virtual Applicant Applicant { get; set; }
+        [ForeignKey(nameof(ApplicantId))]
+        public virtual VillageGroupMembership Applicant { get; set; }
         public virtual List<UploadFile> Files { get; set; }
     }
 }
