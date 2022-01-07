@@ -58,7 +58,7 @@
                     </MudItem>
                 }
                  <MudItem xs="6" sm="6" md="4">
-                   <MudItem xs="6" sm="6" md="4">
+                   
                         <MudSelect T="int"
                                For="(()=>Model.InterestRateId)"
                                Immediate="true"
@@ -71,8 +71,7 @@
                             {
                                 <MudSelectItem T="int" Value="@item.Id">@item.InterestRate % (Payback Duration: @item.PaybackDuration week(s))</MudSelectItem>
                             }
-                        </MudSelect>
-                    </MudItem>
+                        </MudSelect> 
                  </MudItem>
                 <MudItem xs="12">
                     <MudText Align="Align.Center" Typo="Typo.h5">Attached Files</MudText>
