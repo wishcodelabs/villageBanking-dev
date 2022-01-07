@@ -87,9 +87,9 @@
                                     <td>@item.LoanType.LoanName</td>
                                     <td>@item.LoanType.MaxLoanAmount</td>
                                     <td>@item.RequestedAmount.ToString("N2") ZMW</td>
-                                    <td> %</td>
+                                    <td>@item.InterestRate.InterestRate %</td>
                                     <td><MudChip  Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
-                                    <td>@item.LoanType.PaybackDuration  @(item.LoanType.PaybackDuration<=1? "week":"weeks")</td>                                 
+                                    <td>@item.InterestRate.PaybackDuration  @(item.InterestRate.PaybackDuration<=1? "week":"weeks")</td>                                 
                                     
                                      <td>
                                         <MudButton title="edit this record" OnClick="()=>ViewDetails(item)" StartIcon="@Icons.Material.Filled.ViewAgenda" Size="Size.Small" Color="Color.Tertiary">Details</MudButton>

@@ -29,6 +29,7 @@
                                                     <th>No.</th>
                                                     <th>Rate</th>
                                                     <th>Interest Type &nbsp;<MudIcon Icon="@Icons.Material.Outlined.Info" Color="Color.Info"></MudIcon></th>
+                                                    <th>Payback Duration</th>
                                                     <th>Investment Period</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -44,6 +45,7 @@
                                                         <td>@i</td>
                                                         <td>@(item.InterestRate.ToString("N2")) %</td>
                                                         <td>@item.InterestType.ToString()</td>
+                                                        <td>@item.PaybackDuration  @(item.PaybackDuration<=1 ? "week" : "weeks")</td>
                                                         <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                                         <td>
                                                             <MudButton title="edit this record" OnClick="()=>ToggleEdit(item)" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Warning">Edit</MudButton>

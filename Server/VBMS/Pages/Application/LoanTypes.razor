@@ -17,8 +17,7 @@
                         <thead class="thead-dark">
                             <tr>
                                
-                                <th>Loan Name</th>
-                                <th>Payback Period</th>
+                                <th>Loan Name</th>                                
                                 <th>Maximum Loan Amount</th>                                
                                 <th>Date Created</th>
                                 <th>Created By</th>
@@ -32,8 +31,7 @@
                                 Color color = (item.IsActive) ? Color.Success : Color.Dark;
                                 <tr class="text-white">
                                    
-                                    <td>@item.LoanName</td>
-                                    <td>@item.PaybackDuration  @(item.PaybackDuration<=1 ? "week" : "weeks")</td>
+                                    <td>@item.LoanName</td>                                  
                                     <td>@item.MaxLoanAmount.ToString("N2") ZMW</td>
                                     <td>@item.CreatedOn</td>
                                     <td>@item.CreatedBy</td>

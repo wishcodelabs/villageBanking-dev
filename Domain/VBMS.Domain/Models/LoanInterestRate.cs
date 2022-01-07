@@ -8,10 +8,16 @@ public class LoanInterestRate : AuditableEntity<int>
 
     [Required, Range(1, int.MaxValue, ErrorMessage = "Can't be empty")]
     public int PeriodId { get; set; }
-
+    [Required]
+    public int PaybackDuration { get; set; }
     public double InterestRate { get; set; }
 
     [ForeignKey(nameof(PeriodId))]
     public virtual InvestmentPeriod Period { get; set; }
     public virtual LoanType LoanType { get; set; }
+
+    public LoanInterestRate()
+    {
+        PaybackDuration = 1;
+    }
 }
