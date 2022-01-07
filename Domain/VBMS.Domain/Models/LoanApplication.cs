@@ -19,8 +19,6 @@
 
         [ForeignKey(nameof(PeriodId))]
         public InvestmentPeriod Period { get; set; }
-
-        public string Details { get; set; }
         public virtual LoanType LoanType { get; set; }
         [ForeignKey(nameof(ApplicantId))]
         public virtual VillageGroupMembership Applicant { get; set; }
