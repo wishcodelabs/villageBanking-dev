@@ -19,9 +19,7 @@ namespace VBMS.Shared.Components
 
         List<InvestmentPeriod> periods { get; set; } = new();
 
-        List<UploadFile> uploadFiles { get; set; } = new List<UploadFile>();
-
-        protected override async void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             _atri = new Dictionary<string, object>
             {
@@ -31,6 +29,7 @@ namespace VBMS.Shared.Components
             {
                 Model = new();
                 Model.Files = new();
+
             }
             else
             {
@@ -39,7 +38,7 @@ namespace VBMS.Shared.Components
             await Refresh();
         }
 
-        public async void OnFileRemove(RemovingEventArgs args)
+        async Task OnFileRemove(RemovingEventArgs args)
         {
             foreach (var file in args.FilesData)
             {
@@ -60,7 +59,7 @@ namespace VBMS.Shared.Components
 
 
         }
-        async void UploadResults(UploadChangeEventArgs e)
+        async Task UploadResults(UploadChangeEventArgs e)
         {
 
             foreach (var file in e.Files)
@@ -93,8 +92,9 @@ namespace VBMS.Shared.Components
         }
         async Task Refresh()
         {
-            loanTypes = await loanTypeService.GetActive(Membership.VillageGroupId);
+
             periods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, Membership.VillageGroupId);
+            loanTypes = await loanTypeService.GetActive(Membership.VillageGroupId);
             StateHasChanged();
         }
         async Task Submit()

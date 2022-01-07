@@ -1,4 +1,6 @@
-﻿namespace VBMS.Extensions
+﻿
+
+namespace VBMS.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
@@ -74,7 +76,8 @@
                 configuration.SnackbarConfiguration.NewestOnTop = true;
                 configuration.SnackbarConfiguration.MaximumOpacity = 100;
                 configuration.SnackbarConfiguration.ShowCloseIcon = true;
-            });
+            })
+            .AddSyncfusionBlazor();
 
             return services;
         }
