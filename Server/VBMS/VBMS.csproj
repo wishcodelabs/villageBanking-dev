@@ -59,6 +59,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\syncfusion\" />
+    <Folder Include="wwwroot\fileUploads\" />
   </ItemGroup>
 
 </Project>
