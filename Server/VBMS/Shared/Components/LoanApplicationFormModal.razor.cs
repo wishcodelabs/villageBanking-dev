@@ -105,7 +105,29 @@ namespace VBMS.Shared.Components
             {
                 if (!IsEditing)
                 {
-
+                    if (await loanApplicationService.AddAsync(Model))
+                    {
+                        snackBar.Add("Loan Application Submitted.", Severity.Success);
+                        DialogInstance.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Could not submit your application. Try again later", Severity.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (await loanApplicationService.UpdateAsync(Model))
+                    {
+                        snackBar.Add("Loan Application updatedn .", Severity.Success);
+                        DialogInstance.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Could not submit your application. Try again later", Severity.Error);
+                        return;
+                    }
                 }
             }
             else
