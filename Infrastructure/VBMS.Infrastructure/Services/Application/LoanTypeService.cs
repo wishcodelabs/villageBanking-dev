@@ -1,4 +1,6 @@
-﻿namespace VBMS.Infrastructure.Services.Application
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace VBMS.Infrastructure.Services.Application
 {
     public class LoanTypeService : ServiceBase<LoanType, int>
     {
@@ -19,9 +21,10 @@
 
         public async Task<List<LoanType>> GetActive(int villageGroupId)
         {
-            var list = await GetLoanTypes(villageGroupId);
+            var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(1) };
+            var list = await Repository.Entities().FromCacheAsync(options);
 
-            return list.Where(l => l.IsActive).ToList();
+            return list.Where(l => l.IsActive && l.GroupId == villageGroupId).ToList();
         }
     }
 }
