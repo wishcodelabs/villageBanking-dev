@@ -57,7 +57,6 @@ namespace VBMS.Extensions
                     .AddTransient<InvestmentPeriodService>()
                     .AddTransient<InvestmentService>()
                     .AddTransient<GroupAdminService>()
-                    .AddTransient<UploadFileService>()
                     .AddTransient<IUploadService, UploadService>()
                     .AddTransient<IDashboardService, DashboardService>()
                     .AddTransient<CityService>()

@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Domain.Models
 {
-    public class UploadFile : AuditableEntity<int>
+    public class UploadFile
     {
         public string FileName { get; set; }
 

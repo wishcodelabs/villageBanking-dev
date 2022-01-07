@@ -99,6 +99,11 @@ public class SystemDbContext : IdentityDbContext<User, Role, int, IdentityUserCl
         modelBuilder.Entity<LoanApplication>(entity =>
         {
             entity.ToTable("LoanApplications");
+            entity.OwnsMany(e => e.Files, f =>
+            {
+                f.ToTable("LoanApplicationAttachedFiles");
+                f.WithOwner(f => f.LoanApplication);
+            });
         });
         modelBuilder.Entity<Investment>(e =>
         {
