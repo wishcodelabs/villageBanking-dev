@@ -48,7 +48,6 @@ namespace VBMS.Extensions
                     .AddTransient<LoanService>()
                     .AddTransient<GroupMemberRoleService>()
                     .AddTransient<GroupMemberShareService>()
-                    .AddTransient<LoanApplicantService>()
                     .AddTransient<LoanApplicationService>()
                     .AddTransient<LoanTypeService>()
                     .AddTransient<LoanPaymentService>()

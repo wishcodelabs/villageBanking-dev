@@ -17,7 +17,6 @@ namespace VBMS.Shared.Components
 
         List<LoanType> loanTypes = new List<LoanType>();
 
-        Applicant Applicant { get; set; } = new Applicant();
 
         List<InvestmentPeriod> periods { get; set; } = new();
 
@@ -101,6 +100,7 @@ namespace VBMS.Shared.Components
         }
         async Task Submit()
         {
+            Model.ApplicantId = Membership.Id;
             if (Model.Files.Any())
             {
                 if (!IsEditing)
