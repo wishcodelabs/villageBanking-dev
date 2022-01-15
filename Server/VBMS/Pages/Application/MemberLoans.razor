@@ -71,8 +71,7 @@
                                 <th>Requested Amount</th>
                                 <th>Interest Rate</th>
                                 <th>Status</th>                                
-                                <th>Payback Period</th>
-                                <th>Status</th>
+                                <th>Payback Period</th>                            
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -82,7 +81,7 @@
 
                                 <tr class="text-white">
 
-                                    <td>@String.Format("{0:D:HH:MM}",item.DateSubmitted)</td>
+                                    <td>@(item.DateSubmitted.ToString("MMMM yyyy H:mm"))</td>
                                     <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                     <td>@item.LoanType.LoanName</td>
                                     <td>@item.LoanType.MaxLoanAmount</td>
