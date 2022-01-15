@@ -1,0 +1,39 @@
+﻿<MudDialog>
+    <DialogContent>        
+        <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
+            <MudItem xs="12" sm="6">
+                <table class="table table-hover table-striped table-sm">
+                   <thead>
+                       <tr>
+                           <th></th>
+                           <th></th>
+                       </tr>
+                   </thead> 
+                   <tbody>
+                       <tr><td class="font-bold"><strong>Applicant:</strong></td><td>@Model.Applicant.PersonalDetails.FirstName @Model.Applicant.PersonalDetails.LastName</td></tr>
+                       <tr><td class="font-bold"><strong>Date Submitted:</strong></td><td>@(Model.DateSubmitted.ToString("MMMM yyyy H:mm"))</td></tr>
+                   </tbody>
+                </table>
+            </MudItem>
+        </MudGrid>       
+    </DialogContent>
+    <DialogActions>
+      
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+       
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled" >Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [Parameter] public LoanApplication Model { get; set; } 
+    [CascadingParameter] MudDialogInstance DialogInstance { get; set; }
+
+    void Cancel() => DialogInstance.Cancel();
+
+    async Task Submit()
+    {
+        
+    }
+}
