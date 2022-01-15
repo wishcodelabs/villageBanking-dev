@@ -20,10 +20,13 @@
                         <tr><td class="font-bold"><strong>Loan Type:</strong></td><td>@(Model.LoanType.LoanName)</td></tr>
                         <tr><td class="font-bold"><strong>Interest Rate:</strong></td><td>@(Model.InterestRate.InterestRate) %</td></tr>
                         <tr><td class="font-bold"><strong>Payback Duration:</strong></td><td>@Model.InterestRate.PaybackDuration  @(Model.InterestRate.PaybackDuration<=1? "week":"weeks")</td></tr>
-                        <tr>
-                            <td class='font-bold'><strong>Approved Amount: </strong></td>
-                            <td>
-                                <MudNumericField @bind-Value="@approvedAmount"
+                        @if (Model.Status == LoanApplicationStatus.Pending)
+                        {
+                            <tr>
+
+                                <td class='font-bold'><strong>Approved Amount: </strong></td>
+                                <td>
+                                    <MudNumericField @bind-Value="@approvedAmount"
                                                  T="decimal"
                                                  Required="true"
                                                  RequiredError="Can't be empty'"
@@ -34,16 +37,26 @@
                                                  Adornment="Adornment.End" AdornmentText="ZMW"
                                                  Variant="Variant.Outlined" />
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        }
                         <tr>
-                            <td class="font-bold">Action</td>
-                            <td>
-                                <MudChipSet @bind-SelectedChip="selected" Filter="true">
-                                    <MudChip Text="approve" Color="Color.Primary">Approve</MudChip>
-                                    <MudChip Text="reject" Color="Color.Error">Reject</MudChip>
-                                </MudChipSet>
-                            </td>
+                            @if (Model.Status == LoanApplicationStatus.Approved || Model.Status == LoanApplicationStatus.Rejected)
+                            {
+                                <td class="font-bold">Status</td>
+                                <td><MudChip Color="Color.Default">@Model.Status.ToString()</MudChip></td>
+                            }
+                            else
+                            {
+                                <td class="font-bold">Action</td>
+                                <td>
+
+                                    <MudChipSet @bind-SelectedChip="selected" Filter="true">
+                                        <MudChip Text="approve" Color="Color.Primary">Approve</MudChip>
+                                        <MudChip Text="reject" Color="Color.Error">Reject</MudChip>
+                                    </MudChipSet>
+                                </td>
+                            }
                         </tr>
 
                     </tbody>
@@ -68,10 +81,16 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
+        @if (Model.Status == LoanApplicationStatus.Approved || Model.Status == LoanApplicationStatus.Rejected)
+        {
+            <MudButton OnClick="Cancel">Close</MudButton>
+        }
+        else
+        {
+            <MudButton OnClick="Cancel">Cancel</MudButton>
 
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-
-        <MudButton OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+            <MudButton OnClick="Submit" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
+        }
     </DialogActions>
 </MudDialog>
 
