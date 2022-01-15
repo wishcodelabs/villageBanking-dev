@@ -1,48 +1,82 @@
-﻿<MudDialog>
-    <DialogContent>        
+﻿@using Syncfusion.Blazor.PdfViewer
+<MudDialog>
+    <DialogContent>
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
-            <MudItem xs="12" sm="6">
+            <MudItem xs="12" sm="12" md="6">
                 <table class="table table-hover table-striped table-sm">
-                   <thead>
-                       <tr>
-                           <th></th>
-                           <th></th>
-                       </tr>
-                   </thead> 
-                   <tbody>
-                       <tr><td class="font-bold"><strong>Applicant:</strong></td><td>@Model.Applicant.PersonalDetails.FirstName @Model.Applicant.PersonalDetails.LastName</td></tr>
-                       <tr><td class="font-bold"><strong>Reputation: </strong></td><td><MudChip Color="@(HasLoan?Color.Warning:Color.Success)">@(HasLoan?"Has Upaid Loans":"Clean")</MudChip> </td></tr>
-                       <tr><td class="font-bold"><strong>Date Submitted:</strong></td><td>@(Model.DateSubmitted.ToString("MMMM yyyy H:mm"))</td></tr>
-                       <tr><td class="font-bold"><strong>Requested Amount:</strong></td><td>@(Model.RequestedAmount.ToString("N2")) ZMW</td></tr>
-                       <tr><td class="font-bold"><strong>Loan Type:</strong></td><td>@(Model.LoanType.LoanName)</td></tr>
-                       <tr><td class="font-bold"><strong>Interest Rate:</strong></td><td>@(Model.InterestRate.InterestRate) %</td></tr>
-                       <tr><td class="font-bold"><strong>Payback Duration:</strong></td><td>@Model.InterestRate.PaybackDuration  @(Model.InterestRate.PaybackDuration<=1? "week":"weeks")</td></tr>
-                       
-                   </tbody>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="font-bold"><strong>Applicant:</strong></td><td>@Model.Applicant.PersonalDetails.FirstName @Model.Applicant.PersonalDetails.LastName</td></tr>
+                        <tr><td class="font-bold"><strong>Reputation: </strong></td><td><MudChip Size="Size.Small" Color="@(HasLoan?Color.Warning:Color.Success)">@(HasLoan?"Has Upaid Loans":"Clean")</MudChip> </td></tr>
+                        <tr><td class="font-bold"><strong>Date Submitted:</strong></td><td>@(Model.DateSubmitted.ToString("MMMM yyyy H:mm"))</td></tr>
+                        <tr><td class="font-bold"><strong>Requested Amount:</strong></td><td>@(Model.RequestedAmount.ToString("N2")) ZMW</td></tr>
+                        <tr><td class="font-bold"><strong>Loan Type:</strong></td><td>@(Model.LoanType.LoanName)</td></tr>
+                        <tr><td class="font-bold"><strong>Interest Rate:</strong></td><td>@(Model.InterestRate.InterestRate) %</td></tr>
+                        <tr><td class="font-bold"><strong>Payback Duration:</strong></td><td>@Model.InterestRate.PaybackDuration  @(Model.InterestRate.PaybackDuration<=1? "week":"weeks")</td></tr>
+                        <tr>
+                            <td class='font-bold'><strong>Approved Amount: </strong></td>
+                            <td>
+                                <MudNumericField @bind-Value="@approvedAmount"
+                                                 T="decimal"
+                                                 Required="true"
+                                                 RequiredError="Can't be empty'"
+                                                 Format="N2" Culture="@_en"
+                                                 Min="0"
+                                                 HideSpinButtons="true"
+                                                 Immediate="true"
+                                                 Adornment="Adornment.End" AdornmentText="ZMW"
+                                                 Variant="Variant.Outlined" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">Action</td>
+                            <td>
+                                <MudChipSet @bind-SelectedChip="selected" Filter="true">
+                                    <MudChip Text="approve" Color="Color.Primary">Approve</MudChip>
+                                    <MudChip Text="reject" Color="Color.Error">Reject</MudChip>
+                                </MudChipSet>
+                            </td>
+                        </tr>
+
+                    </tbody>
                 </table>
             </MudItem>
-        </MudGrid>       
+            <MudItem xs="12" sm="12" md="6">
+                <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%"></SfPdfViewer>
+            </MudItem>
+        </MudGrid>
     </DialogContent>
     <DialogActions>
-      
-            <MudButton OnClick="Cancel">Cancel</MudButton>
-       
-        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled" >Save</MudButton>
+
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+
+        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled">Save</MudButton>
     </DialogActions>
 </MudDialog>
 
 
 @code {
-    [Parameter] public LoanApplication Model { get; set; } 
+    [Parameter] public LoanApplication Model { get; set; }
     [CascadingParameter] MudDialogInstance DialogInstance { get; set; }
-    [Parameter] public bool HasLoan { get; set;}
+    [Parameter] public bool HasLoan { get; set; }
+    CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
+    MudChip selected;
+    private string DocumentPath { get; set; }
+    bool viewDocument;
+    decimal approvedAmount;
 
 
     void Cancel() => DialogInstance.Cancel();
 
     async Task Submit()
     {
-        
+
     }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace VBMS.Infrastructure.Services.Application
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace VBMS.Infrastructure.Services.Application
 {
     public class LoanService : ServiceBase<Loan, int>
     {
@@ -18,6 +20,18 @@
                          .Entities()
                          .Where(l => l.Status == loanStatus)
                          .ToListAsync();
+        }
+        public async Task<bool> HasUnpaid(int applicant)
+        {
+            var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(24) };
+            var list = Repository.Entities().FromCache(options);
+            var loans = list.Where(l => l.ApplicationRequest.ApplicantId == applicant);
+
+            var hasLoan = loans.Any();
+            var hasPaid = loans.Any(l => l.Status == LoanStatus.Due && l.Payments.Any()) || loans.Any(l => l.Status == LoanStatus.Paid);
+
+            return hasLoan && !hasPaid;
+
         }
 
     }
