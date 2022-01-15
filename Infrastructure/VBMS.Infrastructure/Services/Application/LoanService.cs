@@ -23,7 +23,7 @@ namespace VBMS.Infrastructure.Services.Application
         }
         public async Task<List<Loan>> GetByGroup(int groupId, int periodId)
         {
-            var all = await Repository.Entities().Where(l => l.Approver.VillageGroupId == groupId).ToListAsync();
+            var all = await Repository.Entities().Include(l => l.ApplicationRequest).ThenInclude(l => l.Applicant).Where(l => l.Approver.VillageGroupId == groupId).ToListAsync();
             if (periodId == 0)
             {
                 return all;
