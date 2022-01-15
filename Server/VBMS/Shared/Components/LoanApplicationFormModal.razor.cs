@@ -76,6 +76,7 @@ namespace VBMS.Shared.Components
                         FileId = file.FileInfo.Id,
                         OwnerGuid = Membership.UserGuid,
                         FilePath = fileName,
+                        Description = "Attached File"
 
                     };
                     Model.Files.Add(userFile);
@@ -102,6 +103,7 @@ namespace VBMS.Shared.Components
         async Task Submit()
         {
             Model.ApplicantId = Membership.Id;
+            Model.DateSubmitted = DateTime.Now;
             if (Model.Files.Any())
             {
                 if (!IsEditing)
