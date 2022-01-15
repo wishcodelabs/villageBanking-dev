@@ -127,7 +127,7 @@
     string selectedRow;
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
     int currentPeriod;
-
+    VillageGroupMembership Membership { get; set; }
     List<InvestmentPeriod> openPeriods { get; set; } = new();
     List<LoanApplication> DataSource { get; set; } = new();
     HashSet<LoanApplication> list;
@@ -139,19 +139,15 @@
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
             myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
-            var admin = await groupAdminService.GetByUserGuid(myGuid);
-            VillageBank = admin.Group;
+            Membership = await membershipService.GetByGuid(myGuid);
+            VillageBank = Membership.VillageBankGroup;
             await Refresh();
-
-
-
-
         }
     }
     async Task ViewDetails(LoanApplication record)
     {
         var hasUnpaid = await loanService.HasUnpaid(record.ApplicantId);
-        var parameters = new DialogParameters { ["Model"] = record,["HasLoan"]=hasUnpaid };
+        var parameters = new DialogParameters { ["Model"] = record,["HasLoan"]=hasUnpaid,["ApproverId"]= Membership.Id };
         var dialog = dialogService.Show<ViewLoanApplicationModal>("Loan Application Details", parameters, maxWidth);
         var result = await dialog.Result;
         if(!result.Cancelled)

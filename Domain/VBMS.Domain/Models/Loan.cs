@@ -21,7 +21,7 @@
 
         [ForeignKey(nameof(RequestId))]
         public virtual LoanApplication ApplicationRequest { get; set; }
-        [ForeignKey(nameof(RequestId))]
+        [ForeignKey(nameof(ApproverId))]
         public virtual VillageGroupMembership Approver { get; set; }
         [ForeignKey(nameof(PeriodId))]
         public virtual InvestmentPeriod Period { get; set; }
