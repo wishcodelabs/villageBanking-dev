@@ -21,6 +21,8 @@
             {
                 memberCount = await membershipService.CountMembers(VillageBank.Id);
                 totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
+                approvedLoans = await dashboardService.GetApprovedLoanApplications(VillageBank.Id, currentPeriod);
+                newLoanApplications = await dashboardService.GetNewLoanApplications(VillageBank.Id, currentPeriod);
                 approvedInvestments = await dashboardService.GetByStatusAsync(Status.Approved, VillageBank.Id, currentPeriod);
                 unApprovedInvestments = await dashboardService.GetByStatusAsync(Status.Pending, VillageBank.Id, currentPeriod);
                 StateHasChanged();

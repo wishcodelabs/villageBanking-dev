@@ -36,7 +36,15 @@
 
         public async Task<int> GetNewLoanApplications(int groupId, int investmentPeriodId)
         {
-            return 0;
+            var all = await context.Set<LoanApplication>().Where(a => a.Applicant.VillageGroupId == groupId && a.Status == LoanApplicationStatus.Pending).ToListAsync();
+            if (investmentPeriodId == 0)
+            {
+                return all.Count;
+            }
+            else
+            {
+                return all.Where(a => a.PeriodId == investmentPeriodId).Count();
+            }
         }
 
         public Task<List<int>> GetOverallPerf(int groupId, int investmentPeriodId)
@@ -92,6 +100,17 @@
 
         }
 
-
+        public async Task<int> GetApprovedLoanApplications(int groupId, int investmentPeriodId)
+        {
+            var all = await context.Set<LoanApplication>().Where(a => a.Applicant.VillageGroupId == groupId && a.Status == LoanApplicationStatus.Approved).ToListAsync();
+            if (investmentPeriodId == 0)
+            {
+                return all.Count;
+            }
+            else
+            {
+                return all.Where(a => a.PeriodId == investmentPeriodId).Count();
+            }
+        }
     }
 }
