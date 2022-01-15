@@ -19,6 +19,7 @@
 
             return myApplications;
         }
+
         public async Task<List<LoanApplication>> GetAllByPeriod(int periodId, int groupId)
         {
             var list = new List<LoanApplication>();
