@@ -51,7 +51,7 @@
             </MudItem>
             <MudItem xs="12" sm="12" md="6">
                 @if (viewDocument)
-                {   
+                {
                     <SfPdfViewer ServiceUrl="https://ej2services.syncfusion.com/production/web-services/api/pdfviewer" IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%">
 
                     </SfPdfViewer>
@@ -60,9 +60,9 @@
                 else
                 {   @foreach (var item in Model.Files)
                     {
-                       <MudButton OnClick="()=>ShowDoc(item)" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Pageview">View Attached File</MudButton> 
+                        <MudButton OnClick="()=>ShowDoc(item)" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Pageview">View Attached File</MudButton>
                     }
-                    
+
                 }
             </MudItem>
         </MudGrid>
@@ -80,28 +80,90 @@
     [Parameter] public LoanApplication Model { get; set; }
     [CascadingParameter] MudDialogInstance DialogInstance { get; set; }
     [Parameter] public bool HasLoan { get; set; }
+    [Parameter] public int ApproverId { get; set; }
     CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
     MudChip selected;
     private string DocumentPath { get; set; }
     bool viewDocument;
     decimal approvedAmount;
 
-   
+
     void Cancel() => DialogInstance.Cancel();
- 
+
     async Task Submit()
     {
+        if (selected != null)
+        {
 
+
+            if (approvedAmount > 0)
+            {
+                if (selected.Text == "approve")
+                {
+                    Model.Status = LoanApplicationStatus.Approved;
+                    var loan = new Loan
+                        {
+                            RequestId = Model.Id,
+                            ApprovedAmount = approvedAmount,
+                            ApproverId = ApproverId,
+                            RatingId = Model.InterestRateId,
+                            PeriodId = Model.PeriodId,
+                            DateDue = DateTime.Now.AddDays(Model.InterestRate.PaybackDuration * 7),
+                            DateApproved = DateTime.Now,
+                            Details = Model.LoanType.LoanName
+                        };
+                    if (await loanService.AddAsync(loan) && await loanApplicationService.UpdateAsync(Model))
+                    {
+                        snackBar.Add($"K {loan.ApprovedAmount} ZMW loan has been approved.", Severity.Success);
+                        DialogInstance.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Something went wrong, failed to approve the loan, try again later.", Severity.Error);
+                    }
+                }
+                else if (selected.Text == "reject")
+                {
+                    Model.Status = LoanApplicationStatus.Rejected;
+                    if (await loanApplicationService.UpdateAsync(Model))
+                    {
+                        snackBar.Add("Loan Rejected.", Severity.Success);
+                        DialogInstance.Close(DialogResult.Ok(true));
+                    }
+                    else
+                    {
+                        snackBar.Add("Something went wrong, failed reject the loan, try again later.", Severity.Error);
+                    }
+                }
+                else
+                {
+                    snackBar.Add("Either approve or reject the application.", Severity.Error);
+                    return;
+                }
+
+            }
+            else
+            {
+                snackBar.Add("Approved Amount Can't Be 0.00 Kwacha.", Severity.Error);
+                return;
+            }
+        }
+        else
+        {
+            snackBar.Add("Either approve or reject the application.", Severity.Error);
+            return;
+        }
     }
     async Task ShowDoc(UploadFile file)
     {
-        viewDocument = true;
         var path = Path.Combine(webHostEnv.WebRootPath, "fileUploads", file.FilePath);
-        byte[] byteArray = await System.IO.File.ReadAllBytesAsync(path);
+        var readFileTask = System.IO.File.ReadAllBytesAsync(path);
+        viewDocument = true;
+        byte[] byteArray = await readFileTask;
         DocumentPath = "data:application/pdf;base64," + Convert.ToBase64String(byteArray);
         logger.LogInformation($@"Viewing document path: {path}");
         await InvokeAsync(StateHasChanged);
     }
-    
+
 
 }
