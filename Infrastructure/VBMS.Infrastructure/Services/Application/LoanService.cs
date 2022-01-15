@@ -21,6 +21,18 @@ namespace VBMS.Infrastructure.Services.Application
                          .Where(l => l.Status == loanStatus)
                          .ToListAsync();
         }
+        public async Task<List<Loan>> GetByGroup(int groupId, int periodId)
+        {
+            var all = await Repository.Entities().Where(l => l.Approver.VillageGroupId == groupId).ToListAsync();
+            if (periodId == 0)
+            {
+                return all;
+            }
+            else
+            {
+                return all.Where(l => l.PeriodId == periodId).ToList();
+            }
+        }
         public async Task<bool> HasUnpaid(int applicant)
         {
             var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(24) };
