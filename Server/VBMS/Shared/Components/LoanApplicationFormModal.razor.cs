@@ -66,7 +66,8 @@ namespace VBMS.Shared.Components
 
             foreach (var file in e.Files)
             {
-                var fileName = await uploadService.UploadFileAsync(file.FileInfo.Name);
+                var data = file.Stream;
+                var fileName = await uploadService.UploadFileAsync(file.FileInfo.Name, data);
                 if (!string.IsNullOrEmpty(fileName))
                 {
                     snackBar.Add("File uploaded successifully", Severity.Success);

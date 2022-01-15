@@ -52,7 +52,7 @@
             <MudItem xs="12" sm="12" md="6">
                 @if (viewDocument)
                 {   
-                    <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%">
+                    <SfPdfViewer ServiceUrl="https://ej2services.syncfusion.com/production/web-services/api/pdfviewer" IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%">
 
                     </SfPdfViewer>
                     <MudButton OnClick="(()=>{viewDocument = !viewDocument;})" Variant="Variant.Filled">Close Document</MudButton>

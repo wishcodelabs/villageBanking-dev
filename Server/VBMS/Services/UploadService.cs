@@ -34,21 +34,21 @@
 
         }
 
-        public Task<string> UploadFileAsync(string filePath)
+        public async Task<string> UploadFileAsync(string filePath, MemoryStream data)
         {
             var newName = Path.GetRandomFileName() + "_" + filePath;
             var path = Path.Combine(GetWebRootPath(), "fileUploads", newName);
             try
             {
-                var ms = new MemoryStream();
+
                 using FileStream fileStream = new(path, FileMode.Create, FileAccess.Write);
-                ms.WriteTo(fileStream);
-                return Task.FromResult(newName);
+                await Task.Run(() => data.WriteTo(fileStream));
+                return newName;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message + ex.StackTrace);
-                return Task.FromResult(string.Empty);
+                return string.Empty;
             }
         }
 
