@@ -148,9 +148,10 @@
 
         }
     }
-     async Task ViewDetails(LoanApplication record)
+    async Task ViewDetails(LoanApplication record)
     {
-        var parameters = new DialogParameters { ["Model"] = record };
+        var hasUnpaid = await loanPaymentService.HasUnpaid(record.ApplicantId);
+        var parameters = new DialogParameters { ["Model"] = record,["HasLoan"]=hasUnpaid };
         var dialog = dialogService.Show<ViewLoanApplicationModal>("Loan Application Details", parameters, maxWidth);
         var result = await dialog.Result;
         if(!result.Cancelled)

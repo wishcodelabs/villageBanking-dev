@@ -11,7 +11,7 @@
                    </thead> 
                    <tbody>
                        <tr><td class="font-bold"><strong>Applicant:</strong></td><td>@Model.Applicant.PersonalDetails.FirstName @Model.Applicant.PersonalDetails.LastName</td></tr>
-                       <tr><td class="font-bold"><strong>Reputation: </strong></td></tr>
+                       <tr><td class="font-bold"><strong>Reputation: </strong></td><td><MudChip Color="@(HasLoan?Color.Warning:Color.Success)">@(HasLoan?"Has Upaid Loans":"Clean")</MudChip> </td></tr>
                        <tr><td class="font-bold"><strong>Date Submitted:</strong></td><td>@(Model.DateSubmitted.ToString("MMMM yyyy H:mm"))</td></tr>
                        <tr><td class="font-bold"><strong>Requested Amount:</strong></td><td>@(Model.RequestedAmount.ToString("N2")) ZMW</td></tr>
                        <tr><td class="font-bold"><strong>Loan Type:</strong></td><td>@(Model.LoanType.LoanName)</td></tr>
@@ -35,6 +35,8 @@
 @code {
     [Parameter] public LoanApplication Model { get; set; } 
     [CascadingParameter] MudDialogInstance DialogInstance { get; set; }
+    [Parameter] public bool HasLoan { get; set;}
+
 
     void Cancel() => DialogInstance.Cancel();
 
