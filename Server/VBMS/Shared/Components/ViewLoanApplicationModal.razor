@@ -1,4 +1,5 @@
 ﻿@using Syncfusion.Blazor.PdfViewer
+@inject ILogger<ViewLoanApplicationModal> logger
 <MudDialog>
     <DialogContent>
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
@@ -48,7 +49,18 @@
                 </table>
             </MudItem>
             <MudItem xs="12" sm="12" md="6">
-                <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%"></SfPdfViewer>
+                @if (viewDocument)
+                {   
+                    <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%"></SfPdfViewer>
+                    <MudButton OnClick="(()=>{viewDocument = !viewDocument;})" Variant="Variant.Filled">Close Document</MudButton>
+                }
+                else
+                {   @foreach (var item in Model.Files)
+                    {
+                       <MudButton OnClick="()=>ShowDoc(item)" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Pageview">View Attached File</MudButton> 
+                    }
+                    
+                }
             </MudItem>
         </MudGrid>
     </DialogContent>
@@ -76,6 +88,15 @@
 
     async Task Submit()
     {
+
+    }
+    void ShowDoc(UploadFile file)
+    {
+        DocumentPath = "";
+        DocumentPath =@"wwwroot/fileUploads/"+ file.FilePath;
+        viewDocument = true;
+        StateHasChanged();
+        logger.LogInformation($@"Viewing document path: {DocumentPath}");
 
     }
 
