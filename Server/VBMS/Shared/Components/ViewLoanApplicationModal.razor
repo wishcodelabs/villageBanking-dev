@@ -11,7 +11,13 @@
                    </thead> 
                    <tbody>
                        <tr><td class="font-bold"><strong>Applicant:</strong></td><td>@Model.Applicant.PersonalDetails.FirstName @Model.Applicant.PersonalDetails.LastName</td></tr>
+                       <tr><td class="font-bold"><strong>Reputation: </strong></td></tr>
                        <tr><td class="font-bold"><strong>Date Submitted:</strong></td><td>@(Model.DateSubmitted.ToString("MMMM yyyy H:mm"))</td></tr>
+                       <tr><td class="font-bold"><strong>Requested Amount:</strong></td><td>@(Model.RequestedAmount.ToString("N2")) ZMW</td></tr>
+                       <tr><td class="font-bold"><strong>Loan Type:</strong></td><td>@(Model.LoanType.LoanName)</td></tr>
+                       <tr><td class="font-bold"><strong>Interest Rate:</strong></td><td>@(Model.InterestRate.InterestRate) %</td></tr>
+                       <tr><td class="font-bold"><strong>Payback Duration:</strong></td><td>@Model.InterestRate.PaybackDuration  @(Model.InterestRate.PaybackDuration<=1? "week":"weeks")</td></tr>
+                       
                    </tbody>
                 </table>
             </MudItem>
@@ -36,4 +42,5 @@
     {
         
     }
+
 }

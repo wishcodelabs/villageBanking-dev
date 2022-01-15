@@ -150,7 +150,16 @@
     }
      async Task ViewDetails(LoanApplication record)
     {
-
+        var parameters = new DialogParameters { ["Model"] = record };
+        var dialog = dialogService.Show<ViewLoanApplicationModal>("Loan Application Details", parameters, maxWidth);
+        var result = await dialog.Result;
+        if(!result.Cancelled)
+        {
+            if((bool)result.Data)
+            {
+                await Refresh();
+            }
+        }
     }
     async void Search(string keyWord)
     {
