@@ -1,5 +1,6 @@
 ﻿@using Syncfusion.Blazor.PdfViewer
 @inject ILogger<ViewLoanApplicationModal> logger
+@inject IWebHostEnvironment webHostEnv
 <MudDialog>
     <DialogContent>
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
@@ -51,7 +52,9 @@
             <MudItem xs="12" sm="12" md="6">
                 @if (viewDocument)
                 {   
-                    <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%"></SfPdfViewer>
+                    <SfPdfViewer IsSignatureEditable="false" DocumentPath="@DocumentPath" Height="570px" Width="100%">
+
+                    </SfPdfViewer>
                     <MudButton OnClick="(()=>{viewDocument = !viewDocument;})" Variant="Variant.Filled">Close Document</MudButton>
                 }
                 else
@@ -83,21 +86,22 @@
     bool viewDocument;
     decimal approvedAmount;
 
-
+   
     void Cancel() => DialogInstance.Cancel();
-
+ 
     async Task Submit()
     {
 
     }
-    void ShowDoc(UploadFile file)
+    async Task ShowDoc(UploadFile file)
     {
-        DocumentPath = "";
-        DocumentPath =@"wwwroot/fileUploads/"+ file.FilePath;
         viewDocument = true;
-        StateHasChanged();
-        logger.LogInformation($@"Viewing document path: {DocumentPath}");
-
+        var path = Path.Combine(webHostEnv.WebRootPath, "fileUploads", file.FilePath);
+        byte[] byteArray = await System.IO.File.ReadAllBytesAsync(path);
+        DocumentPath = "data:application/pdf;base64," + Convert.ToBase64String(byteArray);
+        logger.LogInformation($@"Viewing document path: {path}");
+        await InvokeAsync(StateHasChanged);
     }
+    
 
 }
