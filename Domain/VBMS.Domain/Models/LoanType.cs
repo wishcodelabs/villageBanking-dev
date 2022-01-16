@@ -8,7 +8,7 @@ public class LoanType : AuditableEntity<int>
     public int GroupId { get; set; }
 
     public bool IsActive { get; set; }
-    [Required(ErrorMessage = "Can't be empty")]
+    [Required, Range(1, (double)decimal.MaxValue, ErrorMessage = "Can't be Zero")]
     public decimal MaxLoanAmount { get; set; }
 
     public virtual List<LoanInterestRate> InterestRates { get; set; }

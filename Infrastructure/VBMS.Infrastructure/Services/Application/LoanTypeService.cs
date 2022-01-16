@@ -27,9 +27,10 @@ namespace VBMS.Infrastructure.Services.Application
             return list.Where(l => l.IsActive && l.GroupId == villageGroupId).ToList();
         }
 
-        public Task<decimal> GetMaximumLoanAmount(int loanTypeId)
+        public async Task<decimal> GetMaximumLoanAmount(int loanTypeId)
         {
-            throw new NotImplementedException();
+            var loanType = await Repository.Entities().FirstOrDefaultAsync(t => t.Id == loanTypeId);
+            return loanType.MaxLoanAmount;
         }
     }
 }
