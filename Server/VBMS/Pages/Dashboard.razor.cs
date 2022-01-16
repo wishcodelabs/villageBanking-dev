@@ -32,6 +32,7 @@
             {
                 var share = await memberShareService.GetMemberShare(currentPeriod, Membership.VillageGroupId, Membership.Id);
                 approvedInvestments = share.TotalInvestment;
+                approvedLoans = await loanApplicationService.GetMineByStatusAsync(Membership.Id, LoanApplicationStatus.Approved, currentPeriod);
                 totalDebt = await loanService.GetTotalDebtByMembershipId(Membership.Id, currentPeriod);
                 totalShares = share.NumberOfShares;
                 image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";

@@ -34,5 +34,26 @@
 
             return list;
         }
+        public async Task<List<LoanApplication>> GetByStatus(int groupId, LoanApplicationStatus status)
+        {
+            var all = await GetAllByPeriod(0, groupId);
+
+            return all.Where(l => l.Status == status).ToList();
+        }
+
+        public async Task<int> GetMineByStatusAsync(int member, LoanApplicationStatus status, int currentPeriod)
+        {
+            var mine = await Repository.Entities(false).Where(l => l.ApplicantId == member && l.Status == status).ToListAsync();
+            if (currentPeriod == 0)
+            {
+                return mine.Count;
+
+            }
+            else
+            {
+                return mine.Where(l => l.PeriodId == currentPeriod).Count();
+            }
+
+        }
     }
 }
