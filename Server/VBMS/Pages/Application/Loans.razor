@@ -60,6 +60,7 @@
                                 <th>Loan Type</th>
                                 <th>Approved Amount</th>
                                 <th>Requested Amount</th>
+                                <th>Amount Owing</th>
                                 <th>Due Date</th>
                                 <th>Interest Rate</th>
                                 <th>Status</th>
@@ -81,6 +82,7 @@
                                         <td>@item.ApplicationRequest.LoanType.LoanName</td>
                                         <td>@item.ApprovedAmount.ToString("N2") ZMW</td>
                                         <td>@item.ApplicationRequest.RequestedAmount.ToString("N2") ZMW</td>
+                                        <td>@item.GetAmountOwing().ToString("N2Show ") ZMW</td>
                                         <td>@(item.DateDue.ToString("dd MMMM yyyy"))</td>
                                         <td>@item.InterestRate.InterestRate %</td>
                                         <td><MudChip Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
