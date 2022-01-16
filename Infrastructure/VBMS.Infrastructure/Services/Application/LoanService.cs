@@ -46,10 +46,26 @@
             return paid;
         }
 
+        public async Task<decimal> GetTotalDebtorsByGroup(int groupId, int periodId)
+        {
+            var loans = await GetByGroup(groupId, periodId);
+            var totalDebtors = 0M;
+            loans.ForEach((loan) => { totalDebtors += loan.GetAmountOwing(); });
+            return totalDebtors;
+        }
+
         public async Task<List<Loan>> GetDefaulted()
         {
             return await Repository.Entities().Where(l => l.Status == LoanStatus.Due && l.DateDue.Date <= DateTime.Now.AddDays(-3)).ToListAsync();
 
+        }
+
+        public async Task<decimal> GetTotalDebtByMembershipId(int memberId, int currentPeriod)
+        {
+            var loans = await GetAllByMemberId(memberId, currentPeriod);
+            var totalDebtors = 0M;
+            loans.ForEach((loan) => { totalDebtors += loan.GetAmountOwing(); });
+            return totalDebtors;
         }
 
         public async Task<List<Loan>> GetDue()

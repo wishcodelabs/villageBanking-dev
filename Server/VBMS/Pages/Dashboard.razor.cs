@@ -21,6 +21,7 @@
             {
                 memberCount = await membershipService.CountMembers(VillageBank.Id);
                 totalInvestments = await dashboardService.GetTotalInvestments(VillageBank.Id, currentPeriod);
+                totalDeptors = await loanService.GetTotalDebtorsByGroup(VillageBank.Id, currentPeriod);
                 approvedLoans = await dashboardService.GetApprovedLoanApplications(VillageBank.Id, currentPeriod);
                 newLoanApplications = await dashboardService.GetNewLoanApplications(VillageBank.Id, currentPeriod);
                 approvedInvestments = await dashboardService.GetByStatusAsync(Status.Approved, VillageBank.Id, currentPeriod);
@@ -31,6 +32,7 @@
             {
                 var share = await memberShareService.GetMemberShare(currentPeriod, Membership.VillageGroupId, Membership.Id);
                 approvedInvestments = share.TotalInvestment;
+                totalDebt = await loanService.GetTotalDebtByMembershipId(Membership.Id, currentPeriod);
                 totalShares = share.NumberOfShares;
                 image = Membership.PersonalDetails.Gender == Gender.Female ? "/images/female-icon.jpg" : "/images/male-icon.jpg";
                 totalInvestments = await investmentService.GetUserTotalInvestments(Membership.UserGuid, currentPeriod);
