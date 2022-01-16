@@ -1,4 +1,5 @@
 ﻿
+using System.Reflection;
 
 namespace VBMS.Infrastructure.Repositories;
 
@@ -13,19 +14,25 @@ public class RepositoryAsync<T, TKey> : IRepositoryAsync<T, TKey> where T : clas
     public IQueryable<T> Entities(bool includeNavigation = true)
     {
         var query = database.Set<T>().AsQueryable();
+        var navigationProperties = new List<PropertyInfo>();
         if (includeNavigation)
         {
-            var navigations = database.Model.FindEntityType(typeof(T))
-                                                     .GetConcreteDerivedTypesInclusive()
-                                                     .SelectMany(e => e.GetNavigations())
-                                                     .Distinct();
-            foreach (var property in navigations)
+            database.Model.GetEntityTypes().Select(entity => entity.GetNavigations()).ToList().ForEach(navigations =>
             {
-                query = query.Include(property.Name);
+                navigations.ToList().ForEach(navigationProperty =>
+                {
+                    navigationProperties.AddRange(typeof(T).GetProperties().Where(x => x.PropertyType == navigationProperty.PropertyInfo.PropertyType).ToList());
+                });
+            });
+
+            foreach (var navigationProperty in navigationProperties)
+            {
+                query = query.Include(navigationProperty.Name);
             }
         }
         return query;
     }
+
 
     public async Task<bool> AddAsync(T entity)
     {

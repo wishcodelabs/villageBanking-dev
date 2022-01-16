@@ -23,7 +23,11 @@ namespace VBMS.Infrastructure.Services.Application
         }
         public async Task<List<Loan>> GetByGroup(int groupId, int periodId)
         {
-            var all = await Repository.Entities().Include(l => l.ApplicationRequest).ThenInclude(l => l.Applicant).Where(l => l.Approver.VillageGroupId == groupId).ToListAsync();
+            var all = await Repository.Entities(true).Where(l => l.ApplicationRequest.Applicant.VillageGroupId == groupId).ToListAsync();
+            if (all == null)
+            {
+                return new List<Loan>();
+            }
             if (periodId == 0)
             {
                 return all;
@@ -36,7 +40,7 @@ namespace VBMS.Infrastructure.Services.Application
         public async Task<bool> HasUnpaid(int applicant)
         {
             var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(24) };
-            var list = Repository.Entities().FromCache(options);
+            var list = await Repository.Entities().FromCacheAsync(options);
             var loans = list.Where(l => l.ApplicationRequest.ApplicantId == applicant);
 
             var hasLoan = loans.Any();
