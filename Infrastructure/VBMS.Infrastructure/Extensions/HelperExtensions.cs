@@ -10,16 +10,19 @@
         public static decimal GetTotalInterest(this Loan loan)
         {
             var totalInterest = 0.0;
-            if (loan.InterestRate.InterestType == InterestType.Simple)
+            switch (loan.InterestRate.InterestType)
             {
-                totalInterest = ((double)loan.ApprovedAmount * loan.InterestRate.InterestRate * Convert.ToDouble(loan.InterestRate.PaybackDuration * 7)) / (100 * 365);
-            }
-            else if (loan.InterestRate.InterestType == InterestType.Compound)
-            {
-                var p = (double)loan.ApprovedAmount;
-                var r = loan.InterestRate.InterestRate / 100;
-                var n = loan.InterestRate.PaybackDuration;
-                totalInterest = p * ((1 + r) * n - 1);
+                case InterestType.Simple:
+                    totalInterest = (double)loan.ApprovedAmount * loan.InterestRate.InterestRate * Convert.ToDouble(loan.InterestRate.PaybackDuration * 7) / (100 * 365);
+                    break;
+                case InterestType.Compound:
+                    {
+                        var p = (double)loan.ApprovedAmount;
+                        var r = loan.InterestRate.InterestRate / 100;
+                        var n = loan.InterestRate.PaybackDuration;
+                        totalInterest = p * ((1 + r) * n - 1);
+                        break;
+                    }
             }
 
             return (decimal)totalInterest;
