@@ -3,7 +3,13 @@ namespace VBMS.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-
+        public static IServiceCollection AddWorkerServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IUnitOfWork<int>, UnitOfWork<int>>()
+               .AddSingleton<LoanService>()
+               .AddSingleton<LoanPaymentService>();
+            return services;
+        }
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddTransient<IUnitOfWork<int>, UnitOfWork<int>>()
@@ -25,6 +31,23 @@ namespace VBMS.Infrastructure.Extensions
                 .AddTransient<MembershipService>();
 
 
+            return services;
+        }
+
+        public static IServiceCollection AddSingletonDatabase(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHttpContextAccessor()
+                   .AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddDbContext<SystemDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), options2 =>
+                {
+                    options2.MigrationsAssembly("VBMS.Infrastructure");
+                    options2.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+
+                });
+
+            }, ServiceLifetime.Singleton);
             return services;
         }
 

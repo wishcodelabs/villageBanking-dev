@@ -31,6 +31,12 @@ namespace VBMS.Infrastructure.Services.Application
                 return all.Where(l => l.PeriodId == periodId).ToList();
             }
         }
+
+        public async Task<List<Loan>> GetDue()
+        {
+            return await Repository.Entities().Where(l => l.DateDue.Date == DateTime.Today).ToListAsync();
+        }
+
         public async Task<List<Loan>> GetByStatusAsync(LoanStatus loanStatus)
         {
             return await Repository
