@@ -1,9 +1,12 @@
+using VBMS.Infrastructure.Extensions;
 using VBMS.Worker;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((context, services) =>
     {
         services.AddHostedService<Worker>();
+        services.AddDatabase(context.Configuration);
+        services.AddInfrastructureServices();
     })
     .Build();
 
