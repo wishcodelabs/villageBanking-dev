@@ -19,7 +19,7 @@
                     {
                         var n = loan.InterestRate.PaybackDuration;
                         var p = (double)loan.ApprovedAmount;
-                        var r = loan.InterestRate.InterestRate / (100 * n);
+                        var r = loan.InterestRate.InterestRate / (100);
 
                         totalInterest = p * (Math.Pow((1 + r), n) - 1);
                         break;
