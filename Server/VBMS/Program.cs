@@ -5,20 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 SyncfusionLicenseProvider.RegisterLicense(builder.Configuration.GetConnectionString("SLicence"));
 
 // Add services to the container.
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddCurrentUserService();
 builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddIdentity();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdminRole",
-         policy => policy.RequireRole("GroupAdmin"));
-});
-builder.Services.AddIdentityServices();
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-builder.Services.AddApplicationServices();
+builder.Services.AddServerServices()
+                .AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<User>>();
 var app = builder.Build();
 
