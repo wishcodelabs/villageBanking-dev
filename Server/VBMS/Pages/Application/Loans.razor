@@ -59,9 +59,9 @@
                                 <th>Operating Period</th>
                                 <th>Loan Type</th>
                                 <th>Approved Amount</th>
-                                <th>Requested Amount</th>
-                                <th>Interest Rate</th>
+                                <th>Requested Amount</th> 
                                 <th>Due Date</th>
+                                <th>Interest Rate</th>                    
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -74,8 +74,8 @@
 
                                     <tr class="text-white">
                                         <td>@item.ApplicationRequest.Applicant.PersonalDetails.FirstName  @item.ApplicationRequest.Applicant.PersonalDetails.LastName </td>
-                                        <td>@(item.ApplicationRequest.DateSubmitted.ToString("MMMM yyyy H:mm"))</td>
-                                        <td>@(item.DateApproved.ToString("MMMM yyyy H:mm"))</td>
+                                        <td>@(item.ApplicationRequest.DateSubmitted.ToString("dd MMMM yyyy H:mm"))</td>
+                                        <td>@(item.DateApproved.ToString("dd MMMM yyyy H:mm"))</td>
                                         <td>@item.Approver.PersonalDetails.FirstName  @item.Approver.PersonalDetails.LastName </td>
                                         <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
                                         <td>@item.ApplicationRequest.LoanType.LoanName</td>
@@ -84,7 +84,7 @@
                                         <td>@(item.DateDue.ToString("MMMM yyyy H:mm"))</td>
                                         <td>@item.InterestRate.InterestRate %</td>
                                         <td><MudChip Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
-                                        <td>@item.InterestRate.PaybackDuration  @(item.InterestRate.PaybackDuration<=1? "week":"weeks")</td>
+                                        
 
                                         <td>
                                             <MudButton title="edit this record" StartIcon="@Icons.Material.Filled.ViewAgenda" Size="Size.Small" Color="Color.Tertiary">Details</MudButton>
