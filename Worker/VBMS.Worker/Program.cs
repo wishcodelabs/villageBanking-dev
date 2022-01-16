@@ -7,8 +7,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddSingletonDatabase(context.Configuration);
         services.AddWorkerServices();
-        services.AddHostedService<LoanDueDatesService>();
-
+        services.AddHostedService<LoanBackgroundService>();
     })
     .Build();
 

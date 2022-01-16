@@ -6,8 +6,8 @@ namespace VBMS.Infrastructure.Extensions
         public static IServiceCollection AddWorkerServices(this IServiceCollection services)
         {
             services.AddSingleton<IUnitOfWork<int>, UnitOfWork<int>>()
-               .AddSingleton<LoanService>()
-               .AddSingleton<LoanPaymentService>();
+               .AddSingleton<LoanService>();
+
             return services;
         }
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)

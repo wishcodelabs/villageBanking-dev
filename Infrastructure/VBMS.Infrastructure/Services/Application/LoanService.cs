@@ -32,9 +32,15 @@ namespace VBMS.Infrastructure.Services.Application
             }
         }
 
+        public async Task<List<Loan>> GetDefaulted()
+        {
+            return await Repository.Entities().Where(l => l.Status == LoanStatus.Due && l.DateDue.Date <= DateTime.Now.AddDays(-3)).ToListAsync();
+
+        }
+
         public async Task<List<Loan>> GetDue()
         {
-            return await Repository.Entities().Where(l => l.DateDue.Date == DateTime.Today).ToListAsync();
+            return await Repository.Entities().Where(l => l.DateDue.Date <= DateTime.Today && l.Status == LoanStatus.Active).ToListAsync();
         }
 
         public async Task<List<Loan>> GetByStatusAsync(LoanStatus loanStatus)
