@@ -13,14 +13,15 @@
             switch (loan.InterestRate.InterestType)
             {
                 case InterestType.Simple:
-                    totalInterest = (double)loan.ApprovedAmount * loan.InterestRate.InterestRate * Convert.ToDouble(loan.InterestRate.PaybackDuration * 7) / (100 * 365);
+                    totalInterest = (double)loan.ApprovedAmount * loan.InterestRate.InterestRate * Convert.ToDouble(loan.InterestRate.PaybackDuration) / (100);
                     break;
                 case InterestType.Compound:
                     {
-                        var p = (double)loan.ApprovedAmount;
-                        var r = loan.InterestRate.InterestRate / 100;
                         var n = loan.InterestRate.PaybackDuration;
-                        totalInterest = p * ((1 + r) * n - 1);
+                        var p = (double)loan.ApprovedAmount;
+                        var r = loan.InterestRate.InterestRate / (100 * n);
+
+                        totalInterest = p * (Math.Pow((1 + r), n) - 1);
                         break;
                     }
             }
