@@ -61,16 +61,16 @@ namespace VBMS.Infrastructure.Services.Application
                 return all.Where(l => l.PeriodId == periodId).ToList();
             }
         }
-        public async Task<bool> HasUnpaid(int applicant)
+        public async Task<bool> HasDefaulted(int applicant)
         {
             var options = new MemoryCacheEntryOptions() { SlidingExpiration = TimeSpan.FromHours(24) };
             var list = await Repository.Entities().FromCacheAsync(options);
             var loans = list.Where(l => l.ApplicationRequest.ApplicantId == applicant);
 
             var hasLoan = loans.Any();
-            var hasPaid = loans.Any(l => l.Status == LoanStatus.Due && l.Payments.Any()) || loans.Any(l => l.Status == LoanStatus.Paid);
+            var hasDefaulted = loans.Any(l => l.Status == LoanStatus.Defaulted) || loans.Any(l => l.Status == LoanStatus.Due && !l.Payments.Any());
 
-            return hasLoan && !hasPaid;
+            return hasLoan && hasDefaulted;
 
         }
 

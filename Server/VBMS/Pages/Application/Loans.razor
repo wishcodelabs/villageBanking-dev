@@ -282,7 +282,7 @@
      loan.Status switch
      {
          LoanStatus.Paid => Color.Success,
-         LoanStatus.Pending => Color.Surface,
+         LoanStatus.Active => Color.Tertiary,
          LoanStatus.Due => Color.Error,
          _ => Color.Default
      };
