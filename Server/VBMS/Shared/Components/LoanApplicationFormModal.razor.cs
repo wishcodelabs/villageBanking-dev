@@ -110,7 +110,7 @@ namespace VBMS.Shared.Components
                 var maxLoan = await loanTypeService.GetMaximumLoanAmount(Model.LoanTypeId);
                 if (Model.RequestedAmount < maxLoan)
                 {
-                    snackBar.Add($"You can only request upto {maxLoan.ToString("N2")} ZMW");
+                    snackBar.Add($"You can only request upto {maxLoan.ToString("N2")} ZMW", Severity.Error);
                     return;
                 }
                 if (!IsEditing)

@@ -7,12 +7,29 @@ namespace VBMS.Infrastructure.Services.Application
         public LoanService(IUnitOfWork<int> unitOfWork) : base(unitOfWork)
         {
         }
-        public async Task<List<Loan>> GetAllByMemberId(int memberId)
+        public async Task<List<Loan>> GetAllByMemberId(int memberId, int periodId)
         {
-            return await Repository
+            var all = await Repository
                          .Entities()
+                         .Include(l => l.ApplicationRequest)
+                                                .ThenInclude(a => a.Applicant)
+                                                .ThenInclude(m => m.PersonalDetails)
+                         .Include(l => l.ApplicationRequest)
+                                                .ThenInclude(a => a.LoanType)
                          .Where(l => l.ApplicationRequest.ApplicantId == memberId)
                          .ToListAsync();
+            if (all == null)
+            {
+                return new List<Loan>();
+            }
+            if (periodId == 0)
+            {
+                return all;
+            }
+            else
+            {
+                return all.Where(l => l.PeriodId == periodId).ToList();
+            }
         }
         public async Task<List<Loan>> GetByStatusAsync(LoanStatus loanStatus)
         {
@@ -20,6 +37,7 @@ namespace VBMS.Infrastructure.Services.Application
                          .Entities()
                          .Where(l => l.Status == loanStatus)
                          .ToListAsync();
+
         }
         public async Task<List<Loan>> GetByGroup(int groupId, int periodId)
         {

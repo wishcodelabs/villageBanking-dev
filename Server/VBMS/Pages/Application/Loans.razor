@@ -5,7 +5,7 @@
             <MudGrid Spacing="3" Justify="Justify.Center">
                 <MudItem align="center" xs="12">
                     <MudPaper Elevation="20" Class="title-card p-4 ">
-                        <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">Manage Loan Applications</MudText>
+                        <MudText Class="text-white" Align="Align.Center" Typo="Typo.h5">Manage Approved Loans</MudText>
                     </MudPaper>
                 </MudItem>
                 <MudItem xs="12">
@@ -59,9 +59,9 @@
                                 <th>Operating Period</th>
                                 <th>Loan Type</th>
                                 <th>Approved Amount</th>
-                                <th>Requested Amount</th> 
+                                <th>Requested Amount</th>
                                 <th>Due Date</th>
-                                <th>Interest Rate</th>                    
+                                <th>Interest Rate</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -84,7 +84,7 @@
                                         <td>@(item.DateDue.ToString("dd MMMM yyyy"))</td>
                                         <td>@item.InterestRate.InterestRate %</td>
                                         <td><MudChip Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
-                                        
+
 
                                         <td>
                                             <MudButton title="edit this record" StartIcon="@Icons.Material.Filled.ViewAgenda" Size="Size.Small" Color="Color.Tertiary">Details</MudButton>
@@ -99,6 +99,116 @@
             </MudGrid>
         </MudContainer>
     </Authorized>
+    <NotAuthorized>
+        <MudContainer Class="mt-16 px-8 cont" MaxWidth="MaxWidth.False">
+            <MudGrid Spacing="3" Justify="Justify.Center">
+                <MudItem xs="12">
+                    <div class="bg-white title-card shadow rounded overflow-hidden sticky-md-top">
+                        <div class="px-4 pt-0 pb-2 cover">
+                            <div class="media align-items-end profile-head">
+                                <div class="profile mr-3"><img src="@image" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="#" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                                <div class="media-body mb-5 text-white">
+                                    <h3 class="mt-0 mb-4 text-white">Hi, @Membership.PersonalDetails.FirstName @Membership.PersonalDetails.LastName</h3>
+                                    <p class="large mb-6 mt-n2 text-black"> <i class="fas fa-map-marker-alt mr-2"></i>@VillageBank.GroupName</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-light d-flex p-4 justify-content-center text-center">
+                            <h3 class="text-black font-bold text-3xl">Your Loans</h3>
+                        </div>
+                    </div>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudPaper Elevation="24" Class="p-1 mt-4 bg-gradient-to-r from-blue-900 to-gray-800 shadow text-2xl text-white">
+                        <MudGrid Justify="Justify.SpaceBetween">
+                            <MudItem xs="6" md="3">
+                                <MudTextField OnBlur="Refresh" Immediate="true" ValueChanged="(e)=>Search(e)" Class="bg-white bar" T="string" Label="Search" Placeholder="Type here to search" Clearable="true" T="string" Variant="Variant.Filled" />
+                            </MudItem>
+                            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                @if (openPeriods.Any())
+                                {
+                                    <MudItem xs="6" md="3">
+
+                                        <MudSelect T="int"
+                                               Dense="true"
+                                               Class="bg-white bar"
+                                               ValueChanged="(e)=>Filter(e)"
+                                               Immediate="true"
+                                               Variant="Variant.Filled"
+                                               Label="Filter By Investment Period"
+                                               Required="true">
+                                            <MudSelectItem T="int" Value="0">---- All ----</MudSelectItem>
+                                            @foreach (var item in openPeriods)
+                                            {
+                                                <MudSelectItem T="int" Value="@item.Id">@(Convert.ToDateTime(item.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.EndDate).ToShortDateString())</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                }
+                                else
+                                {
+                                    <MudItem xs="6" md="6">
+                                        <MudAlert Severity="Severity.Warning" Variant="Variant.Filled" Dense="true">No investment periods have been opened for this group .</MudAlert>
+
+                                    </MudItem>
+                                }
+                            </MudHidden>
+                        </MudGrid>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12">
+                    <table class="table table-striped table-hover table-responsive-sm">
+                        <caption>List of Loans</caption>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Date Submitted</th>
+                                <th>Date Approved</th>
+                                <th>Approved By</th>
+                                <th>Operating Period</th>
+                                <th>Loan Type</th>
+                                <th>Approved Amount</th>
+                                <th>Requested Amount</th>
+                                <th>Due Date</th>
+                                <th>Interest Rate</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (DataSource.Any())
+                            {
+                                @foreach (var item in DataSource)
+                                {
+
+                                    <tr class="text-white">
+                                        <td>@item.ApplicationRequest.Applicant.PersonalDetails.FirstName  @item.ApplicationRequest.Applicant.PersonalDetails.LastName </td>
+                                        <td>@(item.ApplicationRequest.DateSubmitted.ToString("dd MMMM yyyy H:mm"))</td>
+                                        <td>@(item.DateApproved.ToString("dd MMMM yyyy H:mm"))</td>
+                                        <td>@item.Approver.PersonalDetails.FirstName  @item.Approver.PersonalDetails.LastName </td>
+                                        <td>@(Convert.ToDateTime(item.Period.BeginDate).ToShortDateString()) - @(Convert.ToDateTime(item.Period.EndDate).ToShortDateString())</td>
+                                        <td>@item.ApplicationRequest.LoanType.LoanName</td>
+                                        <td>@item.ApprovedAmount.ToString("N2") ZMW</td>
+                                        <td>@item.ApplicationRequest.RequestedAmount.ToString("N2") ZMW</td>
+                                        <td>@(item.DateDue.ToString("dd MMMM yyyy"))</td>
+                                        <td>@item.InterestRate.InterestRate %</td>
+                                        <td><MudChip Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
+
+
+                                        <td>
+                                            <MudButton title="edit this record" StartIcon="@Icons.Material.Filled.ViewAgenda" Size="Size.Small" Color="Color.Tertiary">Details</MudButton>
+
+                                        </td>
+                                    </tr>
+                                }}
+                        </tbody>
+
+                    </table>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </NotAuthorized>
+
 </AuthorizeView>
 <style>
     body {
@@ -133,7 +243,7 @@
     string selectedRow;
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true, Position = DialogPosition.Center, DisableBackdropClick = true };
     int currentPeriod;
-    VillageGroupMembership Membership { get; set; }
+    VillageGroupMembership Membership { get; set; } = new();
     List<InvestmentPeriod> openPeriods { get; set; } = new();
     List<Loan> DataSource { get; set; } = new();
     HashSet<Loan> list;
@@ -141,6 +251,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        Membership.PersonalDetails = new();
         claimsPrincipal = (await AuthenticationStateTask).User;
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
@@ -168,10 +279,17 @@
     }
     async Task Refresh()
     {
-        openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
 
+        openPeriods = await investmentPeriodService.GetByStatusAsync(PeriodStatus.Open, VillageBank.Id);
         DataSource = new();
-        DataSource = await loanService.GetByGroup(VillageBank.Id, currentPeriod);
+        if (await groupAdminService.IsAlreadyAdmin(myGuid))
+        {
+            DataSource = await loanService.GetByGroup(VillageBank.Id, currentPeriod);
+        }
+        else
+        {
+            DataSource = await loanService.GetAllByMemberId(Membership.Id,currentPeriod);
+        }
         list = new HashSet<Loan>(DataSource);
         StateHasChanged();
     }

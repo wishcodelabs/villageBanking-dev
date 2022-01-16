@@ -1,6 +1,6 @@
 ﻿namespace VBMS.Extensions
 {
-    internal static class SearchExtensions
+    internal static class HelperExtensions
     {
 
 

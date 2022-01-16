@@ -29,7 +29,7 @@ namespace VBMS.Infrastructure.Services.Application
 
         public async Task<decimal> GetMaximumLoanAmount(int loanTypeId)
         {
-            var loanType = await Repository.Entities().FirstOrDefaultAsync(t => t.Id == loanTypeId);
+            var loanType = await Repository.Entities(false).FirstOrDefaultAsync(t => t.Id == loanTypeId);
             return loanType.MaxLoanAmount;
         }
     }
