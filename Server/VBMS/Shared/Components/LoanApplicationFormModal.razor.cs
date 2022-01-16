@@ -107,6 +107,12 @@ namespace VBMS.Shared.Components
             Model.DateSubmitted = DateTime.Now;
             if (Model.Files.Any())
             {
+                var maxLoan = await loanTypeService.GetMaximumLoanAmount(Model.LoanTypeId);
+                if (Model.RequestedAmount < maxLoan)
+                {
+                    snackBar.Add($"You can only request upto {maxLoan.ToString("N2")} ZMW");
+                    return;
+                }
                 if (!IsEditing)
                 {
                     if (await loanApplicationService.AddAsync(Model))

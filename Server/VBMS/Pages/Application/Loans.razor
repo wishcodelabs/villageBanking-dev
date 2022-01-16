@@ -81,7 +81,7 @@
                                         <td>@item.ApplicationRequest.LoanType.LoanName</td>
                                         <td>@item.ApprovedAmount.ToString("N2") ZMW</td>
                                         <td>@item.ApplicationRequest.RequestedAmount.ToString("N2") ZMW</td>
-                                        <td>@(item.DateDue.ToString("MMMM yyyy H:mm"))</td>
+                                        <td>@(item.DateDue.ToString("dd MMMM yyyy"))</td>
                                         <td>@item.InterestRate.InterestRate %</td>
                                         <td><MudChip Size="Size.Small" Color="GetColor(item)" Text="@item.Status.ToString()" /></td>
                                         
