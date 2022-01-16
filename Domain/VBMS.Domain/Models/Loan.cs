@@ -29,5 +29,9 @@
         public virtual LoanInterestRate InterestRate { get; set; }
         public virtual List<LoanPayment> Payments { get; set; }
 
+        public decimal GetAmountOwing()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

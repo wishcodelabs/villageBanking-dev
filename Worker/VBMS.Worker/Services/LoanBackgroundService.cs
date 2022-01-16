@@ -13,53 +13,59 @@ namespace VBMS.Worker.Services
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            await InitChecks();
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogInformation($"Checking for due loans at {DateTime.Now:F}");
-                var dueLoans = await loanService.GetDue();
-                logger.LogInformation($"Checking for defaulted loans at {DateTime.Now:F}");
-                var defaultedLoans = await loanService.GetDefaulted();
-                if (!dueLoans.Any())
+                logger.LogInformation($"Checking for paid off loans at {DateTime.Now:F}");
+                var paidOff = await loanService.GetPaidOff();
+                await Task.Delay(10000, stoppingToken);
+            }
+        }
+        async Task InitChecks()
+        {
+            logger.LogInformation($"Checking for due loans at {DateTime.Now:F}");
+            var dueLoans = await loanService.GetDue();
+            logger.LogInformation($"Checking for defaulted loans at {DateTime.Now:F}");
+            var defaultedLoans = await loanService.GetDefaulted();
+            if (!dueLoans.Any())
+            {
+                logger.LogInformation("No Loans are due today.. ");
+            }
+            else
+            {
+                logger.LogInformation($"{dueLoans.Count} loan(s) are due today.. changing status.");
+                foreach (var loan in dueLoans)
                 {
-                    logger.LogInformation("No Loans are due today.. ");
-                }
-                else
-                {
-                    logger.LogInformation($"{dueLoans.Count} loan(s) are due today.. changing status.");
-                    foreach (var loan in dueLoans)
+                    loan.Status = Domain.Enums.LoanStatus.Due;
+                    if (await loanService.UpdateAsync(loan))
                     {
-                        loan.Status = Domain.Enums.LoanStatus.Due;
-                        if (await loanService.UpdateAsync(loan))
-                        {
-                            logger.LogInformation("Loan marked as due..");
-                        }
-                        else
-                        {
-                            logger.LogError("Failed to update loan status..");
-                        }
+                        logger.LogInformation("Loan marked as due..");
+                    }
+                    else
+                    {
+                        logger.LogError("Failed to update loan status..");
                     }
                 }
-                if (!defaultedLoans.Any())
+            }
+            if (!defaultedLoans.Any())
+            {
+                logger.LogInformation("No defaulted loans today.");
+            }
+            else
+            {
+                logger.LogInformation($"{defaultedLoans.Count} loan(s) are default today.. changing status.");
+                foreach (var loan in defaultedLoans)
                 {
-                    logger.LogInformation("No defaulted loans today.");
-                }
-                else
-                {
-                    logger.LogInformation($"{defaultedLoans.Count} loan(s) are default today.. changing status.");
-                    foreach (var loan in defaultedLoans)
+                    loan.Status = Domain.Enums.LoanStatus.Defaulted;
+                    if (await loanService.UpdateAsync(loan))
                     {
-                        loan.Status = Domain.Enums.LoanStatus.Defaulted;
-                        if (await loanService.UpdateAsync(loan))
-                        {
-                            logger.LogInformation("Loan marked as default..");
-                        }
-                        else
-                        {
-                            logger.LogError("Failed to update loan status..");
-                        }
+                        logger.LogInformation("Loan marked as default..");
+                    }
+                    else
+                    {
+                        logger.LogError("Failed to update loan status..");
                     }
                 }
-                await Task.Delay(86400000, stoppingToken);
             }
         }
 

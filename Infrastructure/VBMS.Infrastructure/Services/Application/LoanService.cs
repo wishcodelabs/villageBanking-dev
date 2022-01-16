@@ -32,6 +32,22 @@ namespace VBMS.Infrastructure.Services.Application
             }
         }
 
+        public async Task<List<Loan>> GetPaidOff()
+        {
+            var paid = new List<Loan>();
+            var all = await Repository.Entities().ToListAsync();
+            foreach (var loan in all)
+            {
+                var totalPayments = 0M;
+                loan.Payments.ForEach(p => totalPayments += p.Amount);
+                if (totalPayments >= loan.GetAmountOwing())
+                {
+                    paid.Add(loan);
+                }
+            }
+            return paid;
+        }
+
         public async Task<List<Loan>> GetDefaulted()
         {
             return await Repository.Entities().Where(l => l.Status == LoanStatus.Due && l.DateDue.Date <= DateTime.Now.AddDays(-3)).ToListAsync();
