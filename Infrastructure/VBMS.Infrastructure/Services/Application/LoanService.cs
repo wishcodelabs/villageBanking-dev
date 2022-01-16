@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace VBMS.Infrastructure.Services.Application
+﻿namespace VBMS.Infrastructure.Services.Application
 {
     public class LoanService : ServiceBase<Loan, int>
     {
@@ -35,7 +33,7 @@ namespace VBMS.Infrastructure.Services.Application
         public async Task<List<Loan>> GetPaidOff()
         {
             var paid = new List<Loan>();
-            var all = await Repository.Entities().ToListAsync();
+            var all = await Repository.Entities().Where(l => l.Status != LoanStatus.Paid).ToListAsync();
             foreach (var loan in all)
             {
                 var totalPayments = 0M;

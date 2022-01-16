@@ -18,6 +18,27 @@ namespace VBMS.Worker.Services
             {
                 logger.LogInformation($"Checking for paid off loans at {DateTime.Now:F}");
                 var paidOff = await loanService.GetPaidOff();
+                if (paidOff.Any())
+                {
+                    logger.LogInformation($"{paidOff.Count} loan(s) have been paid off.. changing status.");
+                    foreach (var loan in paidOff)
+                    {
+                        loan.Status = Domain.Enums.LoanStatus.Paid;
+                        if (await loanService.UpdateAsync(loan))
+                        {
+                            logger.LogInformation("Loan marked as paid off..");
+                        }
+                        else
+                        {
+                            logger.LogError("Failed to update loan status..");
+                        }
+
+                    }
+                }
+                else
+                {
+                    logger.LogInformation($"No Loans paid off at {DateTime.Now:F}");
+                }
                 await Task.Delay(10000, stoppingToken);
             }
         }
