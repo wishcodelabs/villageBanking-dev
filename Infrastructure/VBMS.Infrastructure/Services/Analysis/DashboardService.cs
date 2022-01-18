@@ -20,7 +20,7 @@
                                                 .Where(i => i.InvestmentPeriodId == investmentPeriodId && i.Investor.VillageGroupId == groupId && ((DateTime)i.DateInvested).Month == month)
                                                 .ToListAsync();
             var total = 0.0;
-            investments.ForEach(x => { total += ((double)x.AmountInvested); });
+            investments.ForEach(x => { total += (double)x.AmountInvested; });
             return total;
         }
 
