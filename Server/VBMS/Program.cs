@@ -3,7 +3,13 @@ using Syncfusion.Licensing;
 
 var builder = WebApplication.CreateBuilder(args);
 SyncfusionLicenseProvider.RegisterLicense(builder.Configuration.GetConnectionString("SLicence"));
-
+builder.Host.ConfigureWebHostDefaults(webBuilder =>
+{
+    webBuilder.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(7051);
+    });
+});
 // Add services to the container.
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddServerServices()
