@@ -63,9 +63,9 @@
         public async Task<decimal> GetTotalDebtByMembershipId(int memberId, int currentPeriod)
         {
             var loans = await GetAllByMemberId(memberId, currentPeriod);
-            var totalDebtors = 0M;
-            loans.ForEach((loan) => { totalDebtors += loan.GetAmountOwing(); });
-            return totalDebtors;
+            var totalDebt = 0M;
+            loans.ForEach((loan) => { totalDebt += loan.GetAmountOwing(); });
+            return totalDebt;
         }
 
         public async Task<List<Loan>> GetDue()
