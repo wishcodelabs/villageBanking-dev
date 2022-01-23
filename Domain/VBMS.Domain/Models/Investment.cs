@@ -15,7 +15,7 @@ public class Investment : AuditableEntity<int>
 
     public Status Status { get; set; }
 
-    public string ApprovedBy { get; set; }
+    public string? ApprovedBy { get; set; }
 
     public InvestmentPeriod Period { get; set; }
 
