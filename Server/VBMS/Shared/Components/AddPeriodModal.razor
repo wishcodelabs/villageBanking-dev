@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <EditForm Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
+        <EditForm id="editForm" Model="@Model" OnValidSubmit="Submit" OnInvalidSubmit="ModelInvalid">
             <FluentValidationValidator/>
              <DataAnnotationsValidator/>
              <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
@@ -54,6 +54,6 @@
       
             <MudButton OnClick="Cancel">Cancel</MudButton>
        
-        <MudButton StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled" >Save</MudButton>
+        <MudButton ButtonType="MudBlazor.ButtonType.Submit" UserAttributes="attri" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" Variant="Variant.Filled" >Save</MudButton>
     </DialogActions>
 </MudDialog>

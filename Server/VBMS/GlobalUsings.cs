@@ -11,6 +11,7 @@ global using MudBlazor;
 global using MudBlazor.Services;
 
 global using Syncfusion.Blazor;
+global using Syncfusion.Licensing;
 
 global using System.Globalization;
 global using System.Security.Claims;

@@ -7,8 +7,11 @@
         [Parameter] public InvestmentPeriod? Model { get; set; }
         [Parameter] public int VillageBankId { get; set; }
         public CultureInfo _en = CultureInfo.GetCultureInfo("en-ZM");
+        public Dictionary<string, object> attri;
         protected override void OnInitialized()
         {
+            attri = new();
+            attri.Add("form", "editForm");
             if (!IsEditing)
             {
                 Model = new();

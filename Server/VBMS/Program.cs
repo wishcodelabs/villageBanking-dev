@@ -1,22 +1,16 @@
-
-using Syncfusion.Licensing;
-
 var builder = WebApplication.CreateBuilder(args);
+
+//builder.WebHost.UseKestrel(context =>
+// {
+//     context.ListenAnyIP(7051);
+// });
 SyncfusionLicenseProvider.RegisterLicense(builder.Configuration.GetConnectionString("SLicence"));
-builder.Host.ConfigureWebHostDefaults(webBuilder =>
-{
-    webBuilder.ConfigureKestrel(options =>
-    {
-        options.ListenAnyIP(7051);
-    });
-});
 // Add services to the container.
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddServerServices()
                 .AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<User>>();
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
