@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace VBMS.Infrastructure.Services.Application
+﻿namespace VBMS.Infrastructure.Services.Application
 {
     public class LoanInterestRateService : ServiceBase<LoanInterestRate, int>
     {
@@ -15,7 +13,7 @@ namespace VBMS.Infrastructure.Services.Application
                 return new List<LoanInterestRate>();
             }
 
-            return Repository.Entities().FromCache(options).Where(i => i.LoanTypeId == loanTypeId).ToList();
+            return Repository.Entities().Where(i => i.LoanTypeId == loanTypeId).ToList();
         }
     }
 }

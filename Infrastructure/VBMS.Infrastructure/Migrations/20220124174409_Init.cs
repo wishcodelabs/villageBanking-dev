@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -10,25 +11,6 @@ namespace VBMS.Infrastructure.Migrations
         {
             migrationBuilder.EnsureSchema(
                 name: "Identity");
-
-            migrationBuilder.CreateTable(
-                name: "LoanPayments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LoanNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    LoanId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Quarter = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentMethod = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoanPayments", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "Provinces",
@@ -194,7 +176,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.ProvinceId,
                         principalTable: "Provinces",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,7 +201,7 @@ namespace VBMS.Infrastructure.Migrations
                         principalSchema: "Identity",
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,7 +222,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.GroupId,
                         principalTable: "VillageBankGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,7 +249,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.GroupId,
                         principalTable: "VillageBankGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,7 +262,6 @@ namespace VBMS.Infrastructure.Migrations
                     GroupId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     MaxLoanAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaybackDuration = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -294,7 +275,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.GroupId,
                         principalTable: "VillageBankGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -320,7 +301,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.VillageGroupId,
                         principalTable: "VillageBankGroups",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -332,6 +313,7 @@ namespace VBMS.Infrastructure.Migrations
                     LoanTypeId = table.Column<int>(type: "int", nullable: false),
                     InterestType = table.Column<int>(type: "int", nullable: false),
                     PeriodId = table.Column<int>(type: "int", nullable: false),
+                    PaybackDuration = table.Column<int>(type: "int", nullable: false),
                     InterestRate = table.Column<double>(type: "float", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -346,32 +328,13 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.PeriodId,
                         principalTable: "InvestmentPeriods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LoanInterestRates_LoanTypes_LoanTypeId",
                         column: x => x.LoanTypeId,
                         principalTable: "LoanTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Applicant",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MembershipId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Applicant", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Applicant_Membership_MembershipId",
-                        column: x => x.MembershipId,
-                        principalTable: "Membership",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -395,7 +358,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.MemberId,
                         principalTable: "Membership",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -409,6 +372,7 @@ namespace VBMS.Infrastructure.Migrations
                     InvestmentPeriodId = table.Column<int>(type: "int", nullable: false),
                     AmountInvested = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    ApprovedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -422,13 +386,13 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.InvestmentPeriodId,
                         principalTable: "InvestmentPeriods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Investments_Membership_InvestorId",
                         column: x => x.InvestorId,
                         principalTable: "Membership",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -453,7 +417,7 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.MembershipId,
                         principalTable: "Membership",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -475,23 +439,22 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.MemberId,
                         principalTable: "Membership",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Loans",
+                name: "LoanApplications",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LoadNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    PeriodId = table.Column<int>(type: "int", nullable: false),
                     RequestedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ApprovedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InterestRateId = table.Column<int>(type: "int", nullable: false),
                     DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     LoanTypeId = table.Column<int>(type: "int", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -499,19 +462,31 @@ namespace VBMS.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Loans", x => x.Id);
+                    table.PrimaryKey("PK_LoanApplications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Loans_Applicant_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicant",
+                        name: "FK_LoanApplications_InvestmentPeriods_PeriodId",
+                        column: x => x.PeriodId,
+                        principalTable: "InvestmentPeriods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Loans_LoanTypes_LoanTypeId",
+                        name: "FK_LoanApplications_LoanInterestRates_InterestRateId",
+                        column: x => x.InterestRateId,
+                        principalTable: "LoanInterestRates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LoanApplications_LoanTypes_LoanTypeId",
                         column: x => x.LoanTypeId,
                         principalTable: "LoanTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LoanApplications_Membership_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Membership",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -531,19 +506,112 @@ namespace VBMS.Infrastructure.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MemberAddresses_MemberPersonalDetails_PersonalDetailsMembershipId",
                         column: x => x.PersonalDetailsMembershipId,
                         principalTable: "MemberPersonalDetails",
                         principalColumn: "MembershipId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Applicant_MembershipId",
-                table: "Applicant",
-                column: "MembershipId");
+            migrationBuilder.CreateTable(
+                name: "LoanApplicationAttachedFiles",
+                columns: table => new
+                {
+                    LoanApplicationId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoanApplicationAttachedFiles", x => new { x.LoanApplicationId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_LoanApplicationAttachedFiles_LoanApplications_LoanApplicationId",
+                        column: x => x.LoanApplicationId,
+                        principalTable: "LoanApplications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    ApprovedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PeriodId = table.Column<int>(type: "int", nullable: false),
+                    DateDue = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateApproved = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ApproverId = table.Column<int>(type: "int", nullable: false),
+                    RatingId = table.Column<int>(type: "int", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Loans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Loans_InvestmentPeriods_PeriodId",
+                        column: x => x.PeriodId,
+                        principalTable: "InvestmentPeriods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Loans_LoanApplications_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "LoanApplications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Loans_LoanInterestRates_RatingId",
+                        column: x => x.RatingId,
+                        principalTable: "LoanInterestRates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Loans_Membership_ApproverId",
+                        column: x => x.ApproverId,
+                        principalTable: "Membership",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoanPayments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    LoanId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Quarter = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    PaymentMethod = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoanPayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoanPayments_Loans_LoanId",
+                        column: x => x.LoanId,
+                        principalTable: "Loans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_ProvinceId",
@@ -576,6 +644,26 @@ namespace VBMS.Infrastructure.Migrations
                 column: "InvestorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LoanApplications_ApplicantId",
+                table: "LoanApplications",
+                column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanApplications_InterestRateId",
+                table: "LoanApplications",
+                column: "InterestRateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanApplications_LoanTypeId",
+                table: "LoanApplications",
+                column: "LoanTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanApplications_PeriodId",
+                table: "LoanApplications",
+                column: "PeriodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LoanInterestRates_LoanTypeId",
                 table: "LoanInterestRates",
                 column: "LoanTypeId");
@@ -586,14 +674,29 @@ namespace VBMS.Infrastructure.Migrations
                 column: "PeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_ApplicantId",
-                table: "Loans",
-                column: "ApplicantId");
+                name: "IX_LoanPayments_LoanId",
+                table: "LoanPayments",
+                column: "LoanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_LoanTypeId",
+                name: "IX_Loans_ApproverId",
                 table: "Loans",
-                column: "LoanTypeId");
+                column: "ApproverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_PeriodId",
+                table: "Loans",
+                column: "PeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_RatingId",
+                table: "Loans",
+                column: "RatingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_RequestId",
+                table: "Loans",
+                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoanTypes_GroupId",
@@ -634,13 +737,10 @@ namespace VBMS.Infrastructure.Migrations
                 name: "Investments");
 
             migrationBuilder.DropTable(
-                name: "LoanInterestRates");
+                name: "LoanApplicationAttachedFiles");
 
             migrationBuilder.DropTable(
                 name: "LoanPayments");
-
-            migrationBuilder.DropTable(
-                name: "Loans");
 
             migrationBuilder.DropTable(
                 name: "MemberAddresses");
@@ -673,13 +773,7 @@ namespace VBMS.Infrastructure.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "InvestmentPeriods");
-
-            migrationBuilder.DropTable(
-                name: "Applicant");
-
-            migrationBuilder.DropTable(
-                name: "LoanTypes");
+                name: "Loans");
 
             migrationBuilder.DropTable(
                 name: "Cities");
@@ -692,10 +786,22 @@ namespace VBMS.Infrastructure.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
+                name: "LoanApplications");
+
+            migrationBuilder.DropTable(
                 name: "Provinces");
 
             migrationBuilder.DropTable(
+                name: "LoanInterestRates");
+
+            migrationBuilder.DropTable(
                 name: "Membership");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentPeriods");
+
+            migrationBuilder.DropTable(
+                name: "LoanTypes");
 
             migrationBuilder.DropTable(
                 name: "VillageBankGroups");
