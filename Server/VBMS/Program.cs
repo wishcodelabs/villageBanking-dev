@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+
+using VBMS.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.WebHost.UseKestrel(context =>
@@ -35,5 +39,16 @@ app.UseMiddleware<SignInMiddleware<User>>();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-
+app.MigrateDb();
 app.Run();
+
+public static class Extensions
+{
+    public static IApplicationBuilder MigrateDb(this IApplicationBuilder app)
+    {
+        var scope = app.ApplicationServices.CreateScope();
+        var service  = scope.ServiceProvider.GetService<SystemDbContext>();
+        service.Database.Migrate();
+        return app;
+    }
+}
