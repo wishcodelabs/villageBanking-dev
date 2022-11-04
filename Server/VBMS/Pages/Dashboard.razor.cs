@@ -53,7 +53,7 @@
 
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
-                userGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+                userGuid = claimsPrincipal.GetGuid();
                 if ((await authorizationService.AuthorizeAsync(claimsPrincipal, this, "RequireAdminRole")).Succeeded)
                 {
                     var admin = await groupAdminService.GetByUserGuid(userGuid);

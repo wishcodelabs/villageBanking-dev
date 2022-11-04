@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using VBMS.Infrastructure;
 using VBMS.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,8 @@ SyncfusionLicenseProvider.RegisterLicense(builder.Configuration.GetConnectionStr
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddServerServices()
                 .AddServerSideBlazor();
-builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<User>>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, SystemUserClaimsPrincipalFactory>()
+    .AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<User>>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
