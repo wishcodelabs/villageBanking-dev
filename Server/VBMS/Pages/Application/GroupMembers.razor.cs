@@ -16,7 +16,7 @@
             claimsPrincipal = (await AuthenticationStateTask).User;
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
-                Admin = await groupAdminService.GetByUserGuid(await userService.GetGuid(claimsPrincipal.Identity.Name));
+                Admin = await groupAdminService.GetByUserGuid(claimsPrincipal.GetGuid());
                 VillageBank = Admin.Group;
                 Members = await membershipService.GetMembers(VillageBank.Id);
             }

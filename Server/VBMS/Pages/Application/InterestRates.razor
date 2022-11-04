@@ -96,7 +96,7 @@
         claimsPrincipal = (await AuthenticationStateTask).User;
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
-            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            myGuid = claimsPrincipal.GetGuid();
             var admin = await groupAdminService.GetByUserGuid(myGuid);
             VillageBank = admin.Group;
             LoanTypesData = await loanTypeService.GetLoanTypes(VillageBank.Id);

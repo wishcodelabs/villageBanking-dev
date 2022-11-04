@@ -275,8 +275,13 @@
         claimsPrincipal = (await AuthenticationStateTask).User;
         if (claimsPrincipal.Identity.IsAuthenticated)
         {
-            myGuid = await userService.GetGuid(claimsPrincipal.Identity.Name);
+            myGuid = claimsPrincipal.GetGuid();
             Membership = await membershipService.GetByGuid(myGuid);
+            if (Membership is null)
+            {
+                await dialogService.ShowMessageBox("System Info", "Your village bank group is not active. If you are the admin. Activate the group.");
+                navigationManager.NavigateTo("dashboard");
+            }
             VillageBank = Membership.VillageBankGroup;
             await Refresh();
         }

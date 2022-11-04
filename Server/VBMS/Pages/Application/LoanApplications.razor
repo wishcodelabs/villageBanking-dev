@@ -140,9 +140,10 @@
         {
 
             Membership = await membershipService.GetByGuid(claimsPrincipal.GetGuid());
-            if(Membership is null)
+            if (Membership is null)
             {
-                await dialogService.ShowMessageBox("System Info","Your village bank group is not active. If you are the admin. Activate the group.");
+                await dialogService.ShowMessageBox("System Info", "Your village bank group is not active. If you are the admin. Activate the group.");
+                navigationManager.NavigateTo("dashboard");
             }
             VillageBank = Membership.VillageBankGroup;
             await Refresh();
